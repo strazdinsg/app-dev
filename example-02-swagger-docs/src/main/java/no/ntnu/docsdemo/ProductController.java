@@ -1,5 +1,7 @@
 package no.ntnu.docsdemo;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedList;
@@ -17,6 +19,7 @@ public class ProductController {
 
     /**
      * Get number of products in the store
+     *
      * @return Number of products currently in the store
      */
     @GetMapping("/count")
@@ -27,18 +30,27 @@ public class ProductController {
 
     /**
      * Get a specific product
+     *
      * @param index The index of the product in the store. Indexing starts at 0.
      * @return A product or null if index is invalid.
      */
     @GetMapping("/get")
-    public Product get(int index) {
+    public ResponseEntity<Product> get(int index) {
         lazyInitProducts();
-        return index >= 0 && index < products.size() ? products.get(index) : null;
+        ResponseEntity<Product> response;
+        if (index >= 0 && index < products.size()) {
+            Product product = products.get(index);
+            response = new ResponseEntity<>(product, HttpStatus.OK);
+        } else {
+            response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return response;
     }
 
     /**
-     * Get all procuts in the store.
-     * @return
+     * Get all products in the store.
+     *
+     * @return List of all products
      */
     @GetMapping
     public List<Product> getAll() {
@@ -48,34 +60,40 @@ public class ProductController {
 
     /**
      * Add a product to the store.
+     *
      * @param product The product to add
-     * @return True when product successfully added, false otherwise.
+     * @return 200 OK when added, 400 on error
      */
     @PostMapping
-    boolean add(Product product) {
+    ResponseEntity add(@RequestBody Product product) {
         lazyInitProducts();
-        boolean success = false;
+        ResponseEntity response;
         if (product != null) {
             products.add(product);
-            success = true;
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            response = new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        return success;
+        return response;
     }
 
     /**
      * Delete a product from the store
+     *
      * @param index Index of the product to delete. Indexing starts at 0.
-     * @return True when deleted, false when no product was deleted.
+     * @return 200 OK when deleted, or 404 Not found
      */
     @DeleteMapping
-    boolean delete(int index) {
+    ResponseEntity delete(int index) {
         lazyInitProducts();
-        boolean success = false;
+        ResponseEntity response;
         if (index >= 0 && index < products.size()) {
             products.remove(index);
-            success = true;
+            response = new ResponseEntity(HttpStatus.OK);
+        } else {
+            response = new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        return success;
+        return response;
     }
 
     /**
