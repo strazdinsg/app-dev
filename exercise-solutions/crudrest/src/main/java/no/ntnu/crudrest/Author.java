@@ -47,4 +47,12 @@ public class Author {
     public void setBirthYear(int birthYear) {
         this.birthYear = birthYear;
     }
+
+    /**
+     * Checks if the object is a valid author
+     * @return True if it is valid, false otherwise
+     */
+    public boolean isValid() {
+        return id > 0 && firstName != null && lastName != null && birthYear > 0;
+    }
 }
