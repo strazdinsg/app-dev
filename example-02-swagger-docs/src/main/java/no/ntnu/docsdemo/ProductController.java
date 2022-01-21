@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * REST controller for Product objects
@@ -15,7 +15,7 @@ import java.util.List;
 public class ProductController {
     // Store products here. This is for a simplicity of the demo. Normally you would load products from a database
     // and not have them cached in a static variable!
-    private static final List<Product> products = new LinkedList<>();
+    private static final Map<Integer, Product> products = new ConcurrentHashMap<>();
 
     /**
      * Get number of products in the store
@@ -31,15 +31,15 @@ public class ProductController {
     /**
      * Get a specific product
      *
-     * @param index The index of the product in the store. Indexing starts at 0.
-     * @return A product or null if index is invalid.
+     * @param id The ID of the product
+     * @return A product or null if ID is invalid.
      */
-    @GetMapping("/get")
-    public ResponseEntity<Product> get(int index) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> get(@PathVariable int id) {
         lazyInitProducts();
         ResponseEntity<Product> response;
-        if (index >= 0 && index < products.size()) {
-            Product product = products.get(index);
+        Product product = products.get(id);
+        if (product != null) {
             response = new ResponseEntity<>(product, HttpStatus.OK);
         } else {
             response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -55,24 +55,23 @@ public class ProductController {
     @GetMapping
     public List<Product> getAll() {
         lazyInitProducts();
-        return products;
+        return new ArrayList<>(products.values());
     }
 
     /**
      * Add a product to the store.
      *
      * @param product The product to add
-     * @return 200 OK when added, 400 on error
+     * @return 200 OK when added, 400 on error. Also 400 when product with the same ID was present.
      */
     @PostMapping
-    ResponseEntity add(@RequestBody Product product) {
+    ResponseEntity<String> add(@RequestBody Product product) {
         lazyInitProducts();
-        ResponseEntity response;
-        if (product != null) {
-            products.add(product);
-            return new ResponseEntity(HttpStatus.OK);
+        ResponseEntity<String> response;
+        if (addProduct(product)) {
+            response = new ResponseEntity<>(HttpStatus.OK);
         } else {
-            response = new ResponseEntity(HttpStatus.BAD_REQUEST);
+            response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return response;
     }
@@ -80,18 +79,18 @@ public class ProductController {
     /**
      * Delete a product from the store
      *
-     * @param index Index of the product to delete. Indexing starts at 0.
+     * @param id ID of the product to delete
      * @return 200 OK when deleted, or 404 Not found
      */
-    @DeleteMapping
-    ResponseEntity delete(int index) {
+    @DeleteMapping("/{id}")
+    ResponseEntity<String> delete(@PathVariable int id) {
         lazyInitProducts();
-        ResponseEntity response;
-        if (index >= 0 && index < products.size()) {
-            products.remove(index);
-            response = new ResponseEntity(HttpStatus.OK);
+        ResponseEntity<String> response;
+        Product removedProduct = products.remove(id);
+        if (removedProduct != null) {
+            response = new ResponseEntity<>(HttpStatus.OK);
         } else {
-            response = new ResponseEntity(HttpStatus.NOT_FOUND);
+            response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return response;
     }
@@ -101,9 +100,24 @@ public class ProductController {
      */
     private void lazyInitProducts() {
         if (products.isEmpty()) {
-            products.add(new Product("Soap", 12.3));
-            products.add(new Product("Milk", 16.0));
-            products.add(new Product("Chocolate", 28.2));
+            addProduct(new Product(1, "Soap", 12.3));
+            addProduct(new Product(2, "Milk", 16.0));
+            addProduct(new Product(3, "Chocolate", 28.2));
+        }
+    }
+
+    /**
+     * Add a product to the storage
+     *
+     * @param product The product to add
+     * @return True when product added, false otherwise. When a product with same ID existed already, return false.
+     */
+    private boolean addProduct(Product product) {
+        if (product != null && !products.containsKey(product.getId())) {
+            products.put(product.getId(), product);
+            return true;
+        } else {
+            return false;
         }
     }
 }
