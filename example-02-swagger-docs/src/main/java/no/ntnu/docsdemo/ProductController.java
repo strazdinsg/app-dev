@@ -1,8 +1,12 @@
 package no.ntnu.docsdemo;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,11 +22,14 @@ public class ProductController {
     private static final Map<Integer, Product> products = new ConcurrentHashMap<>();
 
     /**
-     * Get number of products in the store
+     * Get number of products in the store.
+     * We mark it as deprecated just to see how that is reflected in the documentation
      *
      * @return Number of products currently in the store
      */
     @GetMapping("/count")
+    @ApiOperation("Get the number of products currently in the store")
+    @Deprecated
     public int getCount() {
         lazyInitProducts();
         return products.size();
@@ -35,7 +42,8 @@ public class ProductController {
      * @return A product or null if ID is invalid.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Product> get(@PathVariable int id) {
+    @ApiOperation(value = "Get a specific product", notes = "Returns the product or null if ID is invalid")
+    public ResponseEntity<Product> get(@ApiParam("ID of the Product") @PathVariable int id) {
         lazyInitProducts();
         ResponseEntity<Product> response;
         Product product = products.get(id);
@@ -53,6 +61,7 @@ public class ProductController {
      * @return List of all products
      */
     @GetMapping
+    @ApiOperation(value = "Get all products")
     public List<Product> getAll() {
         lazyInitProducts();
         return new ArrayList<>(products.values());
@@ -65,6 +74,8 @@ public class ProductController {
      * @return 200 OK when added, 400 on error. Also 400 when product with the same ID was present.
      */
     @PostMapping
+    @ApiOperation(value = "Add a new product",
+            notes = "Status 200 OK when added, 400 on error or when product with the same ID was present")
     ResponseEntity<String> add(@RequestBody Product product) {
         lazyInitProducts();
         ResponseEntity<String> response;
@@ -78,11 +89,13 @@ public class ProductController {
 
     /**
      * Delete a product from the store
+     * Warning - we mark it as @ApiIgnore just to check how Swagger will handle it.
      *
      * @param id ID of the product to delete
      * @return 200 OK when deleted, or 404 Not found
      */
     @DeleteMapping("/{id}")
+    @ApiIgnore // Will not appear in Swagger docs!
     ResponseEntity<String> delete(@PathVariable int id) {
         lazyInitProducts();
         ResponseEntity<String> response;
