@@ -9,3 +9,4 @@ spring.mvc.pathmatch.matching-strategy=ant-path-matcher
 
 See [this StackOverflow thread](https://stackoverflow.com/questions/70059018/swagger-2-issue-spring-boot) for explanation.
 
+To access the docs, launch the project and navigate to [http://localhost:8080/swagger-ui/](http://localhost:8080/swagger-ui/).
