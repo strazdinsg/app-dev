@@ -28,7 +28,9 @@ public class DocsDemoApplication {
                 .select()
                 // We can say that we want to include only APIs under a specific URL. But we skip that, because
                 // here all the APIs which are created by us use the no.ntnu package
-//				.paths(PathSelectors.ant("/products/*"))
+                // See some examples of URL matching rules here:
+                // https://stackoverflow.com/questions/2952196/ant-path-style-patterns
+//				.paths(PathSelectors.ant("/products/**"))
                 .apis(RequestHandlerSelectors.basePackage("no.ntnu"))
                 .build()
                 .apiInfo(describeApi());
