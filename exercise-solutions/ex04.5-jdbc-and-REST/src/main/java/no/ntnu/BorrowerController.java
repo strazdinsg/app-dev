@@ -6,14 +6,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static no.ntnu.Week4Application.*;
-
 /**
  * REST API controller for borrower endpoints
  */
 @RestController
 @RequestMapping("borrowers")
 public class BorrowerController {
+
+    private final JdbcConnection connection;
+
+    public BorrowerController(JdbcConnection connection) {
+        this.connection = connection;
+    }
 
     /**
      * HTTP PUT mapping - update borrower in the database
@@ -26,8 +30,7 @@ public class BorrowerController {
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody String address) {
         ResponseEntity<String> response;
-        JdbcConnection connection = connectToDb();
-        if (connection != null && connection.isConnected()) {
+        if (connection.tryConnect()) {
             try {
                 connection.updateBorrowerAddress(id, address);
                 response = new ResponseEntity<>(HttpStatus.OK);
@@ -42,21 +45,6 @@ public class BorrowerController {
     }
 
     /**
-     * Try to establish database connection
-     *
-     * @return The connection object; or null on error
-     */
-    private JdbcConnection connectToDb() {
-        JdbcConnection connection = JdbcConnection.getInstance();
-        try {
-            connection.connect(DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD);
-        } catch (Exception e) {
-            connection = null;
-        }
-        return connection;
-    }
-
-    /**
      * HTTP GET names of all borrowers who borrowed book with given title
      *
      * @param bookTitle Title of the book, query string (?bookTitle=...)
@@ -65,10 +53,8 @@ public class BorrowerController {
      */
     @GetMapping()
     public ResponseEntity<List<String>> getBorrowerNames(@RequestParam String bookTitle) {
-        JdbcConnection connection = connectToDb();
-
         ResponseEntity<List<String>> response;
-        if (connection != null && connection.isConnected()) {
+        if (connection.tryConnect()) {
             try {
                 List<String> borrowerNames = connection.getBorrowerNames(bookTitle);
                 response = ResponseEntity.ok(borrowerNames);
