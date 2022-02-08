@@ -1,0 +1,57 @@
+{
+	"info": {
+		"_postman_id": "b9d6204f-7c1b-4f23-a058-12e5e463583a",
+		"name": "Exercises Week 4",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PUT borrower address",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "Ddd street 17"
+				},
+				"url": {
+					"raw": "localhost:8080/borrowers/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"borrowers",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET borrowers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/borrowers/?bookTitle=12 Rules For Life",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"borrowers",
+						""
+					],
+					"query": [
+						{
+							"key": "bookTitle",
+							"value": "12 Rules For Life"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
