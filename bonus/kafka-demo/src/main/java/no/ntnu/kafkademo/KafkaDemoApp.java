@@ -27,8 +27,6 @@ public class KafkaDemoApp {
     @Bean
     public NewTopic createTopic() {
         return TopicBuilder.name("dbUpdate")
-                .partitions(10)
-                .replicas(1)
                 .build();
     }
 
