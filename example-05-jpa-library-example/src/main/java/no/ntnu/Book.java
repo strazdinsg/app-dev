@@ -3,6 +3,8 @@ package no.ntnu;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents a resource: a book. We store Book objects in the application state (database).
@@ -18,6 +20,8 @@ public class Book {
     @ManyToOne
     @JsonIgnore
     private Genre genre;
+    @ManyToMany(mappedBy = "books")
+    private Set<Author> authors = new HashSet<>();
 
     public Book() {}
 
@@ -64,6 +68,18 @@ public class Book {
         this.numberOfPages = numberOfPages;
     }
 
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
+    }
+
     /**
      * Check if the book object is valid
      * @return True when valid, false when invalid
@@ -72,5 +88,13 @@ public class Book {
     @JsonIgnore
     public boolean isValid() {
         return (id == null || id > 0) && !"".equals(title) && yearIssued > 0 && numberOfPages > 0;
+    }
+
+    /**
+     * Add an author to the author list of the book.
+     * @param author The author to add
+     */
+    public void addAuthor(Author author) {
+        authors.add(author);
     }
 }

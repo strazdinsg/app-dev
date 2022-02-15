@@ -2,9 +2,9 @@ package no.ntnu;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents a resource: an author. We store Author objects in the application state (database).
@@ -17,6 +17,13 @@ public class Author {
     private String firstName;
     private String lastName;
     private int birthYear;
+    @ManyToMany
+    @JoinTable(name = "author_book",
+            joinColumns = @JoinColumn(name="author_id"),
+            inverseJoinColumns = @JoinColumn(name="book_id")
+    )
+    @JsonIgnore
+    private Set<Book> books = new HashSet<>();
 
     public Author() {}
 
@@ -66,5 +73,21 @@ public class Author {
 
     public void setBirthYear(int birthYear) {
         this.birthYear = birthYear;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
+    }
+
+    /**
+     * Add a book to the author's book collection
+     * @param book The book to add
+     */
+    public void addBook(Book book) {
+        books.add(book);
     }
 }

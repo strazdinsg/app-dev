@@ -31,10 +31,9 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
         Author mObama = new Author("Michele", "Obama", 1964);
         Author jPeterson = new Author("Jordan", "Peterson", 1962);
         Author jKurose = new Author("Jim", "Kurose", 1956);
+        Author iSpector = new Author("Ian", "Spector", 1988);
+        Author kRoss = new Author("Keith", "Ross", 1957);
 
-        authorRepository.save(mObama);
-        authorRepository.save(jPeterson);
-        authorRepository.save(jKurose);
 
         Genre gParody = new Genre("Parody");
         Genre gNetworks = new Genre("Computer Networks");
@@ -56,6 +55,18 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
         bookRepository.save(b12Rules);
         bookRepository.save(bChuck);
         bookRepository.save(bBecoming);
+
+        jKurose.addBook(bCompNet);
+        kRoss.addBook(bCompNet);
+        jPeterson.addBook(b12Rules);
+        iSpector.addBook(bChuck);
+        mObama.addBook(bBecoming);
+
+        authorRepository.save(mObama);
+        authorRepository.save(kRoss);
+        authorRepository.save(jPeterson);
+        authorRepository.save(jKurose);
+        authorRepository.save(iSpector);
 
         logger.info("DONE importing test data");
     }
