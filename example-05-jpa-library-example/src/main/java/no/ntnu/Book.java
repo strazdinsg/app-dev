@@ -2,9 +2,7 @@ package no.ntnu;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Represents a resource: a book. We store Book objects in the application state (database).
@@ -17,6 +15,13 @@ public class Book {
     private String title;
     private int yearIssued;
     private int numberOfPages;
+    @ManyToOne
+    @JsonIgnore
+    private Genre genre;
+
+    public Genre getGenre() {
+        return genre;
+    }
 
     public Integer getId() {
         return id;
