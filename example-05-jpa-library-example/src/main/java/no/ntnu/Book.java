@@ -18,7 +18,6 @@ public class Book {
     private int yearIssued;
     private int numberOfPages;
     @ManyToOne
-    @JsonIgnore
     private Genre genre;
     @ManyToMany(mappedBy = "books")
     private Set<Author> authors = new HashSet<>();

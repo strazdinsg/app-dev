@@ -20,14 +20,23 @@ public class BookController {
      * Get All books
      * HTTP GET to /books
      *
+     * @param genre Genre. When specified, get all books with a genre including this substring, case-insensitive.
+     * @param author Author. When specified, get all books with an author including this substring, case-insensitive.
      * @return List of all books currently stored in the collection
      */
     @GetMapping
-    public List<Book> getAll(@RequestParam(required = false) String genre) {
-        if (genre == null || "".equals(genre)) {
-            return bookService.getAll();
+    public List<Book> getAll(@RequestParam(required = false) String genre,
+                             @RequestParam(required = false) String author) {
+        if (genre != null && !"".equals(genre)) {
+            if (author != null && !"".equals(author)) {
+                return bookService.getAllByAuthorAndGenre(author, genre);
+            } else {
+                return bookService.getAllByGenre(genre);
+            }
+        } else if (author != null && !"".equals(author)) {
+            return bookService.getAllByAuthor(author);
         } else {
-            return bookService.getAllByGenre(genre);
+            return bookService.getAll();
         }
     }
 

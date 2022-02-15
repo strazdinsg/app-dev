@@ -95,4 +95,12 @@ public class BookService {
     public List<Book> getAllByGenre(String genre) {
         return bookRepository.findByGenreNameContainingIgnoreCase(genre);
     }
+
+    public List<Book> getAllByAuthor(String author) {
+        return bookRepository.findByAuthorsFirstNameContainingIgnoreCase(author);
+    }
+
+    public List<Book> getAllByAuthorAndGenre(String author, String genre) {
+        return bookRepository.findByAuthorsFirstNameContainingIgnoreCaseAndGenreNameContainingIgnoreCase(author, genre);
+    }
 }

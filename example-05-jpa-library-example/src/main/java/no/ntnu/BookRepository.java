@@ -9,6 +9,9 @@ import java.util.List;
  * Spring will auto-generate necessary methods.
  */
 public interface BookRepository extends CrudRepository<Book, Integer> {
-    // We need to include
     List<Book> findByGenreNameContainingIgnoreCase(String genre);
+
+    List<Book> findByAuthorsFirstNameContainingIgnoreCase(String author);
+
+    List<Book> findByAuthorsFirstNameContainingIgnoreCaseAndGenreNameContainingIgnoreCase(String author, String genre);
 }
