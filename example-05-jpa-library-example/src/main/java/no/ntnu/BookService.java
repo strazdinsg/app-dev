@@ -91,4 +91,8 @@ public class BookService {
         }
         return errorMessage;
     }
+
+    public List<Book> getAllByGenre(String genre) {
+        return bookRepository.findByGenreNameContainingIgnoreCase(genre);
+    }
 }

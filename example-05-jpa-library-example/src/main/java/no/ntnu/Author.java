@@ -18,6 +18,14 @@ public class Author {
     private String lastName;
     private int birthYear;
 
+    public Author() {}
+
+    public Author(String firstName, String lastName, int birthYear) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthYear = birthYear;
+    }
+
     /**
      * Check if the author object is valid
      *

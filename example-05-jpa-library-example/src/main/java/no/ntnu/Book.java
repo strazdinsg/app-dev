@@ -19,6 +19,15 @@ public class Book {
     @JsonIgnore
     private Genre genre;
 
+    public Book() {}
+
+    public Book(String title, int yearIssued, int numberOfPages, Genre genre) {
+        this.title = title;
+        this.yearIssued = yearIssued;
+        this.numberOfPages = numberOfPages;
+        this.genre = genre;
+    }
+
     public Genre getGenre() {
         return genre;
     }

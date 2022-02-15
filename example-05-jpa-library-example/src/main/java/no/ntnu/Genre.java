@@ -12,7 +12,13 @@ public class Genre {
     @Id
     @GeneratedValue
     private Integer id;
-    private String genre;
+    private String name;
+
+    public Genre() {}
+
+    public Genre(String name) {
+        this.name = name;
+    }
 
     public Integer getId() {
         return id;
@@ -22,11 +28,11 @@ public class Genre {
         this.id = id;
     }
 
-    public String getGenre() {
-        return genre;
+    public String getName() {
+        return name;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public void setName(String genre) {
+        this.name = genre;
     }
 }

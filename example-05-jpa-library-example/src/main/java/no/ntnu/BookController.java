@@ -23,8 +23,12 @@ public class BookController {
      * @return List of all books currently stored in the collection
      */
     @GetMapping
-    public List<Book> getAll() {
-        return bookService.getAll();
+    public List<Book> getAll(@RequestParam(required = false) String genre) {
+        if (genre == null || "".equals(genre)) {
+            return bookService.getAll();
+        } else {
+            return bookService.getAllByGenre(genre);
+        }
     }
 
     /**
