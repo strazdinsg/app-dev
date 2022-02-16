@@ -27,6 +27,11 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
      */
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
+        if (isDataImported()) {
+            logger.info("Data already exists! Not importing again...");
+            return;
+        }
+
         logger.info("Importing test data...");
         Author mObama = new Author("Michele", "Obama", 1964);
         Author jPeterson = new Author("Jordan", "Peterson", 1962);
@@ -68,5 +73,14 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
         authorRepository.save(iSpector);
 
         logger.info("DONE importing test data");
+    }
+
+    /**
+     * Check if data is already imported (in the previous run)
+     * @return True when database already contains data, false when it does not
+     */
+    private boolean isDataImported() {
+        // Just check if there are any genres already stored
+        return genreRepository.count() > 0;
     }
 }
