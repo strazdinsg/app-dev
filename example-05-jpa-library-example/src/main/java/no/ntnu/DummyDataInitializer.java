@@ -34,7 +34,6 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
         Author iSpector = new Author("Ian", "Spector", 1988);
         Author kRoss = new Author("Keith", "Ross", 1957);
 
-
         Genre gParody = new Genre("Parody");
         Genre gNetworks = new Genre("Computer Networks");
         Genre gPsychology = new Genre("Medical Applied Psychology");

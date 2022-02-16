@@ -17,8 +17,10 @@ public class Book {
     private String title;
     private int yearIssued;
     private int numberOfPages;
+
     @ManyToOne
     private Genre genre;
+
     @ManyToMany(mappedBy = "books")
     private Set<Author> authors = new HashSet<>();
 
