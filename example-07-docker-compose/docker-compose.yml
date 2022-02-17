@@ -1,0 +1,29 @@
+# This file describes all the services we have in our solution
+# Run the following command in the command line:
+#   docker-compose up
+services:
+  app:
+    build: .
+    ports:
+      - 80:8080
+    depends_on:
+      database:
+        # This is important! Without it application will fail because MySQL has not started properly!
+        condition: service_healthy
+  database:
+    image: mysql:8.0.28
+    # Forward MySQL port 3306 to localhost port 5000, for debugging
+    ports:
+      - 5000:3306
+    # Automatically start the container when Docker restarts
+    # (unless the user has manually stopped it)
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=verysecretpassword
+      - MYSQL_DATABASE=library
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      # For PostgreSQL, use this test condition:
+      # test: ["CMD-SHELL", "pg_isready -U postgres"]
+      timeout: 5s
+      retries: 20
