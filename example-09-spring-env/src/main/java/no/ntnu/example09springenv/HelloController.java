@@ -16,6 +16,10 @@ public class HelloController {
     private String myCustomVariable;
     @Value("${MY_INT_PARAM}")
     private Integer myIntParam;
+    /** This value will come from a command line parameter. To set it, run the application with --SERVER_FLAG=yourValue
+     * We use a hack in the application.properties to set default value for it. */
+    @Value("${server.flag}")
+    private String serverFlag;
 
 
     /**
@@ -28,6 +32,7 @@ public class HelloController {
         env.put("JAVA_HOME", javaPath);
         env.put("MY_ENV_VARIABLE", myCustomVariable);
         env.put("my integer parameter", myIntParam);
+        env.put("server.flag", serverFlag);
         return env;
     }
 }
