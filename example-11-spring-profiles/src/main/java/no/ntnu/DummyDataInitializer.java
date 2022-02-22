@@ -5,7 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 /**
  * A class which inserts some dummy data into the database, when Spring Boot app has started
@@ -18,6 +21,8 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     private GenreRepository genreRepository;
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private Environment environment;
 
     private final Logger logger = LoggerFactory.getLogger("DummyInit");
 
@@ -27,6 +32,10 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
      */
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
+        if (isTestingProfile()) {
+            logger.info("NOT importing data in the test environment!");
+            return;
+        }
         if (isDataImported()) {
             logger.info("Data already exists! Not importing again...");
             return;
@@ -73,6 +82,14 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
         authorRepository.save(iSpector);
 
         logger.info("DONE importing test data");
+    }
+
+    /**
+     * Check if we are running this with the `test` profile
+     * @return True when `test` is (one of) active profile(s)
+     */
+    private boolean isTestingProfile() {
+        return Arrays.asList(environment.getActiveProfiles()).contains("test");
     }
 
     /**
