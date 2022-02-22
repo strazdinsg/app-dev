@@ -1,0 +1,6 @@
+myapp:
+  servers:
+    - 192.168.0.1
+    - www.chuck.com
+  use-auth: false
+  port: 80
