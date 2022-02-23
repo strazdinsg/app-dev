@@ -10,6 +10,9 @@ services:
       database:
         # This is important! Without it application will fail because MySQL has not started properly!
         condition: service_healthy
+    environment:
+      - SPRING_PROFILE=prod
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
   database:
     image: mysql:8.0.28
     # Forward MySQL port 3306 to localhost port 5000, for debugging
