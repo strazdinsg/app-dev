@@ -28,3 +28,5 @@ sends an HTTP GET request to `/api/hello` using Javascript. The result of the AP
 This example uses static HTML file. However, the ThymeLeaf template engine allows you to do some server-side rendering -
 you can define controllers for specific URLs; these controllers can load necessary data and inject the data in the
 templates. In this manner you create a `monolith` application without a separation of backend and frontend.
+
+Check out [this tutorial](https://spring.io/guides/gs/serving-web-content/) to know more about using ThymeLeaf templates.
