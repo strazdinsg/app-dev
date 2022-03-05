@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Backend+frontend demo app</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+        html {
+            font-size: 62.5%;
+            font-family: 'Montserrat', sans-serif;
+            color: #2a1100;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 2rem;
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.6rem;
+            margin-bottom: 0.6rem;
+        }
+
+        #message {
+            border: 1px solid #484848;
+            padding: 1rem;
+        }
+
+    </style>
+</head>
+<body onload="requestData()">
+
+<h1>Welcome to a demo app!</h1>
+<p>This app demonstrates how we can include frontend part of a web application into a Spring Boot project.</p>
+
+<p>The message here will be loaded from the backend using Javascript:</p>
+<p id="message">[the message will be here, loading...]</p>
+
+<script>
+    // Here we include Javascript code
+
+    // This function requests data from the API (/api/hello) and displays the response in element with id="message"
+    function requestData() {
+        const apiRequest = new XMLHttpRequest();
+        // Here we define what function must be called when the API request is loaded
+        // The request can have different states and status codes, we must check that we get status == 200 (OK)
+        apiRequest.onload = function () {
+            if (this.readyState === XMLHttpRequest.DONE) {
+                if (this.status === 200) {
+                    document.getElementById("message").innerText = this.responseText;
+                } else {
+                    console.error("Error " + this.status);
+                }
+            }
+        }
+        apiRequest.open("GET", "/api/hello");
+        apiRequest.send();
+    }
+</script>
+
+</body>
+</html>
