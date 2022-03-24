@@ -19,3 +19,5 @@ example-05-jpa-library-example/derby.log
 example-06-docker-demo/derby.log
 
 example-11-spring-profiles/derby.log
+
+exercises/full-stack-spring-boot/derby.log
