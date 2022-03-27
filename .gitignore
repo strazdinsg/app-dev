@@ -21,3 +21,5 @@ example-06-docker-demo/derby.log
 example-11-spring-profiles/derby.log
 
 exercises/full-stack-spring-boot/derby.log
+
+security-demos/03-jdbc-authentication/derby.log
