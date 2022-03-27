@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name="roles")
 public class Role {
     @Id
     @GeneratedValue
