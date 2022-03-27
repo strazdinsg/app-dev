@@ -25,3 +25,5 @@ exercises/full-stack-spring-boot/derby.log
 security-demos/03-jdbc-authentication/derby.log
 
 security-demos/04-jpa-authentication/derby.log
+
+security-demos/05-jwt-authentication/derby.log
