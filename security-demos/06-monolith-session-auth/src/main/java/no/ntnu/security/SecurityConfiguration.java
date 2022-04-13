@@ -10,8 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.sql.DataSource;
-
 /**
  * Creates AuthenticationManager - set up authentication type
  * The @EnableWebSecurity tells that this ia a class for configuring web security
@@ -47,10 +45,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // Set up the authorization requests, starting from most restrictive at the top, to least restrictive on bottom
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/user").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/users/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/").permitAll()
-                .and().formLogin();
+                .and().formLogin().loginPage("/login")
+                .and().logout().logoutSuccessUrl("/")
+        ;
     }
 
     /**

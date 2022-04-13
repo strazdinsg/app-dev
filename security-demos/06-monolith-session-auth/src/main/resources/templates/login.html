@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log in</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<main>
+    <p>This is a "styled" login form. No fancy styles, but it shows the concept of using "your own" login form.</p>
+    <form method="post" th:action="@{/login}">
+        <h2>Sign in</h2>
+        <label class="sr-only" for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Username">
+        <label class="sr-only" for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password">
+        <p th:if="${param.error}" class="alert">Invalid username or password</p>
+        <button type="submit">Sign in</button>
+    </form>
+</main>
+
+</body>
+</html>

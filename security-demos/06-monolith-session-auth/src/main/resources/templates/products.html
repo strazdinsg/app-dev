@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/product-data-loader.js"></script>
+</head>
+<body onload="sendProductDataRequest()">
+<nav th:include="components/navigation"></nav>
+<main>
+    <h1>Products</h1>
+    <p>Here you can see all our products.</p>
+    <ul id="product-container">
+        <li>Loading...</li>
+    </ul>
+</main>
+</body>
+</html>

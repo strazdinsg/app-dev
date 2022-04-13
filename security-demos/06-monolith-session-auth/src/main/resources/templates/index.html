@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>Security demo</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<nav th:insert="components/navigation"></nav>
+<main>
+    <h1>Welcome!</h1>
+    <p>Welcome to our page. Here we demonstrate basic security handling for a monolith full-stack Spring Boot
+        application.
+        The following concepts are shown here:</p>
+    <ul>
+        <li>Storing users in a database</li>
+        <li>Configuration of necessary authorization levels for different URLs (pages) of the application</li>
+        <li>Accessing currently logged-in user</li>
+        <li>Passing user data to Thymeleaf templates</li>
+        <li>Conditional elements in Thymeleaf - some elements in the navigation shown only for logged-in users, some
+            only for admins
+        </li>
+        <li>Several pages on the site: some requiring no authorization, some accessible to all users, some - only to
+            admins
+        </li>
+        <li>Including a reusable navigation component in several pages</li>
+    </ul>
+    <p th:if="${user != null}">You can try to access a <a th:href="@{/users/} + 'john'">profile page of another user</a>.
+        It will fail.</p>
+</main>
+</body>
+</html>

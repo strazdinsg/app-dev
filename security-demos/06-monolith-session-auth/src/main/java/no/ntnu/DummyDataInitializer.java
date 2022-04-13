@@ -1,7 +1,9 @@
 package no.ntnu;
 
+import no.ntnu.models.Product;
 import no.ntnu.models.Role;
 import no.ntnu.models.User;
+import no.ntnu.repositories.ProductRepository;
 import no.ntnu.repositories.RoleRepository;
 import no.ntnu.repositories.UserRepository;
 import org.slf4j.Logger;
@@ -23,6 +25,9 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     private final Logger logger = LoggerFactory.getLogger("DummyInit");
 
@@ -49,6 +54,14 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
 
             userRepository.save(chuck);
             userRepository.save(dave);
+
+            Product chocolate = new Product("Chocolate", 1.23);
+            Product milk = new Product("Milk", 2.46);
+            Product hammer = new Product("Hammer", 66.67);
+
+            productRepository.save(chocolate);
+            productRepository.save(milk);
+            productRepository.save(hammer);
 
             logger.info("DONE importing test data");
         } else {
