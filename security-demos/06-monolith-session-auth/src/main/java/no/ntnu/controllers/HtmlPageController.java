@@ -1,6 +1,8 @@
 package no.ntnu.controllers;
 
 import no.ntnu.dto.SignupDto;
+import no.ntnu.dto.UserProfileDto;
+import no.ntnu.models.User;
 import no.ntnu.services.AccessUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,16 +32,47 @@ public class HtmlPageController {
         return "index";
     }
 
+    /**
+     * Show profile page for a user
+     *
+     * @param model    Model for passing data to Thymeleaf
+     * @param username Username of the user
+     * @return
+     */
     @GetMapping("users/{username}")
     public String userPage(Model model, @PathVariable String username) {
-        UserDetails authenticatedUser = userService.getSessionUser();
+        return handleProfilePageRequest(username, null, model);
+    }
+
+    /**
+     * This method handles HTTP POST - user submits changes to his/her profile
+     *
+     * @param model    Model for passing data to Thymeleaf
+     * @param username Username of the user
+     * @return name of the Thymeleaf template to render the result
+     */
+    @PostMapping("users/{username}")
+    public String userPagePost(@ModelAttribute UserProfileDto profileData, @PathVariable String username, Model model) {
+        return handleProfilePageRequest(username, profileData, model);
+    }
+
+    private String handleProfilePageRequest(String username, UserProfileDto postData, Model model) {
+        User authenticatedUser = userService.getSessionUser();
         if (authenticatedUser != null && authenticatedUser.getUsername().equals(username)) {
             model.addAttribute("user", authenticatedUser);
+            if (postData != null) {
+                if (userService.updateProfile(authenticatedUser, postData)) {
+                    model.addAttribute("successMessage", "Profile updated!");
+                } else {
+                    model.addAttribute("errorMessage", "Could not update profile data!");
+                }
+            }
             return "user";
         } else {
             return "no-access";
         }
     }
+
 
     @GetMapping("admin")
     public String adminPage(Model model) {
@@ -62,6 +95,7 @@ public class HtmlPageController {
 
     /**
      * Sign-up form
+     *
      * @return NAme of Thymeleaf template to use
      */
     @GetMapping("/signup")
@@ -71,6 +105,7 @@ public class HtmlPageController {
 
     /**
      * This method processes data received from the sign-up form (HTTP POST)
+     *
      * @return NAme of the template for the result page
      */
     @PostMapping("/signup")

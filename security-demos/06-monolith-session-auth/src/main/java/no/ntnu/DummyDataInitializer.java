@@ -41,8 +41,8 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
         Optional<User> existingChuckUser = userRepository.findByUsername("chuck");
         if (existingChuckUser.isEmpty()) {
             logger.info("Importing test data...");
-            User chuck = new User("chuck", "$2a$12$/NoknpFFPDlzL3kBryJfsur0yeYC2JFqAs7Fd79ypMP6PN/mtSYmC");
-            User dave = new User("dave", "$2a$10$nwbEjYKgcomq2rjUPge2JegqI.y4zEcNqRMPdqwFnd1ytorNCQM/y");
+            User chuck = new User("chuck", "$2a$12$/NoknpFFPDlzL3kBryJfsur0yeYC2JFqAs7Fd79ypMP6PN/mtSYmC", "I don't need a mic for remote conferences. My voice goes directly into USB.");
+            User dave = new User("dave", "$2a$10$nwbEjYKgcomq2rjUPge2JegqI.y4zEcNqRMPdqwFnd1ytorNCQM/y", "Dangerous Dave");
             Role user = new Role("ROLE_USER");
             Role admin = new Role("ROLE_ADMIN");
             chuck.addRole(user);

@@ -1,6 +1,9 @@
 package no.ntnu.models;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -11,6 +14,7 @@ public class User {
     private Long id;
     private String username;
     private String password;
+    private String bio;
     private boolean active = true;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
@@ -28,6 +32,12 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public User(String username, String password, String bio) {
+        this.username = username;
+        this.password = password;
+        this.bio = bio;
     }
 
     public void setRoles(Set<Role> roles) {
@@ -78,5 +88,38 @@ public class User {
      */
     public void addRole(Role role) {
         roles.add(role);
+    }
+
+    /**
+     * Check if this user is an admin
+     * @return True if the user has admin role, false otherwise
+     */
+    public boolean isAdmin() {
+        return this.hasRole("ROLE_ADMIN");
+    }
+
+    /**
+     * Check if the user has a specified role
+     * @param roleName Name of the role
+     * @return True if hte user has the role, false otherwise.
+     */
+    public boolean hasRole(String roleName) {
+        boolean found = false;
+        Iterator<Role> it = roles.iterator();
+        while (!found && it.hasNext()) {
+            Role role = it.next();
+            if (role.getName().equals(roleName)) {
+                found = true;
+            }
+        }
+        return found;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 }

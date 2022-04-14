@@ -3,7 +3,6 @@ package no.ntnu;
 
 import no.ntnu.models.Role;
 import no.ntnu.models.User;
-import no.ntnu.security.AccessUserDetails;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -12,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Unit tests for AccessUserDetails class
  */
-public class AccessUserDetailsTest {
+public class UserTest {
 
     @Test
     public void testRoleCheck() {
@@ -26,14 +25,12 @@ public class AccessUserDetailsTest {
         adminUser.addRole(userRole);
         adminUser.addRole(adminRole);
 
-        AccessUserDetails regularUserDetails = new AccessUserDetails(regularUser);
-        assertFalse(regularUserDetails.isAdmin());
-        assertFalse(regularUserDetails.hasRole("ROLE_ADMIN"));
-        assertTrue(regularUserDetails.hasRole("ROLE_USER"));
+        assertFalse(regularUser.isAdmin());
+        assertFalse(regularUser.hasRole("ROLE_ADMIN"));
+        assertTrue(regularUser.hasRole("ROLE_USER"));
 
-        AccessUserDetails adminUserDetails = new AccessUserDetails(adminUser);
-        assertTrue(adminUserDetails.isAdmin());
-        assertTrue(adminUserDetails.hasRole("ROLE_ADMIN"));
-        assertTrue(adminUserDetails.hasRole("ROLE_USER"));
+        assertTrue(adminUser.isAdmin());
+        assertTrue(adminUser.hasRole("ROLE_ADMIN"));
+        assertTrue(adminUser.hasRole("ROLE_USER"));
     }
 }

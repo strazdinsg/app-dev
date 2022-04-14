@@ -51,6 +51,14 @@ main {
     margin: 1rem;
 }
 
+.alert {
+    color: #bd3333;
+}
+
+.success {
+    color: #33bd33;
+}
+
 /* Navigation */
 .navigation {
     display: flex;
@@ -80,6 +88,12 @@ input, button {
     display: none;
 }
 
-.alert {
-    color: #bd3333;
+
+/* User profile page */
+#bio {
+    width: 100%;
+    height: 10rem;
+}
+form.bio {
+    width: 40rem;
 }

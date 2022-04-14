@@ -1,5 +1,6 @@
 package no.ntnu.services;
 
+import no.ntnu.dto.UserProfileDto;
 import no.ntnu.models.Role;
 import no.ntnu.models.User;
 import no.ntnu.repositories.RoleRepository;
@@ -43,15 +44,11 @@ public class AccessUserService implements UserDetailsService {
      *
      * @return User object or null if no user has logged in
      */
-    public UserDetails getSessionUser() {
+    public User getSessionUser() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         String username = authentication.getName();
-        try {
-            return loadUserByUsername(username);
-        } catch (UsernameNotFoundException ex) {
-            return null;
-        }
+        return userRepository.findByUsername(username).orElse(null);
     }
 
     /**
@@ -129,5 +126,17 @@ public class AccessUserService implements UserDetailsService {
      */
     private String createHash(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
+    /**
+     * Update profile information for a user
+     * @param user User to update
+     * @param profileData Profile data to set for the user
+     * @return True on success, false otherwise
+     */
+    public boolean updateProfile(User user, UserProfileDto profileData) {
+        user.setBio(profileData.getBio());
+        userRepository.save(user);
+        return true;
     }
 }
