@@ -2,11 +2,11 @@
     <ul class="navigation">
         <li><a th:href="@{/}">Home</a></li>
         <li><a th:href="@{/products}">Products</a></li>
-        <li th:if="${user != null && user.isAdmin}"><a th:href="@{/admin}">Administration</a></li>
-        <li th:if="${user != null}">
-            <a th:href="@{/users/} + ${user.username}" th:text="'Welcome, ' + ${user.username} + '!'"></a>
-        </li>
+        <th:block th:if="${user != null}">
+            <li th:if="${user.isAdmin}"><a th:href="@{/admin}">Administration</a></li>
+            <li><a th:href="@{/users/} + ${user.username}" th:text="'Welcome, ' + ${user.username} + '!'"></a></li>
+            <li><a th:href="@{/logout}">Logout</a></li>
+        </th:block>
         <li th:if="${user == null}"><a th:href="@{login}">Login</a></li>
-        <li th:if="${user != null}"><a th:href="@{/logout}">Logout</a></li>
     </ul>
 </nav>
