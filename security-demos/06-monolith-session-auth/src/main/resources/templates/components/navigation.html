@@ -7,6 +7,9 @@
             <li><a th:href="@{/users/} + ${user.username}" th:text="'Welcome, ' + ${user.username} + '!'"></a></li>
             <li><a th:href="@{/logout}">Logout</a></li>
         </th:block>
-        <li th:if="${user == null}"><a th:href="@{login}">Login</a></li>
+        <th:block th:if="${user == null}">
+            <li><a th:href="@{login}">Login</a></li>
+            <li><a th:href="@{signup}">Sign up</a></li>
+        </th:block>
     </ul>
 </nav>

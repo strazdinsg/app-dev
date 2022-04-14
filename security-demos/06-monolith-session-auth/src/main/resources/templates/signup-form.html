@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign up</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<main>
+    <form method="post" th:action="@{/signup}" th:object="${signupData}">
+        <h2>Sign up</h2>
+        <label class="sr-only" for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Username">
+        <label class="sr-only" for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password">
+        <p th:if="${errorMessage != null}" class="alert" th:text="${errorMessage}"></p>
+        <button type="submit">Sign up</button>
+    </form>
+</main>
+
+</body>
+</html>
