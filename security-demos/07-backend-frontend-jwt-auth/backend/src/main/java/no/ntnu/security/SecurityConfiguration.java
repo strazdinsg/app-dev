@@ -17,10 +17,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 /**
  * Creates AuthenticationManager - set up authentication type
  * The @EnableWebSecurity tells that this ia a class for configuring web security
- * The @EnableGlobalMethodSecurity is needed so that each endpoint can specify which role it requires
  */
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     /**
      * A service providing our users from the database
@@ -53,7 +51,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // Allow JWT authentication
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/authenticate").permitAll()
+                .antMatchers("/api/authenticate").permitAll()
+                .antMatchers("/api/products").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
