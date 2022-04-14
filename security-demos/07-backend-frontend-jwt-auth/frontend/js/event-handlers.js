@@ -18,14 +18,3 @@ function submitLoginForm(event) {
 function onLoginSuccess() {
     redirectTo("/");
 }
-
-function showFormError(errorMessage) {
-    showFormResult(errorMessage, "error");
-}
-
-function showFormResult(message, resultType) {
-    const resultElement = document.getElementById("result-message");
-    resultElement.classList.add(resultType);
-    resultElement.classList.remove("hidden");
-    resultElement.innerText = message;
-}

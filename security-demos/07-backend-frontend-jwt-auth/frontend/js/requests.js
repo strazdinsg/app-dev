@@ -17,7 +17,10 @@ function sendApiRequest(method, url, callback, requestBody, errorCallback) {
     request.onload = function () {
         if (request.readyState === XMLHttpRequest.DONE) {
             if (request.status === 200) {
-                const responseJson = JSON.parse(request.responseText);
+                let responseJson = "";
+                if (request.responseText) {
+                    responseJson = JSON.parse(request.responseText);
+                }
                 callback(responseJson);
             } else if (errorCallback) {
                 errorCallback(request.responseText);
@@ -27,6 +30,10 @@ function sendApiRequest(method, url, callback, requestBody, errorCallback) {
         }
     };
     request.open(method, API_BASE_URL + url);
+    const jwtToken = getCookie("jwt");
+    if (jwtToken) {
+        request.setRequestHeader("Authorization", "Bearer " + jwtToken);
+    }
     if (requestBody) {
         if (method.toLowerCase() !== "get") {
             request.setRequestHeader('Content-Type', 'application/json');

@@ -6,8 +6,8 @@
           content="width=device-width, initial-scale=1.0">
     <title>Security demo</title>
     <link rel="stylesheet" href="css/styles.css">
-    <script src="js/authentication.js"></script>
     <script src="js/tools.js"></script>
+    <script src="js/authentication.js"></script>
     <script src="js/navigation.js"></script>
 </head>
 <body onload="createNavigation()">
@@ -24,12 +24,4 @@
         Thymeleaf application and uses session authentication.</p>
 </main>
 </body>
-<script>
-    // If the user has logged in, provide a link to inaccessible user profile page, for testing the permissions
-    const authenticatedUser = getAuthenticatedUser();
-    if (authenticatedUser != null) {
-        addParagraph(document.querySelector("main"),
-            "You can try to access a <a href='/users/john'>profile page of another user</a>. It will fail.");
-    }
-</script>
 </html>

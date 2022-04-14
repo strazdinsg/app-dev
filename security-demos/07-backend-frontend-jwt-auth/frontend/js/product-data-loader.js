@@ -1,8 +1,6 @@
 // Dynamically load product data
 
-document.addEventListener("DOMContentLoaded", function() {
-   sendProductDataRequest();
-});
+runOnLoad(sendProductDataRequest);
 
 /**
  * Send an Ajax request to backend, fetch product data

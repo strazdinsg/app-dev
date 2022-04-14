@@ -11,7 +11,7 @@ function createNavigation() {
         if (isAdmin(authenticatedUser)) {
             addNavigationItem("Administration", "/admin.html");
         }
-        addNavigationItem(`Welcome, ${authenticatedUser.username}!`, `/users/${authenticatedUser.username}`);
+        addNavigationItem(`Welcome, ${authenticatedUser.username}!`, "/profile.html");
         addNavigationItem("Logout", `/logout`);
     } else {
         addNavigationItem("Login", "/login.html");
