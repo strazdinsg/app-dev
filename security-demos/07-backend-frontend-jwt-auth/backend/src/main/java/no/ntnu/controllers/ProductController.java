@@ -24,7 +24,7 @@ public class ProductController {
 
     /**
      * Get all products stored in the database
-     * @return
+     * @return List of all products
      */
     @GetMapping("/api/products")
     public List<Product> getAll() {

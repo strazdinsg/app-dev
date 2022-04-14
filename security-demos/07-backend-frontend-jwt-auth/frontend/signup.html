@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign up</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="js/tools.js"></script>
+    <script src="js/requests.js"></script>
+    <script src="js/authentication.js"></script>
+    <script src="js/navigation.js"></script>
+</head>
+<body>
+<main>
+    <form method="post">
+        <h2>Sign up</h2>
+        <label class="sr-only" for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Username">
+        <label class="sr-only" for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password">
+        <p id="result-message" class="hidden"></p>
+        <button id="signup-button" type="submit">Sign up</button>
+    </form>
+</main>
+</body>
+<script src="js/signup.js"></script>
+</html>
