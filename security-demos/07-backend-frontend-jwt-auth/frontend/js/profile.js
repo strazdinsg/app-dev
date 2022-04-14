@@ -16,6 +16,9 @@ profileSaveButton.onclick = function(event) {
     sendApiRequest("PUT", "/users/" + username, profileSaveSuccess, profileData, profileSaveError);
 }
 
+/**
+ * Send request to backend, load user profile data
+ */
 function loadProfileData() {
     console.log("Loading profile data from API...");
     bioElement.disabled = true;
@@ -40,12 +43,19 @@ function showProfileData(profileData) {
     }
 }
 
+/**
+ * This function is called when profile was successfully saved (response from API received)
+ */
 function profileSaveSuccess() {
     showFormSuccess("Profile saved");
     bioElement.disabled = false;
     profileSaveButton.disabled = false;
 }
 
+/**
+ * This function is called when profile-saving failed
+ * @param error Error message received from the API
+ */
 function profileSaveError(error) {
     showFormError(error);
 }

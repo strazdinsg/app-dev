@@ -4,25 +4,30 @@ const BASE_URL = "/frontend"; // Set this to whatever your BASE URL is
  * Create the navigation, adding links based on current user permission level
  */
 function createNavigation() {
-    addNavigationItem("Home", "/");
-    addNavigationItem("Products", "/products.html");
+    addNavigationLink("Home", "/");
+    addNavigationLink("Products", "/products.html");
     const authenticatedUser = getAuthenticatedUser();
     if (authenticatedUser) {
         if (isAdmin(authenticatedUser)) {
-            addNavigationItem("Administration", "/admin.html");
+            addNavigationLink("Administration", "/admin.html");
         }
-        addNavigationItem(`Welcome, ${authenticatedUser.username}!`, "/profile.html");
-        addNavigationItem("Logout", `/logout`);
+        addNavigationLink(`Welcome, ${authenticatedUser.username}!`, "/profile.html");
+        addNavigationLink("Logout", `/logout`);
     } else {
-        addNavigationItem("Login", "/login.html");
-        addNavigationItem("Sign up", "/signup.html");
+        addNavigationLink("Login", "/login.html");
+        addNavigationLink("Sign up", "/signup.html");
     }
 }
 
-function addNavigationItem(title, url) {
+/**
+ * Add a single navigation link to the navigation area
+ * @param title Title to be displayed
+ * @param relativeUrl relative URL of the link
+ */
+function addNavigationLink(title, relativeUrl) {
     const navList = document.querySelector(".navigation");
     const navItem = document.createElement("li");
-    navItem.innerHTML = `<a href='${BASE_URL + url}'>${title}</a>`;
+    navItem.innerHTML = `<a href='${BASE_URL + relativeUrl}'>${title}</a>`;
     navList.appendChild(navItem);
 }
 

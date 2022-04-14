@@ -1,8 +1,11 @@
 // Scripts related to admin page
 
-runOnLoad(checkAdminPermissions);
+runOnLoad(protectAdminArea);
 
-function checkAdminPermissions() {
+/**
+ * Redirect the user away from this page when admin permissions not present
+ */
+function protectAdminArea() {
     if (!isAdmin(getAuthenticatedUser())) {
         redirectTo("/index.html");
     }

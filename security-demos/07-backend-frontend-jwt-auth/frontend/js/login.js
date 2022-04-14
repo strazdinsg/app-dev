@@ -1,10 +1,14 @@
-// Handlers of events - form button clicks etc
+// Login-form related stuff
 
 const loginFormButton = document.getElementById("login-form-button");
 if (loginFormButton) {
     loginFormButton.addEventListener("click", submitLoginForm);
 }
 
+/**
+ * Submit the login form
+ * @param event
+ */
 function submitLoginForm(event) {
     event.preventDefault(); // Don't submit the form using the regular HTTP POST
     const username = document.getElementById("username").value;
@@ -16,5 +20,5 @@ function submitLoginForm(event) {
  * This function will be called when login was successful
  */
 function onLoginSuccess() {
-    redirectTo("/");
+    redirectTo("/index.html");
 }

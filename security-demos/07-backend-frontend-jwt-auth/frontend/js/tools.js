@@ -73,6 +73,11 @@ function showFormSuccess(successMessage) {
     showFormResult(successMessage, "success");
 }
 
+/**
+ * Show a result message in a form
+ * @param message The message to show
+ * @param resultType Type of the result: error or success
+ */
 function showFormResult(message, resultType) {
     const resultElement = document.getElementById("result-message");
     resultElement.classList.add(resultType);
