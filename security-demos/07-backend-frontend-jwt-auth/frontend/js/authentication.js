@@ -89,3 +89,22 @@ function parseJwtUser(jwtString) {
     }
     return user;
 }
+
+
+/**
+ * Log-out the user
+ */
+function doLogout() {
+    console.log("Logging out...");
+    deleteAuthorizationCookies();
+    redirectTo("/index.html");
+}
+
+/**
+ * Delete all cookies related to authorization (user session)
+ */
+function deleteAuthorizationCookies() {
+    deleteCookie("jwt");
+    deleteCookie("current_username");
+    deleteCookie("current_user_roles");
+}

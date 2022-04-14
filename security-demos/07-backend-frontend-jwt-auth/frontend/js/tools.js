@@ -47,6 +47,13 @@ function setCookie(cname, cvalue, exdays) {
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
+/**
+ * Delete a cookie
+ * @param cookieName Name of the cookie to delete
+ */
+function deleteCookie(cookieName) {
+    setCookie(cookieName, "", -1);
+}
 
 /**
  * Execute the function func after the page is loaded
