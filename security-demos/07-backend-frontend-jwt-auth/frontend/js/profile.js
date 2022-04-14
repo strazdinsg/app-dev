@@ -36,8 +36,8 @@ function loadProfileData() {
  * @param profileData User profile data received from the backend
  */
 function showProfileData(profileData) {
-    if (profileData && profileData.bio) {
-        bioElement.innerText = profileData.bio;
+    if (profileData) {
+        bioElement.innerText = profileData.bio ? profileData.bio : "";
         bioElement.disabled = false;
         profileSaveButton.disabled = false;
     }
