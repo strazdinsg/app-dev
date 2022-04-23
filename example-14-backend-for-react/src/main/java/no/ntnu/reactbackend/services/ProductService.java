@@ -25,6 +25,9 @@ public class ProductService {
      * Fill product collection with fake products
      */
     private void initializeFakeProducts() {
-        // TODO
+        products.clear();
+        products.add(new Product(1, "Jeans", "Blue Jeans", 123));
+        products.add(new Product(2, "Sneakers", "Regular sneakers", 226.99));
+        products.add(new Product(3, "T-shirt", "A shirt that reminds everyone of 'green thinking'", 57));
     }
 }
