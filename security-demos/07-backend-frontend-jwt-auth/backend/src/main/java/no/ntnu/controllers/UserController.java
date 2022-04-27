@@ -50,7 +50,7 @@ public class UserController {
         if (sessionUser != null && sessionUser.getUsername().equals(username)) {
             if (profileData != null) {
                 if (userService.updateProfile(sessionUser, profileData)) {
-                    Thread.sleep(2000); // Simulate sleep
+                    Thread.sleep(2000); // Simulate long operation
                     response = new ResponseEntity<>("", HttpStatus.OK);
                 } else {
                     response = new ResponseEntity<>("Could not update Profile data", HttpStatus.INTERNAL_SERVER_ERROR);

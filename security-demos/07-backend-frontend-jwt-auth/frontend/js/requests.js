@@ -2,7 +2,7 @@
 
 // The base path where the API is running
 // TODO - make this dynamic
-const API_BASE_URL = "http://localhost:8080/api";
+const API_BASE_URL = "http://datakomm.work:8042/api";
 
 /**
  * Send a REST-API request to the backend
