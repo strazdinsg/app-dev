@@ -7,7 +7,7 @@ runOnLoad(sendProductDataRequest);
  */
 function sendProductDataRequest() {
     console.log("Loading product data...");
-    sendApiRequest("GET", "/products", showProducts)
+    sendApiRequest("GET", "/products", showProducts, null, productLoadingFailed);
 }
 
 /**
@@ -23,4 +23,9 @@ function showProducts(products) {
         productElement.innerText = product.name + " ($" + product.price + ")";
         productContainer.appendChild(productElement);
     }
+}
+
+function productLoadingFailed() {
+    const main = document.querySelector("main");
+    main.innerHTML = "<p class='error'>Could not load products from the API. Perhaps the backend is not accessible?</p>";
 }

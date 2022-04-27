@@ -14,7 +14,7 @@ const API_BASE_URL = "http://localhost:8080/api";
  */
 function sendApiRequest(method, url, callback, requestBody, errorCallback) {
     const request = new XMLHttpRequest();
-    request.onload = function () {
+    request.onreadystatechange = function () {
         if (request.readyState === XMLHttpRequest.DONE) {
             if (request.status === 200) {
                 let responseJson = "";
