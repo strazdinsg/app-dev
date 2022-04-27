@@ -32,7 +32,7 @@ function isAdmin(user) {
  * @param username Username
  * @param password Password, plain text
  * @param successCallback Function to call on success
- * @param errorCallback Function to call on error, with resposne text as the parameter
+ * @param errorCallback Function to call on error, with response text as the parameter
  */
 function sendAuthenticationRequest(username, password, successCallback, errorCallback) {
     const postData = {
