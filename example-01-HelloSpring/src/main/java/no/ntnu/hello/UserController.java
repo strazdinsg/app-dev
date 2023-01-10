@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("users")
 public class UserController {
     /**
-     * This method is called when an HTTP request to /users/list is received
+     * This method is called when an HTTP request to /users/list is received.
      * P.S. We need to specify only /list as the path (URL part) here, because the
      * controller is already mapped to /users
      *

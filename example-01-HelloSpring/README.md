@@ -1,5 +1,5 @@
 # Instructions
-Experiment with this Example (try to do it on your own or follow along video, see course description):
+Experiment with this Example:
 1. Download this project 
 2. Open the project in your IDE
 3. Run it
