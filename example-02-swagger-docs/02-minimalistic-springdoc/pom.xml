@@ -6,13 +6,14 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.0.1</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>no.ntnu</groupId>
-    <artifactId>crud-demo</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>crud-demo</name>
-    <description>Exercise 3.3 - CRUD REST</description>
+    <artifactId>springdoc-demo</artifactId>
+    <version>1.0</version>
+    <name>Springdoc demo</name>
+    <description>Example of generating OpenAPI documentation with Swagger UI, using Springdoc library. Minimalistic
+        example, without extra configuration.
+    </description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -27,6 +28,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- This dependency is needed for the Swagger docs -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
