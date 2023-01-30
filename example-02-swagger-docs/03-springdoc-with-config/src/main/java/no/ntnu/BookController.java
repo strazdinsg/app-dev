@@ -1,6 +1,9 @@
 package no.ntnu;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,6 +37,11 @@ public class BookController {
    * @return List of all the books in the collection.
    */
   @GetMapping("/books")
+  @Deprecated
+  @Operation(
+      summary = "Get all books",
+      description = "Note: the deprecation is only as an example."
+  )
   public Iterable<Book> getBooks() {
     return books;
   }
@@ -45,7 +53,16 @@ public class BookController {
    * @return The book, or 404 code if not found.
    */
   @GetMapping("/books/{id}")
-  public ResponseEntity<Book> getBook(@PathVariable int id) {
+  @Operation(
+      summary = "Get one book",
+      description = "Get a single book, with the given ID. Return the book "
+          + "in the response body or 404 code on error."
+  )
+  public ResponseEntity<Book> getBook(
+      @Parameter(description = "The ID of the book to fetch")
+      @PathVariable
+      int id
+  ) {
     ResponseEntity<Book> response;
     Book book = findBookById(id);
     if (book != null) {
