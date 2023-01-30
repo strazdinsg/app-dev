@@ -45,14 +45,13 @@ public class BookController {
    * @return The book, or 404 code if not found.
    */
   @GetMapping("/books/{id}")
-  public ResponseEntity<Object> getBook(@PathVariable int id) {
-    ResponseEntity<Object> response;
-
+  public ResponseEntity<Book> getBook(@PathVariable int id) {
+    ResponseEntity<Book> response;
     Book book = findBookById(id);
     if (book != null) {
-      response = new ResponseEntity<>(book, HttpStatus.OK);
+      response = ResponseEntity.ok(book);
     } else {
-      response = new ResponseEntity<>("No book with ID " + id, HttpStatus.NOT_FOUND);
+      response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     return response;
