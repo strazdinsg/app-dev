@@ -27,4 +27,13 @@ public class Hello {
   public void setMessage(String message) {
     this.message = message;
   }
+
+  /**
+   * Check if the object is valid.
+   *
+   * @return True when it is valid, false otherwise
+   */
+  public boolean isValid() {
+    return title != null && message != null;
+  }
 }

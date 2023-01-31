@@ -44,14 +44,11 @@ public class HelloController {
    * Simulate addition of a new object on HTTP POST /add
    *
    * @param hello The hello object to add, received from HTTP request body, JSON string
-   * @return Status code 201 CREATED when hello is not null, 400 BAD REQUEST otherwise
+   * @return Status code 201 CREATED when hello is not null, 406 NOT ACCEPTABLE otherwise
    */
   @PostMapping("/add")
   public ResponseEntity<String> add(@RequestBody Hello hello) {
-    if (hello != null) {
-      return new ResponseEntity<>(HttpStatus.CREATED);
-    } else {
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
+    HttpStatus status = hello.isValid() ? HttpStatus.CREATED : HttpStatus.NOT_ACCEPTABLE;
+    return new ResponseEntity<>(status);
   }
 }

@@ -95,10 +95,27 @@ class DemoApplicationTests {
    */
   @Test
   void tryPost() throws Exception {
-    String jsonString = objectMapper.writeValueAsString(new Hello("Hei", "Hei på deg"));
+    String jsonString = convertHelloToJson(new Hello("Hei", "Hei på deg"));
     mvc.perform(post("/add")
             .content(jsonString)
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isCreated());
+  }
+
+  private String convertHelloToJson(Hello hello) throws JsonProcessingException {
+    return objectMapper.writeValueAsString(hello);
+  }
+
+  /**
+   * Perform an HTTP POST without any data. The response code must be BAD REQUEST.
+   *
+   * @throws Exception MockMvc can throw an exception
+   */
+  @Test
+  void tryEmptyPost() throws Exception {
+    mvc.perform(post("/add")
+            .content("{}")
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotAcceptable());
   }
 }
