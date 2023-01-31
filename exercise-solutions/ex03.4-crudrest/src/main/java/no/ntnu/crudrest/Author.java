@@ -1,5 +1,7 @@
 package no.ntnu.crudrest;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Represents a resource: an author. We store Author objects in the application state.
  */
@@ -53,6 +55,7 @@ public class Author {
    *
    * @return True if it is valid, false otherwise
    */
+  @JsonIgnore
   public boolean isValid() {
     return firstName != null && lastName != null && birthYear > 0;
   }
