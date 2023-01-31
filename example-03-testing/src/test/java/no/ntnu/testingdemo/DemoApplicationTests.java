@@ -23,82 +23,82 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class DemoApplicationTests {
 
-    /**
-     * Used for simulating API endpoint requests and analyzing them
-     */
-    @Autowired
-    MockMvc mvc;
+  /**
+   * Used for simulating API endpoint requests and analyzing them
+   */
+  @Autowired
+  MockMvc mvc;
 
-    /**
-     * Used for converting Hello <-> JSON string
-     */
-    @Autowired
-    ObjectMapper objectMapper;
+  /**
+   * Used for converting Hello <-> JSON string
+   */
+  @Autowired
+  ObjectMapper objectMapper;
 
-    /**
-     * This test simply checks if we manage to compile and initialize the application without any errors
-     */
-    @Test
-    void contextLoads() {
-    }
+  /**
+   * This test simply checks if we manage to compile and initialize the application without any errors
+   */
+  @Test
+  void contextLoads() {
+  }
 
-    /**
-     * Check if GET /hello returns a string containing word "world" and status code 200 OK
-     *
-     * @throws Exception MVC mock can throw an exception
-     */
-    @Test
-    void greetingTextCheck() throws Exception {
-        mvc.perform(get("/hello"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("world")));
-    }
+  /**
+   * Check if GET /hello returns a string containing word "world" and status code 200 OK
+   *
+   * @throws Exception MVC mock can throw an exception
+   */
+  @Test
+  void greetingTextCheck() throws Exception {
+    mvc.perform(get("/hello"))
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("world")));
+  }
 
-    /**
-     * Check if DELETE /delete returns "Not available" in the response body and status code 501 Not implemented
-     *
-     * @throws Exception MVC mock can throw an exception
-     */
-    @Test
-    void deleteCheck() throws Exception {
-        mvc.perform(delete("/delete"))
-                .andExpect(status().isNotImplemented())
-                .andExpect(content().string(equalTo("Not available")));
-        ;
-    }
+  /**
+   * Check if DELETE /delete returns "Not available" in the response body and status code 501 Not implemented
+   *
+   * @throws Exception MVC mock can throw an exception
+   */
+  @Test
+  void deleteCheck() throws Exception {
+    mvc.perform(delete("/delete"))
+        .andExpect(status().isNotImplemented())
+        .andExpect(content().string(equalTo("Not available")));
+    ;
+  }
 
-    /**
-     * Check if GET /hello/object returns the expected Hello object and code 200 OK
-     *
-     * @throws Exception MVC mock can throw an exception
-     */
-    @Test
-    void checkResponseObject() throws Exception {
-        String responseJson = mvc.perform(get("/hello/object"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+  /**
+   * Check if GET /hello/object returns the expected Hello object and code 200 OK
+   *
+   * @throws Exception MVC mock can throw an exception
+   */
+  @Test
+  void checkResponseObject() throws Exception {
+    String responseJson = mvc.perform(get("/hello/object"))
+        .andExpect(status().isOk())
+        .andReturn().getResponse().getContentAsString();
 
-        Hello hello = convertJsonToHello(responseJson);
+    Hello hello = convertJsonToHello(responseJson);
 
-        assertThat(hello.getTitle()).isEqualTo("Hello");
-        assertThat(hello.getMessage()).contains("Mars");
-    }
+    assertThat(hello.getTitle()).isEqualTo("Hello");
+    assertThat(hello.getMessage()).contains("Mars");
+  }
 
-    private Hello convertJsonToHello(String responseJson) throws JsonProcessingException {
-        return objectMapper.readValue(responseJson, Hello.class);
-    }
+  private Hello convertJsonToHello(String responseJson) throws JsonProcessingException {
+    return objectMapper.readValue(responseJson, Hello.class);
+  }
 
-    /**
-     * Perform an HTTP POST with JSON data in the request body. Check if return code is 201 CREATED.
-     *
-     * @throws Exception JSON parsing or MockMvc can throw an exception
-     */
-    @Test
-    void tryPost() throws Exception {
-        String jsonString = objectMapper.writeValueAsString(new Hello("Hei", "Hei på deg"));
-        mvc.perform(post("/add")
-                        .content(jsonString)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
-    }
+  /**
+   * Perform an HTTP POST with JSON data in the request body. Check if return code is 201 CREATED.
+   *
+   * @throws Exception JSON parsing or MockMvc can throw an exception
+   */
+  @Test
+  void tryPost() throws Exception {
+    String jsonString = objectMapper.writeValueAsString(new Hello("Hei", "Hei på deg"));
+    mvc.perform(post("/add")
+            .content(jsonString)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isCreated());
+  }
 }
