@@ -14,7 +14,7 @@
 	<name>buggy-books</name>
 	<description>Exercise 3.3 - Buggy Book API</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
