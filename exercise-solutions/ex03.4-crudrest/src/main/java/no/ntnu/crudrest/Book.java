@@ -22,7 +22,7 @@ public class Book {
    * @return True if the book is valid, false otherwise
    */
   public boolean isValid() {
-    return id > 0 && title != null && !title.equals("");
+    return title != null && !title.equals("");
   }
 
   public int getId() {

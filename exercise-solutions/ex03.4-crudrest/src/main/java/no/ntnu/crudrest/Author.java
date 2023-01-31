@@ -54,6 +54,6 @@ public class Author {
    * @return True if it is valid, false otherwise
    */
   public boolean isValid() {
-    return id > 0 && firstName != null && lastName != null && birthYear > 0;
+    return firstName != null && lastName != null && birthYear > 0;
   }
 }

@@ -4,9 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * REST API controller for book collection
@@ -14,7 +12,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/books")
 public class BookController {
-  private List<Book> books;
+  private Map<Integer, Book> books;
+  private int latestId;
 
   public BookController() {
     initializeData();
@@ -24,9 +23,14 @@ public class BookController {
    * Initialize dummy book data for the collection
    */
   private void initializeData() {
-    books = new LinkedList<>();
-    books.add(new Book(1, "Computer Networks", 2016, 800));
-    books.add(new Book(2, "12 Rules for Life", 2019, 600));
+    latestId = 1;
+    books = new HashMap<>();
+    addBookToCollection(new Book(-1, "Computer Networks", 2016, 800));
+    addBookToCollection(new Book(-1, "12 Rules for Life", 2019, 600));
+  }
+
+  private int createNewId() {
+    return latestId++;
   }
 
   /**
@@ -36,14 +40,14 @@ public class BookController {
    * @return List of all books currently stored in the collection
    */
   @GetMapping
-  public List<Book> getAll() {
-    return books;
+  public Collection<Book> getAll() {
+    return books.values();
   }
 
   /**
    * Get a specific book
    *
-   * @param id Id of the book to be returned
+   * @param id ID` of the book to be returned
    * @return Book with the given ID or status 404
    */
   @GetMapping("/{id}")
@@ -59,21 +63,23 @@ public class BookController {
   }
 
   /**
-   * Add a book to the collection
+   * HTTP POST endpoint for adding a new book.
    *
-   * @param book Book to be added, from HTTP response body
-   * @return 200 OK status on success, 400 Bad request on error
+   * @param book Data of the book to add. ID will be ignored.
+   * @return 201 Created on success and the new ID in the response body,
+   * 400 Bad request if some data is missing or incorrect
    */
-  @PostMapping
-  public ResponseEntity<String> add(@RequestBody Book book) {
-    ResponseEntity<String> response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    if (book != null && book.isValid()) {
-      Book existingBook = findBookById(book.getId());
-      if (existingBook == null) {
-        books.add(book);
-        response = new ResponseEntity<>(HttpStatus.OK);
-      }
+  @PostMapping()
+  ResponseEntity<String> add(@RequestBody Book book) {
+    ResponseEntity<String> response;
+
+    try {
+      addBookToCollection(book);
+      response = new ResponseEntity<>("" + book.getId(), HttpStatus.CREATED);
+    } catch (IllegalArgumentException e) {
+      response = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
     return response;
   }
 
@@ -86,14 +92,23 @@ public class BookController {
   @DeleteMapping("/{id}")
   public ResponseEntity<String> delete(@PathVariable int id) {
     ResponseEntity<String> response;
-    Book book = findBookById(id);
-    if (book != null) {
-      books.remove(book);
+    if (removeBookFromCollection(id)) {
       response = new ResponseEntity<>(HttpStatus.OK);
     } else {
       response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     return response;
+  }
+
+  /**
+   * Remove a book from the collection.
+   *
+   * @param id ID of the book to remove
+   * @return True when book with that ID existed and was removed, false otherwise.
+   */
+  private boolean removeBookFromCollection(int id) {
+    Book removedBook = books.remove(id);
+    return removedBook != null;
   }
 
   /**
@@ -105,24 +120,12 @@ public class BookController {
    */
   @PutMapping("/{id}")
   public ResponseEntity<String> update(@PathVariable int id, @RequestBody Book book) {
-    String errorMessage = null;
-    Book existingBook = findBookById(id);
-    if (existingBook == null) {
-      errorMessage = "No book with id " + id + " found";
-    }
-    if (book == null || !book.isValid()) {
-      errorMessage = "Wrong data in request body";
-    } else if (book.getId() != id) {
-      errorMessage = "Book ID in the URL does not match the ID in JSON data (response body)";
-    }
-
     ResponseEntity<String> response;
-    if (errorMessage == null) {
-      books.remove(existingBook);
-      books.add(book);
+    try {
+      updateBook(id, book);
       response = new ResponseEntity<>(HttpStatus.OK);
-    } else {
-      response = new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    } catch (Exception e) {
+      response = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     return response;
@@ -135,14 +138,38 @@ public class BookController {
    * @return Book or null if not found
    */
   private Book findBookById(Integer id) {
-    Book book = null;
-    Iterator<Book> it = books.iterator();
-    while (it.hasNext() && book == null) {
-      Book b = it.next();
-      if (b.getId() == id) {
-        book = b;
-      }
+    return books.get(id);
+  }
+
+  private void addBookToCollection(Book book) throws IllegalArgumentException {
+    if (!book.isValid()) {
+      throw new IllegalArgumentException("Book is invalid");
     }
-    return book;
+    book.setId(createNewId());
+    books.put(book.getId(), book);
+  }
+
+  /**
+   * Try to update a book with given ID. The book.id must match the id.
+   *
+   * @param id   ID of the book
+   * @param book The updated book data
+   * @throws IllegalArgumentException If something goes wrong.
+   *                                  Error message can be used in HTTP response.
+   */
+  private void updateBook(int id, Book book) throws IllegalArgumentException {
+    Book existingBook = findBookById(id);
+    if (existingBook == null) {
+      throw new IllegalArgumentException("No book with id " + id + " found");
+    }
+    if (book == null || !book.isValid()) {
+      throw new IllegalArgumentException("Wrong data in request body");
+    }
+    if (book.getId() != id) {
+      throw new IllegalArgumentException(
+          "Book ID in the URL does not match the ID in JSON data (response body)");
+    }
+
+    books.put(id, book);
   }
 }

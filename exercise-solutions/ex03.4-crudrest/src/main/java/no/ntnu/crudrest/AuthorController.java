@@ -4,9 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * REST API controller for author collection
@@ -14,7 +12,8 @@ import java.util.List;
 @RestController
 @RequestMapping("authors")
 public class AuthorController {
-  private List<Author> authors;
+  private Map<Integer, Author> authors;
+  private int latestId;
 
   public AuthorController() {
     initializeData();
@@ -24,10 +23,15 @@ public class AuthorController {
    * Initialize dummy author data for the collection
    */
   private void initializeData() {
-    authors = new LinkedList<>();
-    authors.add(new Author(1, "James", "Kurose", 1960));
-    authors.add(new Author(2, "Keith", "Ross", 1965));
-    authors.add(new Author(3, "Jordan", "Peterson", 1960));
+    latestId = 1;
+    authors = new HashMap<>();
+    addAuthorToCollection(new Author(-1, "James", "Kurose", 1960));
+    addAuthorToCollection(new Author(-1, "Keith", "Ross", 1965));
+    addAuthorToCollection(new Author(-1, "Jordan", "Peterson", 1960));
+  }
+
+  private int createNewId() {
+    return latestId++;
   }
 
   /**
@@ -37,8 +41,8 @@ public class AuthorController {
    * @return List of all authors currently stored in the collection
    */
   @GetMapping
-  public List<Author> getAll() {
-    return authors;
+  public Collection<Author> getAll() {
+    return authors.values();
   }
 
   /**
@@ -60,22 +64,32 @@ public class AuthorController {
   }
 
   /**
-   * Add an author to the collection
+   * Add an author to the collection.
    *
    * @param author Author to be added, from HTTP response body
-   * @return 200 OK status on success, 400 Bad request on error
+   * @return 201 CREATED status on success, 400 Bad request on error
    */
   @PostMapping
   public ResponseEntity<String> add(@RequestBody Author author) {
-    ResponseEntity<String> response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    if (author != null && author.isValid()) {
-      Author existingAuthor = findAuthorById(author.getId());
-      if (existingAuthor == null) {
-        authors.add(author);
-        response = new ResponseEntity<>(HttpStatus.OK);
-      }
+    ResponseEntity<String> response;
+
+    try {
+      addAuthorToCollection(author);
+      response = new ResponseEntity<>(HttpStatus.CREATED);
+    } catch (Exception e) {
+      response = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
     return response;
+  }
+
+  private void addAuthorToCollection(Author author) throws IllegalArgumentException {
+    if (!author.isValid()) {
+      throw new IllegalArgumentException("Invalid author");
+    }
+
+    author.setId(createNewId());
+    authors.put(author.getId(), author);
   }
 
   /**
@@ -87,14 +101,23 @@ public class AuthorController {
   @DeleteMapping("/{id}")
   public ResponseEntity<String> delete(@PathVariable int id) {
     ResponseEntity<String> response;
-    Author author = findAuthorById(id);
-    if (author != null) {
-      authors.remove(author);
+    if (removeAuthorFromCollection(id)) {
       response = new ResponseEntity<>(HttpStatus.OK);
     } else {
       response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     return response;
+  }
+
+  /**
+   * Try to remove an author from the collection.
+   *
+   * @param id ID of the author to remove
+   * @return True when author with given ID was found and removed, false otherwise
+   */
+  private boolean removeAuthorFromCollection(int id) {
+    Author removedAuthor = authors.remove(id);
+    return removedAuthor != null;
   }
 
   /**
@@ -106,27 +129,31 @@ public class AuthorController {
    */
   @PutMapping("/{id}")
   public ResponseEntity<String> update(@PathVariable int id, @RequestBody Author author) {
-    String errorMessage = null;
-    Author existingAuthor = findAuthorById(id);
-    if (existingAuthor == null) {
-      errorMessage = "No author with id " + id + " found";
-    }
-    if (author == null || !author.isValid()) {
-      errorMessage = "Wrong data in request body";
-    } else if (author.getId() != id) {
-      errorMessage = "Author ID in the URL does not match the ID in JSON data (response body)";
-    }
-
     ResponseEntity<String> response;
-    if (errorMessage == null) {
-      authors.remove(existingAuthor);
-      authors.add(author);
+    try {
+      updateAuthor(id, author);
       response = new ResponseEntity<>(HttpStatus.OK);
-    } else {
-      response = new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    } catch (IllegalArgumentException e) {
+      response = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     return response;
+  }
+
+  private void updateAuthor(int id, Author author) throws IllegalArgumentException {
+    Author existingAuthor = findAuthorById(id);
+    if (existingAuthor == null) {
+      throw new IllegalArgumentException("No author with id " + id + " found");
+    }
+    if (author == null || !author.isValid()) {
+      throw new IllegalArgumentException("Wrong data in request body");
+    }
+    if (author.getId() != id) {
+      throw new IllegalArgumentException(
+          "Author ID in the URL does not match the ID in the response body");
+    }
+
+    authors.put(id, author);
   }
 
   /**
@@ -136,14 +163,6 @@ public class AuthorController {
    * @return Author or null if not found
    */
   private Author findAuthorById(Integer id) {
-    Author author = null;
-    Iterator<Author> it = authors.iterator();
-    while (it.hasNext() && author == null) {
-      Author b = it.next();
-      if (b.getId() == id) {
-        author = b;
-      }
-    }
-    return author;
+    return authors.get(id);
   }
 }
