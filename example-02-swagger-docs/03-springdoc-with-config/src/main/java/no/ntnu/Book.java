@@ -1,5 +1,7 @@
 package no.ntnu;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * Data structure for storing Book data.
  *
@@ -8,5 +10,18 @@ package no.ntnu;
  * @param year          The year when the book was published
  * @param numberOfPages Number of pages
  */
-public record Book(int id, String title, int year, int numberOfPages) {
+@Schema(description = "Represents a book in the library")
+public record Book(
+    @Schema(description = "Unique ID")
+    int id,
+
+    @Schema(description = "Title of the book")
+    String title,
+
+    @Schema(description = "The year when the book was published")
+    int year,
+
+    @Schema(description = "The number of pages")
+    int numberOfPages
+) {
 }
