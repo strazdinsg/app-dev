@@ -77,10 +77,15 @@ class DemoApplicationTests {
         String responseJson = mvc.perform(get("/hello/object"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
-        Hello hello = objectMapper.readValue(responseJson, Hello.class);
+
+        Hello hello = convertJsonToHello(responseJson);
 
         assertThat(hello.getTitle()).isEqualTo("Hello");
         assertThat(hello.getMessage()).contains("Mars");
+    }
+
+    private Hello convertJsonToHello(String responseJson) throws JsonProcessingException {
+        return objectMapper.readValue(responseJson, Hello.class);
     }
 
     /**
