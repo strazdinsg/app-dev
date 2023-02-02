@@ -1,0 +1,376 @@
+{
+	"info": {
+		"_postman_id": "848ad784-aeb7-4aff-96b0-ab1a48476637",
+		"name": "Exercise 5.2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1534868"
+	},
+	"item": [
+		{
+			"name": "3: GET all books",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains an array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(Array.isArray(jsonData)).to.eql(true);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Save initial book\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var bookCount = jsonData.length;\r",
+							"    pm.environment.set(\"initial_book_count\", bookCount);\r",
+							"    pm.expect(bookCount).to.gt(0);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/books",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4: GET non-existing book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/books/772",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"books",
+						"772"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5: ADD a book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Save the new book ID\", function () {\r",
+							"    var newBookId = parseInt(pm.response.text());\r",
+							"    pm.expect(newBookId).to.gt(0);\r",
+							"    pm.environment.set(\"new_book_id\", newBookId);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"title\": \"Learning web design, 5th edition\",\r\n \"year\": 2018,\r\n \"numberOfPages\": 736\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/books",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "8: GET all books , including the new one",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains an array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(Array.isArray(jsonData)).to.eql(true);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains an array with correct number of elements\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var expectedBookCount = pm.environment.get(\"initial_book_count\") + 1;\r",
+							"    pm.expect(jsonData.length).to.eql(expectedBookCount);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/books",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9: GET the new book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains expected values\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.title).to.eql(\"Learning web design, 5th edition\");\r",
+							"    pm.expect(jsonData.year).to.eql(2018);\r",
+							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"new_book_id\"));\r",
+							"    pm.expect(jsonData.numberOfPages).to.eql(736);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/books/{{new_book_id}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"books",
+						"{{new_book_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "23: Try DELETE non-existing book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/books/883",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"books",
+						"883"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "24: DELETE the new book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/books/{{new_book_id}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"books",
+						"{{new_book_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "25: Try DELETE the new book again - fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/books/{{new_book_id}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"books",
+						"{{new_book_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "26: Try GET the deleted book - fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/books/{{new_book_id}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"books",
+						"{{new_book_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3: GET all books again",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains an array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(Array.isArray(jsonData)).to.eql(true);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The number of books matches the initial count\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var bookCount = jsonData.length;\r",
+							"    pm.expect(bookCount).to.eql(pm.environment.get(\"initial_book_count\"));\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/books",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"books"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
