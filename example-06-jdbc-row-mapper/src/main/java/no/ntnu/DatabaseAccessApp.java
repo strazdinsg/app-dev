@@ -14,6 +14,11 @@ public class DatabaseAccessApp {
   private static final String DB_USERNAME = "root";
   private static final String DB_PASSWORD = "uc7aJFY5as";
 
+  /**
+   * Entry point for the application.
+   *
+   * @param args Command-line arguments, not used
+   */
   public static void main(String[] args) {
     JdbcConnection connection = JdbcConnection.getInstance();
     try {
@@ -25,6 +30,12 @@ public class DatabaseAccessApp {
       System.out.println("Updating borrower address...");
       int updateCount = connection.updateBorrowerAddress(1, "New address");
       System.out.println(updateCount + " borrowers updated");
+
+      System.out.println("All books:");
+      List<Book> books = connection.getAllBooks();
+      for (Book book : books) {
+        System.out.println("    " + book);
+      }
 
       // Example of SELECTing data
       String bookTitle = "12 Rules For Life";

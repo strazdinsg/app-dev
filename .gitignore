@@ -31,3 +31,5 @@ security-demos/05-jwt-authentication/derby.log
 security-demos/06-monolith-session-auth/derby.log
 
 security-demos/07-backend-frontend-jwt-auth/backend/derby.log
+
+example-06-jdbc-row-mapper/jdbc-example.iml

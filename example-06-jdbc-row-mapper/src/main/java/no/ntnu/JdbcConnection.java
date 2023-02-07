@@ -15,6 +15,10 @@ public class JdbcConnection {
    */
   private Connection connection;
 
+  // Mapper for Book objects. Note: normally you would move it into more specific class
+  // (such as BookRepository)
+  private BookRowMapper bookRowMapper = new BookRowMapper();
+
   /**
    * We prevent creation of instances directly by making the constructor private!
    * The intention is to use getInstance(), in this way we enforce the singleton pattern.
@@ -85,6 +89,10 @@ public class JdbcConnection {
     return executeStringListSelectQuery(query, new String[]{bookTitle});
   }
 
+  public List<Book> getAllBooks() {
+    return executeSelectQuery("SELECT * FROM `books`", new String[]{}, bookRowMapper);
+  }
+
 
   /**
    * Execute an SQL statement which updates the state of the database
@@ -131,5 +139,30 @@ public class JdbcConnection {
       responseStrings.add(rs.getString(1));
     }
     return responseStrings;
+  }
+
+  /**
+   * Execute a SELECT query, return the rows converted to the model-class objects.
+   *
+   * @param query     The SQL query
+   * @param values    Values to replace the "?" placeholders
+   * @param rowMapper Mapper which can convert a row to an object of desired model class
+   * @return List of strings, returned as rows from SQL
+   * @return The rows of the result table as a list of resulting objects, null on error
+   */
+  private <T> List<T> executeSelectQuery(String query, String[] values, RowMapper<T> rowMapper) {
+    List<T> results = new LinkedList<>();
+
+    try {
+      PreparedStatement stmt = prepareStatement(query, values);
+      ResultSet rs = stmt.executeQuery();
+      while (rs.next()) {
+        results.add(rowMapper.rowToObject(rs));
+      }
+    } catch (SQLException e) {
+      results = null;
+    }
+
+    return results;
   }
 }
