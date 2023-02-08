@@ -10,9 +10,9 @@ public class DatabaseAccessApp {
   // We will see how to do that later in the course.
   private static final String DB_HOST = "localhost"; // Hostname (or IP address) of the DB server
   private static final int DB_PORT = 3306; // TCP port number of the connection
-  private static final String DB_DATABASE = "ddd"; // Database name
-  private static final String DB_USERNAME = "root";
-  private static final String DB_PASSWORD = "uc7aJFY5as";
+  private static final String DB_DATABASE = "library"; // Database name
+  private static final String DB_USERNAME = "libuser";
+  private static final String DB_PASSWORD = "libuser23!";
 
   public static void main(String[] args) {
     JdbcConnection connection = JdbcConnection.getInstance();
