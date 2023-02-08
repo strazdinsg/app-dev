@@ -2,11 +2,11 @@ package no.ntnu.crudrest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.NotImplementedException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.*;
 import java.util.*;
 
 /**
@@ -15,26 +15,11 @@ import java.util.*;
 @RestController
 @RequestMapping("/books")
 public class BookController {
-//  private Map<Integer, Book> books;
-//  private int latestId;
+  private final BookRepository bookRepository;
 
-//  public BookController() {
-//    initializeData();
-//  }
-
-  /**
-   * Initialize dummy book data for the collection
-   */
-//  private void initializeData() {
-//    latestId = 1;
-//    books = new HashMap<>();
-//    addBookToCollection(new Book(-1, "Computer Networks", 2016, 800));
-//    addBookToCollection(new Book(-1, "12 Rules for Life", 2019, 600));
-//  }
-
-//  private int createNewId() {
-//    return latestId++;
-//  }
+  public BookController(BookRepository bookRepository) {
+    this.bookRepository = bookRepository;
+  }
 
   /**
    * Get All books
@@ -48,47 +33,15 @@ public class BookController {
       description = "List of all books currently stored in the collection"
   )
   public ResponseEntity<Object> getAll() {
-    // Establish connection to SQL database
-    Connection connection;
-    try {
-      connection = DriverManager.getConnection(
-          "jdbc:mysql://localhost:3306/library?user=libuser&password=libuser23!");
-      System.out.println("Connection established");
-    } catch (SQLException e) {
-      return handleDatabaseError(e);
+    Collection<Book> books = bookRepository.getAll();
+    if (books != null) {
+      return new ResponseEntity<>(books, HttpStatus.OK);
+    } else {
+      return handleDatabaseError();
     }
-
-    // Execute query
-    ResultSet resultSet;
-    try {
-      String query = "SELECT * FROM `books`";
-      PreparedStatement statement = connection.prepareStatement(query);
-      resultSet = statement.executeQuery();
-    } catch (SQLException e) {
-      return handleDatabaseError(e);
-    }
-
-    // Parse the response data
-    List<Book> books = new LinkedList<>();
-    try {
-      while (resultSet.next()) {
-        Book book = new Book(
-            resultSet.getInt("id"),
-            resultSet.getString("title"),
-            resultSet.getInt("year"),
-            resultSet.getInt("number_of_pages")
-        );
-        books.add(book);
-      }
-    } catch (SQLException e) {
-      return handleDatabaseError(e);
-    }
-
-    return new ResponseEntity<>(books, HttpStatus.OK);
   }
 
-  private ResponseEntity<Object> handleDatabaseError(SQLException e) {
-    System.out.println("SQL database error: " + e.getMessage());
+  private ResponseEntity<Object> handleDatabaseError() {
     return new ResponseEntity<>("Database error, contact the admin!", HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
@@ -101,7 +54,7 @@ public class BookController {
   @GetMapping("/{id}")
   public ResponseEntity<Book> getOne(@PathVariable Integer id) {
     ResponseEntity<Book> response;
-    Book book = findBookById(id);
+    Book book = bookRepository.findBookById(id);
     if (book != null) {
       response = new ResponseEntity<>(book, HttpStatus.OK);
     } else {
@@ -157,6 +110,7 @@ public class BookController {
    * @return True when book with that ID existed and was removed, false otherwise.
    */
   private boolean removeBookFromCollection(int id) {
+    // return bookRepository.removeBook(id);
     // TODO - implement
 //    Book removedBook = books.remove(id);
 //    return removedBook != null;
@@ -183,17 +137,6 @@ public class BookController {
     return response;
   }
 
-  /**
-   * Search through the book collection, find the book by given ID
-   *
-   * @param id Book ID
-   * @return Book or null if not found
-   */
-  private Book findBookById(Integer id) {
-    // TODO - implement
-//    return books.get(id);
-    return null;
-  }
 
   private void addBookToCollection(Book book) throws IllegalArgumentException {
     // TODO - implement
@@ -216,7 +159,7 @@ public class BookController {
    */
   private void updateBook(int id, Book book) throws IllegalArgumentException {
 
-    Book existingBook = findBookById(id);
+    Book existingBook = bookRepository.findBookById(id);
     if (existingBook == null) {
       throw new IllegalArgumentException("No book with id " + id + " found");
     }
