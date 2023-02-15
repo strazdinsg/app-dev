@@ -38,6 +38,7 @@ public class BookController {
   )
   public ResponseEntity<Object> getAll() {
     logger.error("Getting all books");
+//    Iterable<Book> books = bookRepository.findAllByTitleContaining("web");
     Iterable<Book> books = bookRepository.findAll();
     return new ResponseEntity<>(books, HttpStatus.OK);
   }

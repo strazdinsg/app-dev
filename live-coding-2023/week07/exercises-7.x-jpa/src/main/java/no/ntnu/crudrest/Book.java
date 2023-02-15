@@ -2,9 +2,10 @@ package no.ntnu.crudrest;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents a resource: a book. We store Book objects in the application state.
@@ -22,6 +23,14 @@ public class Book {
   private int year;
 
   private int numberOfPages;
+
+  @ManyToMany
+  @JoinTable(
+      name = "author_book",
+      inverseJoinColumns = @JoinColumn(name = "author_id"),
+      joinColumns = @JoinColumn(name = "book_id")
+  )
+  private Set<Author> authors = new HashSet<>();
 
   public Book() {
   }
@@ -83,5 +92,14 @@ public class Book {
 
   public void setNumberOfPages(int numberOfPages) {
     this.numberOfPages = numberOfPages;
+  }
+
+
+  public Set<Author> getAuthors() {
+    return authors;
+  }
+
+  public void setAuthors(Set<Author> authors) {
+    this.authors = authors;
   }
 }
