@@ -1,15 +1,24 @@
 package no.ntnu.crudrest;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 /**
  * Represents a resource: an author. We store Author objects in the application state.
  */
+@Entity
 public class Author {
+  @Id
+  @GeneratedValue
   private int id;
   private String firstName;
   private String lastName;
   private int birthYear;
+
+  public Author() {
+  }
 
   public Author(int id, String firstName, String lastName, int birthYear) {
     this.id = id;
