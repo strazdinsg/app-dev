@@ -2,6 +2,8 @@ package no.ntnu.crudrest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.NotImplementedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,8 @@ import java.util.*;
 @RequestMapping("/books")
 public class BookController {
   private final BookRepository bookRepository;
+
+  private static final Logger logger = LoggerFactory.getLogger(BookController.class.getSimpleName());
 
   public BookController(BookRepository bookRepository) {
     this.bookRepository = bookRepository;
@@ -32,6 +36,7 @@ public class BookController {
       description = "List of all books currently stored in the collection"
   )
   public ResponseEntity<Object> getAll() {
+    logger.error("Getting all books");
     Collection<Book> books = bookRepository.getAll();
     if (books != null) {
       return new ResponseEntity<>(books, HttpStatus.OK);
