@@ -2,17 +2,29 @@ package no.ntnu.crudrest;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 /**
  * Represents a resource: a book. We store Book objects in the application state.
  */
 @Schema(description = "A book in our library", title = "Ei bok")
+@Entity
 public class Book {
+  @Id
+  @GeneratedValue
   private int id;
+
   private String title;
+
   @Schema(description = "The year of publication, for example, 1984")
   private int year;
+
   private int numberOfPages;
+
+  public Book() {
+  }
 
   public Book(int id, String title, int year, int numberOfPages) {
     this.id = id;
