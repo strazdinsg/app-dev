@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,16 +38,8 @@ public class BookController {
   )
   public ResponseEntity<Object> getAll() {
     logger.error("Getting all books");
-    Collection<Book> books = bookRepository.getAll();
-    if (books != null) {
-      return new ResponseEntity<>(books, HttpStatus.OK);
-    } else {
-      return handleDatabaseError();
-    }
-  }
-
-  private ResponseEntity<Object> handleDatabaseError() {
-    return new ResponseEntity<>("Database error, contact the admin!", HttpStatus.INTERNAL_SERVER_ERROR);
+    Iterable<Book> books = bookRepository.findAll();
+    return new ResponseEntity<>(books, HttpStatus.OK);
   }
 
   /**
@@ -58,9 +51,9 @@ public class BookController {
   @GetMapping("/{id}")
   public ResponseEntity<Book> getOne(@PathVariable Integer id) {
     ResponseEntity<Book> response;
-    Book book = bookRepository.findBookById(id);
-    if (book != null) {
-      response = new ResponseEntity<>(book, HttpStatus.OK);
+    Optional<Book> book = bookRepository.findById(id);
+    if (book.isPresent()) {
+      response = new ResponseEntity<>(book.get(), HttpStatus.OK);
     } else {
       response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -114,11 +107,14 @@ public class BookController {
    * @return True when book with that ID existed and was removed, false otherwise.
    */
   private boolean removeBookFromCollection(int id) {
-    // return bookRepository.removeBook(id);
-    // TODO - implement
-//    Book removedBook = books.remove(id);
-//    return removedBook != null;
-    return false;
+    boolean deleted = false;
+    try {
+      bookRepository.deleteById(id);
+      deleted = true;
+    } catch (DataAccessException e) {
+      logger.warn("Could not delete book with ID " + id + ": " + e.getMessage());
+    }
+    return deleted;
   }
 
   /**
@@ -143,14 +139,10 @@ public class BookController {
 
 
   private void addBookToCollection(Book book) throws IllegalArgumentException {
-    // TODO - implement
-    throw new NotImplementedException("Not implemented yet");
-
-//    if (!book.isValid()) {
-//      throw new IllegalArgumentException("Book is invalid");
-//    }
-//    book.setId(createNewId());
-//    books.put(book.getId(), book);
+    if (!book.isValid()) {
+      throw new IllegalArgumentException("Book is invalid");
+    }
+    bookRepository.save(book);
   }
 
   /**
@@ -163,8 +155,8 @@ public class BookController {
    */
   private void updateBook(int id, Book book) throws IllegalArgumentException {
 
-    Book existingBook = bookRepository.findBookById(id);
-    if (existingBook == null) {
+    Optional<Book> existingBook = bookRepository.findById(id);
+    if (existingBook.isEmpty()) {
       throw new IllegalArgumentException("No book with id " + id + " found");
     }
     if (book == null || !book.isValid()) {
@@ -175,7 +167,11 @@ public class BookController {
           "Book ID in the URL does not match the ID in JSON data (response body)");
     }
 
-    // TODO - implement
-    throw new NotImplementedException("Not implemented yet");
+    try {
+      bookRepository.save(book);
+    } catch (Exception e) {
+      logger.warn("Could not update book " + book.getId() + ": " + e.getMessage());
+      throw new IllegalArgumentException("Could not update book " + book.getId());
+    }
   }
 }
