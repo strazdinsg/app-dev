@@ -1,11 +1,11 @@
 package no.ntnu.tools;
 
-import no.ntnu.model.Genre;
-import no.ntnu.repository.GenreRepository;
 import no.ntnu.model.Author;
-import no.ntnu.repository.AuthorRepository;
 import no.ntnu.model.Book;
+import no.ntnu.model.Genre;
+import no.ntnu.repository.AuthorRepository;
 import no.ntnu.repository.BookRepository;
+import no.ntnu.repository.GenreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

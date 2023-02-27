@@ -2,7 +2,6 @@ package no.ntnu.service;
 
 import no.ntnu.repository.AuthorRepository;
 import no.ntnu.model.Author;
-import no.ntnu.tools.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +21,8 @@ public class AuthorService {
      *
      * @return A list of authors, empty list if there are none
      */
-    public List<Author> getAll() {
-        return Converter.iterableToList(authorRepository.findAll());
+    public Iterable<Author> getAll() {
+        return authorRepository.findAll();
     }
 
 

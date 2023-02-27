@@ -2,11 +2,8 @@ package no.ntnu.service;
 
 import no.ntnu.repository.BookRepository;
 import no.ntnu.model.Book;
-import no.ntnu.tools.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Business logic related to books
@@ -21,8 +18,8 @@ public class BookService {
      *
      * @return All the books
      */
-    public List<Book> getAll() {
-        return Converter.iterableToList(bookRepository.findAll());
+    public Iterable<Book> getAll() {
+        return bookRepository.findAll();
     }
 
     /**
@@ -95,15 +92,15 @@ public class BookService {
         return errorMessage;
     }
 
-    public List<Book> getAllByGenre(String genre) {
+    public Iterable<Book> getAllByGenre(String genre) {
         return bookRepository.findByGenreNameContainingIgnoreCase(genre);
     }
 
-    public List<Book> getAllByAuthor(String author) {
+    public Iterable<Book> getAllByAuthor(String author) {
         return bookRepository.findByAuthorsFirstNameContainingIgnoreCase(author);
     }
 
-    public List<Book> getAllByAuthorAndGenre(String author, String genre) {
+    public Iterable<Book> getAllByAuthorAndGenre(String author, String genre) {
         return bookRepository.findByAuthorsFirstNameContainingIgnoreCaseAndGenreNameContainingIgnoreCase(author, genre);
     }
 }
