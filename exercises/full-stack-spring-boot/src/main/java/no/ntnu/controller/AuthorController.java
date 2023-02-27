@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("authors")
 public class AuthorController {
-    @Autowired
-    AuthorService authorService;
+  @Autowired
+  AuthorService authorService;
 
-    /**
-     * Get details for a specific author
-     *
-     * @param id ID of the author to be returned
-     * @return template which will render the page
-     */
-    @GetMapping("/{id}")
-    public String getOne(@PathVariable Integer id, Model model) {
-        model.addAttribute("author", authorService.findById(id));
-        return "author-details";
-    }
+  /**
+   * Get details for a specific author
+   *
+   * @param id ID of the author to be returned
+   * @return template which will render the page
+   */
+  @GetMapping("/{id}")
+  public String getOne(@PathVariable Integer id, Model model) {
+    model.addAttribute("author", authorService.findById(id));
+    return "author-details";
+  }
 }

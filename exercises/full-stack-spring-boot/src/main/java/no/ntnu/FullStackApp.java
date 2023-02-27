@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class FullStackApp {
-    public static void main(String[] args) {
-        SpringApplication.run(FullStackApp.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(FullStackApp.class, args);
+  }
 }
 

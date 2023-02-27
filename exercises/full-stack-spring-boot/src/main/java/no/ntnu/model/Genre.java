@@ -9,30 +9,31 @@ import javax.persistence.Id;
  */
 @Entity
 public class Genre {
-    @Id
-    @GeneratedValue
-    private Integer id;
-    private String name;
+  @Id
+  @GeneratedValue
+  private Integer id;
+  private String name;
 
-    public Genre() {}
+  public Genre() {
+  }
 
-    public Genre(String name) {
-        this.name = name;
-    }
+  public Genre(String name) {
+    this.name = name;
+  }
 
-    public Integer getId() {
-        return id;
-    }
+  public Integer getId() {
+    return id;
+  }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+  public void setId(Integer id) {
+    this.id = id;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String genre) {
-        this.name = genre;
-    }
+  public void setName(String genre) {
+    this.name = genre;
+  }
 }

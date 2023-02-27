@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 public class HomeController {
-    @Autowired
-    private AuthorService authorService;
-    @Autowired
-    private BookService bookService;
+  @Autowired
+  private AuthorService authorService;
+  @Autowired
+  private BookService bookService;
 
-    /**
-     * Responds to HTTP get /
-     *
-     * @return Name of the template to render
-     */
-    @GetMapping("/")
-    public String getHome(Model model) {
-        model.addAttribute("authors", authorService.getAll());
-        model.addAttribute("books", bookService.getAll());
-        return "index";
-    }
+  /**
+   * Responds to HTTP get /
+   *
+   * @return Name of the template to render
+   */
+  @GetMapping("/")
+  public String getHome(Model model) {
+    model.addAttribute("authors", authorService.getAll());
+    model.addAttribute("books", bookService.getAll());
+    return "index";
+  }
 }
