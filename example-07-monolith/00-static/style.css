@@ -1,0 +1,59 @@
+/* Take full control of box sizing */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Reset 1 rem to 10px */
+html {
+  font-size: 62.5%;
+  font-family: "Noto Serif", serif;
+  color: #060200;
+}
+
+h1 {
+  font-size: 5rem;
+  margin-top: 0.6rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+p {
+  font-size: 2.4rem;
+}
+
+nav ul {
+  background-color: #4a2511;
+  display: flex;
+  justify-content: center;
+}
+
+nav li {
+  font-size: 2rem;
+  list-style-type: none;
+  padding: 2rem;
+  text-align: center;
+  transition-duration: 1s;
+}
+
+nav ul,
+nav a {
+  color: white;
+  text-decoration: none;
+}
+
+nav li:hover {
+  background-color: #170802;
+  transition: all 0.5s;
+}
+
+nav li.active {
+  background-color: #2a1306;
+}
+
+main {
+  margin: 2rem auto;
+  min-width: 60rem;
+  max-width: 90rem;
+  padding: 0 2rem;
+}

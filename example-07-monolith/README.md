@@ -35,3 +35,8 @@ The remaining two projects are decoupled - a separate frontend and backend appli
 
 The decoupled applications can reside on different servers (backend on one server and frontend 
 on another). Also, the backend can be consumed using other apps (such as Flutter apps for mobile).
+
+Used in the
+courses [IDATA2306 Application Development](https://www.ntnu.edu/studies/courses/IDATA2306)
+and [IDATA2301 Web Technologies](https://www.ntnu.edu/studies/courses/IDATA2301)
+at [NTNU](https://ntnu.edu)
