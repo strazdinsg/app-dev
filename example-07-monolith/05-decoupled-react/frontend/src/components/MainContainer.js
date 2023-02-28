@@ -10,14 +10,12 @@ import { AboutUsPage } from "../pages/AboutUsPage";
  */
 export function MainContainer() {
   return (
-    <div className="main-container">
-      <main id="main-content">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/books" element={<BookPage />} />
-          <Route path="/about" element={<AboutUsPage />} />
-        </Routes>
-      </main>
-    </div>
+    <main id="main-content">
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/books" element={<BookPage />} />
+        <Route path="/about" element={<AboutUsPage />} />
+      </Routes>
+    </main>
   );
 }
