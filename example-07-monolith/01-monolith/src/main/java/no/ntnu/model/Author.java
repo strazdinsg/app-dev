@@ -1,7 +1,12 @@
 package no.ntnu.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,6 +32,13 @@ public class Author {
   public Author() {
   }
 
+  /**
+   * Create an author.
+   *
+   * @param firstName First name
+   * @param lastName  Last name
+   * @param birthYear Year of birth (For example, 1980)
+   */
   public Author(String firstName, String lastName, int birthYear) {
     this.firstName = firstName;
     this.lastName = lastName;
@@ -34,7 +46,7 @@ public class Author {
   }
 
   /**
-   * Check if the author object is valid
+   * Check if the author object is valid.
    *
    * @return True when valid, false when not
    */
@@ -84,7 +96,7 @@ public class Author {
   }
 
   /**
-   * Add a book to the author's book collection
+   * Add a book to the author's book collection.
    *
    * @param book The book to add
    */

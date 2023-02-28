@@ -1,7 +1,11 @@
 package no.ntnu.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,9 +27,20 @@ public class Book {
   @ManyToMany(mappedBy = "books")
   private Set<Author> authors = new HashSet<>();
 
+  /**
+   * Create a book. Default constructor is needed for JPA.
+   */
   public Book() {
   }
 
+  /**
+   * Create a book.
+   *
+   * @param title         Title of the book
+   * @param yearIssued    The year when the book was issued
+   * @param numberOfPages The number of pages
+   * @param genre         The main genre of the book
+   */
   public Book(String title, int yearIssued, int numberOfPages, Genre genre) {
     this.title = title;
     this.yearIssued = yearIssued;
@@ -82,7 +97,7 @@ public class Book {
   }
 
   /**
-   * Check if the book object is valid
+   * Check if the book object is valid.
    *
    * @return True when valid, false when invalid
    */

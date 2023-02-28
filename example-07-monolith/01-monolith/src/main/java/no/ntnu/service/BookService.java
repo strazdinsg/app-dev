@@ -8,7 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 /**
- * Business logic related to books
+ * Business logic related to books.
  */
 @Service
 public class BookService {
@@ -16,7 +16,7 @@ public class BookService {
   private BookRepository bookRepository;
 
   /**
-   * Get all books currently stored in the application state (database)
+   * Get all books currently stored in the application state (database).
    *
    * @return All the books
    */
@@ -25,7 +25,7 @@ public class BookService {
   }
 
   /**
-   * Look up a book in the application state (database)
+   * Look up a book in the application state (database).
    *
    * @param id ID of the book to look up
    * @return The book or null if none found
@@ -34,6 +34,12 @@ public class BookService {
     return bookRepository.findById(id).orElse(null);
   }
 
+  /**
+   * Add a book to the database.
+   *
+   * @param book The book to add
+   * @return Tru on success, false if the book was not added.
+   */
   public boolean add(Book book) {
     boolean added = false;
     if (canBeAdded(book)) {
@@ -44,7 +50,7 @@ public class BookService {
   }
 
   /**
-   * Check if the provided book can be added to the application state (database)
+   * Check if the provided book can be added to the application state (database).
    *
    * @param book Book to be checked
    * @return True if the book is valid and can be added to the database
@@ -55,7 +61,7 @@ public class BookService {
   }
 
   /**
-   * Delete a book from application state (database)
+   * Delete a book from application state (database).
    *
    * @param bookId ID of the book to delete
    * @return true when deleted, false on error
@@ -70,7 +76,7 @@ public class BookService {
   }
 
   /**
-   * Try to update a book in the application state (databasE)
+   * Try to update a book in the application state (database).
    *
    * @param id   ID of the book to update
    * @param book The updated book values
@@ -103,7 +109,8 @@ public class BookService {
   }
 
   public Iterable<Book> getAllByAuthorAndGenre(String author, String genre) {
-    return bookRepository.findByAuthorsFirstNameContainingIgnoreCaseAndGenreNameContainingIgnoreCase(author, genre);
+    return bookRepository
+        .findByAuthorsFirstNameContainingIgnoreCaseAndGenreNameContainingIgnoreCase(author, genre);
   }
 
   /**

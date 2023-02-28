@@ -15,7 +15,10 @@ public interface BookRepository extends CrudRepository<Book, Integer> {
 
   Iterable<Book> findByAuthorsFirstNameContainingIgnoreCase(String author);
 
-  Iterable<Book> findByAuthorsFirstNameContainingIgnoreCaseAndGenreNameContainingIgnoreCase(String author, String genre);
+  Iterable<Book> findByAuthorsFirstNameContainingIgnoreCaseAndGenreNameContainingIgnoreCase(
+      String author,
+      String genre
+  );
 
   /**
    * Find all books, use pagination.

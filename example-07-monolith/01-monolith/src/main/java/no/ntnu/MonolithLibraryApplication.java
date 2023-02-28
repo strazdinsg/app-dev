@@ -8,9 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class MonolithLibraryApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(MonolithLibraryApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(MonolithLibraryApplication.class, args);
+  }
 }

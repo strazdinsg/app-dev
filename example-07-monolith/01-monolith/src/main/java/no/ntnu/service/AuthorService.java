@@ -1,13 +1,13 @@
 package no.ntnu.service;
 
+import java.util.Optional;
 import no.ntnu.model.Author;
 import no.ntnu.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 /**
- * Business logic related to authors
+ * Business logic related to authors.
  */
 @Service
 public class AuthorService {
@@ -15,7 +15,7 @@ public class AuthorService {
   private AuthorRepository authorRepository;
 
   /**
-   * Get all authors from the application state
+   * Get all authors from the application state.
    *
    * @return A list of authors, empty list if there are none
    */
@@ -25,7 +25,7 @@ public class AuthorService {
 
 
   /**
-   * Look up author in the application state
+   * Look up author in the application state.
    *
    * @param id ID of the author to look up
    * @return The author or null if none found by that ID
@@ -36,7 +36,7 @@ public class AuthorService {
   }
 
   /**
-   * Add an author to the application state (persist in the database)
+   * Add an author to the application state (persist in the database).
    *
    * @param author Author to persist
    * @return true when author added, false on error
@@ -54,7 +54,7 @@ public class AuthorService {
   }
 
   /**
-   * Remove an author from application state (database)
+   * Remove an author from application state (database).
    *
    * @param authorId ID of the author to delete
    * @return ture when author deleted, false when author was not found in the database
@@ -68,7 +68,7 @@ public class AuthorService {
   }
 
   /**
-   * Update an author in the application state (persist in the database)
+   * Update an author in the application state (persist in the database).
    *
    * @param author Author to update
    * @return null on success, error message on error
