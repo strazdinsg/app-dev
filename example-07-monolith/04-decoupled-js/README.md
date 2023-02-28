@@ -1,4 +1,4 @@
-# Library website variant - HTML fragments
+# Library website variant - Decoupled vanilla JS
 
 A fully decoupled solution where the backend serves only data in JSON format 
 (REST API) and the frontend application is a separate multi-page application, 
