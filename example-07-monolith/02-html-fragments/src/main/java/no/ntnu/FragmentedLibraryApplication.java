@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Main entrypoint for the application.
  */
 @SpringBootApplication
-public class MonolithLibraryApplication {
+public class FragmentedLibraryApplication {
   public static void main(String[] args) {
-    SpringApplication.run(MonolithLibraryApplication.class, args);
+    SpringApplication.run(FragmentedLibraryApplication.class, args);
   }
 }

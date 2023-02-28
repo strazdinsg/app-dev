@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * Controller for all the HTML pages
+ * Controller for all HTML pages.
  */
 @Controller
 public class PageController {
@@ -18,7 +18,7 @@ public class PageController {
   AuthorService authorService;
 
   /**
-   * The `Home` page
+   * The `Home` page.
    *
    * @param model The model where the data will be stored
    * @return Name of the ThymeLeaf template to render
@@ -30,7 +30,7 @@ public class PageController {
   }
 
   /**
-   * The `Books` page
+   * The `Books` page.
    *
    * @param model The model where the data will be stored
    * @return Name of the ThymeLeaf template to render
@@ -42,7 +42,7 @@ public class PageController {
   }
 
   /**
-   * The `About us` page
+   * The `About us` page.
    *
    * @param model The model where the data will be stored
    * @return Name of the ThymeLeaf template to render

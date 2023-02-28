@@ -35,3 +35,7 @@ security-demos/07-backend-frontend-jwt-auth/backend/derby.log
 example-06-jdbc-row-mapper/jdbc-example.iml
 
 example-07-monolith/01-monolith/derby.log
+
+*.iml
+
+example-07-monolith/02-html-fragments/derby.log
