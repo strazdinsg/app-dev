@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head th:insert="components/head" />
+  <body>
+    <head th:insert="components/navigation" />
+    <div class="main-container">
+      <main>
+        <section>
+          <h1>Welcome to our library!</h1>
+          <p>We are the largest library in town with plenty of books.</p>
+        </section>
+
+        <section>
+          <h2>Books of the week</h2>
+          <head th:insert="components/book-listing" />
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

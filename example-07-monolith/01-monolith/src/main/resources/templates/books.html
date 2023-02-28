@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head th:insert="components/head" />
+  <body>
+    <head th:insert="components/navigation" />
+    <div class="main-container">
+      <main>
+        <h1>Our books</h1>
+        <p>We have the following books in our collection:</p>
+        <head th:insert="components/book-listing" />
+      </main>
+    </div>
+  </body>
+</html>
