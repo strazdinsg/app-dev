@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Library</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="scripts.js"></script>
+  </head>
+  <body
+    onload='initializeNavigation() && requestData("/books/favorite", showFavoriteBooks)'
+  >
+    <nav><ul></ul></nav>
+    <div class="main-container">
+      <main id="main-content">
+        <article id="home-page">
+          <section>
+            <h1>Welcome to our library!</h1>
+            <p>We are the largest library in town with plenty of books.</p>
+          </section>
+
+          <section>
+            <h2>Books of the week</h2>
+            <div class="book-container" id="favorite-book-container">
+              <!-- This paragraph will be replaced by Javascript -->
+              <p>Loading...</p>
+
+              <!-- For each book, create a card here -->
+              <!--
+                    <div class="card">
+                      <div class="book-image-container">
+                        <img src="img/books/{id}.jpg" alt="A book cover" />
+                      </div>
+                      <p>Book title</p>
+                    </div>
+                    -->
+            </div>
+          </section>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

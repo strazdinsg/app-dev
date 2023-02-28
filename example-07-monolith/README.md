@@ -27,10 +27,10 @@ The first three solutions are monolithic - a single Spring Boot application incl
 
 The remaining two projects are decoupled - a separate frontend and backend application:
 
-* [04-fully-decoupled-js](04-fully-decoupled-js) A fully decoupled solution where the backend serves
-  only data in JSON format (REST API) and the frontend application is a separate single-page
-  application, written in vanilla Javascript.
-* [05-fully-decoupled-react](05-fully-decoupled-react) The same fully decoupled solution, but using
+* [04-decoupled-js](04-decoupled-js) A fully decoupled solution where the backend serves
+  only data in JSON format (REST API) and the frontend application is a separate multi-page
+  application, with vanilla Javascript.
+* [05-decoupled-react](05-decoupled-react) The same fully decoupled solution, but using
   React JS instead of vanilla Javascript.
 
 The decoupled applications can reside on different servers (backend on one server and frontend 

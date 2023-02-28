@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Library - books</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="scripts.js"></script>
+  </head>
+  <body onload='initializeNavigation() && requestData("/books", showAllBooks)'>
+    <nav><ul></ul></nav>
+    <div class="main-container">
+      <main id="main-content">
+        <!-- Books page -->
+        <article id="books-page">
+          <h1>Our books</h1>
+          <p>We have the following books in our collection:</p>
+          <div class="book-container" id="all-book-container">
+            <!-- This paragraph will be replaced by Javascript -->
+            <p>Loading...</p>
+            <!-- For each book, create a card here -->
+            <!--
+                <div class="card">
+                  <div class="book-image-container">
+                    <img src="img/books/{id}.jpg" alt="A book cover" />
+                  </div>
+                  <p>Book title</p>
+                </div>
+                -->
+          </div>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

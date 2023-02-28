@@ -1,0 +1,134 @@
+package no.ntnu.service;
+
+import no.ntnu.model.Book;
+import no.ntnu.repository.BookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+/**
+ * Business logic related to books.
+ */
+@Service
+public class BookService {
+  @Autowired
+  private BookRepository bookRepository;
+
+  /**
+   * Get all books currently stored in the application state (database).
+   *
+   * @return All the books
+   */
+  public Iterable<Book> getAll() {
+    return bookRepository.findAll();
+  }
+
+  /**
+   * Look up a book in the application state (database).
+   *
+   * @param id ID of the book to look up
+   * @return The book or null if none found
+   */
+  public Book findById(Integer id) {
+    return bookRepository.findById(id).orElse(null);
+  }
+
+  /**
+   * Add a book to the database.
+   *
+   * @param book The book to add
+   * @return Tru on success, false if the book was not added.
+   */
+  public boolean add(Book book) {
+    boolean added = false;
+    if (canBeAdded(book)) {
+      bookRepository.save(book);
+      added = true;
+    }
+    return added;
+  }
+
+  /**
+   * Check if the provided book can be added to the application state (database).
+   *
+   * @param book Book to be checked
+   * @return True if the book is valid and can be added to the database
+   */
+  private boolean canBeAdded(Book book) {
+    return book != null && book.isValid()
+        && (book.getId() == null || bookRepository.findById(book.getId()).isEmpty());
+  }
+
+  /**
+   * Delete a book from application state (database).
+   *
+   * @param bookId ID of the book to delete
+   * @return true when deleted, false on error
+   */
+  public boolean delete(int bookId) {
+    boolean deleted = false;
+    if (findById(bookId) != null) {
+      bookRepository.deleteById(bookId);
+      deleted = true;
+    }
+    return deleted;
+  }
+
+  /**
+   * Try to update a book in the application state (database).
+   *
+   * @param id   ID of the book to update
+   * @param book The updated book values
+   * @return null on success, error message on error
+   */
+  public String update(int id, Book book) {
+    Book existingBook = findById(id);
+    String errorMessage = null;
+    if (existingBook == null) {
+      errorMessage = "No book with id " + id + " found";
+    }
+    if (book == null || !book.isValid()) {
+      errorMessage = "Wrong data in request body";
+    } else if (book.getId() != id) {
+      errorMessage = "Book ID in the URL does not match the ID in JSON data (response body)";
+    }
+
+    if (errorMessage == null) {
+      bookRepository.save(book);
+    }
+    return errorMessage;
+  }
+
+  public Iterable<Book> getAllByGenre(String genre) {
+    return bookRepository.findByGenreNameContainingIgnoreCase(genre);
+  }
+
+  public Iterable<Book> getAllByAuthor(String author) {
+    return bookRepository.findByAuthorsFirstNameContainingIgnoreCase(author);
+  }
+
+  public Iterable<Book> getAllByAuthorAndGenre(String author, String genre) {
+    return bookRepository
+        .findByAuthorsFirstNameContainingIgnoreCaseAndGenreNameContainingIgnoreCase(author, genre);
+  }
+
+  /**
+   * Get the first n books from the database.
+   *
+   * @param n The number of books to select
+   * @return An iterable over the books, empty when no books found.
+   */
+  public Page<Book> getFirst(int n) {
+    return bookRepository.findAll(PageRequest.of(0, n));
+  }
+
+  /**
+   * Get the number of books in the database.
+   *
+   * @return The total number of books stored in the database.
+   */
+  public long getCount() {
+    return bookRepository.count();
+  }
+}
