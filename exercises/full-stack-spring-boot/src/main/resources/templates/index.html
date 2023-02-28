@@ -11,16 +11,16 @@
 <h2>Our authors</h2>
 <ul>
     <li th:each="author: ${authors}">
-        <a th:href="@{/authors/{id}(id=${author.id})}">
-            <p th:text="${author.firstName + ' ' + author.lastName}"></p>
+        <a th:href="@{/authors/{id}(id=${author.id})}"
+           th:text="${author.firstName + ' ' + author.lastName}">
         </a>
     </li>
 </ul>
 <h2>Our books</h2>
 <ul>
     <li th:each="book: ${books}">
-        <a th:href="@{/books/{id}(id=${book.id})}">
-            <p th:text="${book.title + ' (' + book.yearIssued + ')'}"></p>
+        <a th:href="@{/books/{id}(id=${book.id})}"
+           th:text="${book.title + ' (' + book.yearIssued + ')'}">
         </a>
     </li>
 </ul>
