@@ -1,5 +1,6 @@
 package no.ntnu.controllers;
 
+import no.ntnu.service.AuthorService;
 import no.ntnu.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class FragmentController {
   @Autowired
   BookService bookService;
+  @Autowired
+  AuthorService authorService;
 
   /**
    * Return an HTML fragment representing the content for the "Home" page.
@@ -44,10 +47,13 @@ public class FragmentController {
   /**
    * Return an HTML fragment representing the content for the "About us" page.
    *
+   * @param model The model where data will be stored (passed to ThymeLeaf template)
    * @return name of the ThymeLeaf template with the HTML content.
    */
   @GetMapping("/about")
-  public String getAbout() {
+  public String getAbout(Model model) {
+    model.addAttribute("bookCount", bookService.getCount());
+    model.addAttribute("authorCount", authorService.getCount());
     return "pages/about";
   }
 }
