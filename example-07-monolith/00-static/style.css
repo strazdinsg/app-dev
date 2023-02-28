@@ -2,6 +2,7 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 /* Reset 1 rem to 10px */
@@ -13,9 +14,21 @@ html {
 
 h1 {
   font-size: 5rem;
-  margin-top: 0.6rem;
-  margin-bottom: 1rem;
   font-weight: bold;
+}
+
+h1,
+h2 {
+  margin-top: 2rem;
+  margin-bottom: 0.6rem;
+}
+
+h2 {
+  font-size: 4rem;
+}
+
+section {
+  margin-bottom: 6rem;
 }
 
 p {
@@ -33,7 +46,7 @@ nav li {
   list-style-type: none;
   padding: 2rem;
   text-align: center;
-  transition-duration: 1s;
+  /*transition-duration: 1s;*/
 }
 
 nav ul,
@@ -51,9 +64,50 @@ nav li.active {
   background-color: #2a1306;
 }
 
-main {
-  margin: 2rem auto;
-  min-width: 60rem;
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.main-container {
+  flex-grow: 1;
+  width: 90%;
+  min-width: 70rem;
   max-width: 90rem;
-  padding: 0 2rem;
+  margin: 0 auto;
+  background-color: #ece7e5;
+}
+
+main {
+  margin: 0 auto;
+  width: 70rem;
+  padding: 2rem;
+}
+
+.book-container {
+  display: flex;
+  gap: 4rem;
+}
+
+.card {
+  width: 20rem;
+}
+
+.book-image-container {
+  width: 20rem;
+  height: 30rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.card img {
+  width: 100%;
+  display: block;
+}
+.card p {
+  font-size: 1.6rem;
+  text-align: center;
+  margin-top: 0.6rem;
 }
