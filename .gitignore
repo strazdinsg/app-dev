@@ -43,3 +43,5 @@ example-07-monolith/02-html-fragments/derby.log
 example-07-monolith/03-json-data/derby.log
 
 example-07-monolith/04-decoupled-js/backend/derby.log
+
+example-07-monolith/05-decoupled-react/backend/derby.log
