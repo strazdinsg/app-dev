@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!-- The main frame (skeleton) of the page. The data will be placed inside it by Javascript. -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Library</title>
+    <!-- Import Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Our own styles -->
+    <link rel="stylesheet" th:href="@{style.css}" />
+    <script th:src="@{scripts.js}"></script>
+  </head>
+  <body onload="showPage('home')">
+    <nav>
+      <ul>
+        <li onclick="showPage('home')">Home</li>
+        <li onclick="showPage('books')">Books</li>
+        <li onclick="showPage('about')">About us</li>
+      </ul>
+    </nav>
+    <div class="main-container">
+      <main id="main-content"><p>Loading...</p></main>
+    </div>
+  </body>
+</html>
