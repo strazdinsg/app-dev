@@ -39,3 +39,5 @@ example-07-monolith/01-monolith/derby.log
 *.iml
 
 example-07-monolith/02-html-fragments/derby.log
+
+example-07-monolith/03-json-data/derby.log

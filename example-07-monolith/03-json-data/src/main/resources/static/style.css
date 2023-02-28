@@ -1,0 +1,119 @@
+/* Take full control of box sizing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Reset 1 rem to 10px */
+html {
+  font-size: 62.5%;
+  font-family: "Noto Serif", serif;
+  color: #060200;
+}
+
+h1 {
+  font-size: 5rem;
+  font-weight: bold;
+}
+
+h1,
+h2 {
+  margin-top: 2rem;
+  margin-bottom: 0.6rem;
+}
+
+h2 {
+  font-size: 4rem;
+}
+
+section {
+  margin-bottom: 6rem;
+}
+
+p {
+  font-size: 2.4rem;
+}
+
+nav ul {
+  background-color: #4a2511;
+  display: flex;
+  justify-content: center;
+  min-width: 90rem;
+}
+
+nav li {
+  font-size: 2rem;
+  list-style-type: none;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+nav ul,
+nav a {
+  color: white;
+  text-decoration: none;
+}
+
+nav li:hover {
+  background-color: #170802;
+}
+
+nav li.active {
+  background-color: #2a1306;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.main-container {
+  flex-grow: 1;
+  width: 90%;
+  min-width: 90rem;
+  max-width: 100rem;
+  margin: 0 auto;
+  background-color: #ece7e5;
+  padding-bottom: 10rem;
+}
+
+main {
+  margin: 0 auto;
+  width: 68rem;
+}
+
+.book-container {
+  display: flex;
+  gap: 4rem;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 20rem;
+}
+
+.book-image-container {
+  width: 20rem;
+  height: 31rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.card img {
+  width: 100%;
+  display: block;
+}
+.card p {
+  font-size: 1.6rem;
+  text-align: center;
+  margin-top: 0.6rem;
+}
+
+.error {
+  color: #be0000;
+  margin: 2rem;
+}
