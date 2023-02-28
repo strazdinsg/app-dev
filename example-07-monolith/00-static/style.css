@@ -39,6 +39,7 @@ nav ul {
   background-color: #4a2511;
   display: flex;
   justify-content: center;
+  min-width: 90rem;
 }
 
 nav li {
@@ -73,21 +74,21 @@ body {
 .main-container {
   flex-grow: 1;
   width: 90%;
-  min-width: 70rem;
-  max-width: 90rem;
+  min-width: 90rem;
+  max-width: 100rem;
   margin: 0 auto;
   background-color: #ece7e5;
 }
 
 main {
   margin: 0 auto;
-  width: 70rem;
-  padding: 2rem;
+  width: 68rem;
 }
 
 .book-container {
   display: flex;
   gap: 4rem;
+  flex-wrap: wrap;
 }
 
 .card {
@@ -96,7 +97,7 @@ main {
 
 .book-image-container {
   width: 20rem;
-  height: 30rem;
+  height: 31rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
