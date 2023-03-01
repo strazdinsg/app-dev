@@ -6,9 +6,9 @@ decoupled application.
 
 The logic is the same in all the projects: a library website with multiple sections:
 
-* A Welcome-site (dashboard) shows some common information, see Figure 1.
-* Library shows a list of available books, see Figure 2.
-* An "about us" section shows general information about the library, See Figure 3.
+* A "Home page" (dashboard) shows some common information and a listing of selected books.
+* "Books" page shows a list of available books.
+* An "About us" section shows some statistics and a map.
 
 The subdirectories implement his application in different architectural styles.
 
