@@ -2,7 +2,7 @@
 <html lang="en">
   <head th:insert="components/head" />
   <body>
-    <head th:insert="components/navigation" />
+    <nav th:insert="components/navigation"></nav>
     <div class="main-container">
       <main>
         <section>
@@ -12,7 +12,7 @@
 
         <section>
           <h2>Books of the week</h2>
-          <head th:insert="components/book-listing" />
+          <div th:insert="components/book-listing"></div>
         </section>
       </main>
     </div>
