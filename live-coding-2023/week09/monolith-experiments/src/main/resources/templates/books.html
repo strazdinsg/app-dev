@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head th:include="components/head"> </head>
+
+  <body>
+    <nav th:insert="components/navigation"></nav>
+    <div class="main-container">
+      <main>
+        <h1>Our books</h1>
+        <p>We have the following books in our collection:</p>
+        <div th:insert="components/book-container"></div>
+      </main>
+    </div>
+  </body>
+</html>
