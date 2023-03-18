@@ -88,6 +88,7 @@ input, button {
     padding: 0.5rem;
     margin: 1rem 0 0 0;
 }
+
 .sr-only {
     display: none;
 }
@@ -98,6 +99,7 @@ input, button {
     width: 100%;
     height: 10rem;
 }
+
 form.bio {
     width: 40rem;
 }

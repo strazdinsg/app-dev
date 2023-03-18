@@ -15,22 +15,23 @@ import java.util.List;
  */
 @RestController
 public class ProductController {
-    Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+  Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
-    @Autowired
-    private ProductService productService;
+  @Autowired
+  private ProductService productService;
 
-    /**
-     * Get all products stored in the database
-     * @return
-     */
-    @GetMapping("/api/products")
-    public List<Product> getAll() {
-        try {
-            Thread.sleep(3000); // Imitate long loading of data...
-        } catch (InterruptedException e) {
-            logger.error("Product-loading thread interrupted!");
-        }
-        return productService.getAll();
+  /**
+   * Get all products stored in the database
+   *
+   * @return
+   */
+  @GetMapping("/api/products")
+  public List<Product> getAll() {
+    try {
+      Thread.sleep(3000); // Imitate long loading of data...
+    } catch (InterruptedException e) {
+      logger.error("Product-loading thread interrupted!");
     }
+    return productService.getAll();
+  }
 }

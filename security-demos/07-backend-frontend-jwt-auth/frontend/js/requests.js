@@ -2,7 +2,7 @@
 
 // The base path where the API is running
 // TODO - make this dynamic
-const API_BASE_URL = "http://datakomm.work:8042/api";
+const API_BASE_URL = "http://localhost:8042/api";
 
 /**
  * Send a REST-API request to the backend
@@ -12,37 +12,54 @@ const API_BASE_URL = "http://datakomm.work:8042/api";
  * @param requestBody When supplied, send this data in the request body. Does not work with HTTP GET!
  * @param errorCallback A function called when the response code is not 200
  */
-function sendApiRequest(method, url, callback, requestBody, errorCallback) {
-    const request = new XMLHttpRequest();
-    request.onreadystatechange = function () {
-        if (request.readyState === XMLHttpRequest.DONE) {
-            if (request.status === 200) {
-                let responseJson = "";
-                if (request.responseText) {
-                    responseJson = JSON.parse(request.responseText);
-                }
-                callback(responseJson);
-            } else if (errorCallback) {
-                errorCallback(request.responseText);
-            } else {
-                console.error("Error in API request");
-            }
-        }
-    };
-    request.open(method, API_BASE_URL + url);
-    const jwtToken = getCookie("jwt");
-    if (jwtToken) {
-        request.setRequestHeader("Authorization", "Bearer " + jwtToken);
+async function sendApiRequest(
+  method,
+  url,
+  callback,
+  requestBody,
+  errorCallback
+) {
+  let parameters = { method: method, headers: constructRequestHeaders(method) };
+
+  if (requestBody) {
+    parameters.body = JSON.stringify(requestBody);
+  }
+
+  try {
+    const response = await fetch(API_BASE_URL + url, parameters);
+    const responseText = await response.text();
+
+    if (response.status === 200) {
+      let responseJson = "";
+      if (responseText) {
+        responseJson = JSON.parse(responseText);
+      }
+      callback(responseJson);
+    } else if (errorCallback) {
+      errorCallback(responseText);
     }
-    if (requestBody) {
-        if (method.toLowerCase() !== "get") {
-            request.setRequestHeader('Content-Type', 'application/json');
-            request.send(JSON.stringify(requestBody));
-        } else {
-            console.error("Trying to send request data with HTTP GET, not allowed!")
-            request.send();
-        }
-    } else {
-        request.send();
+  } catch (error) {
+    if (errorCallback) {
+      errorCallback(error);
     }
+  }
+}
+
+/**
+ * Construct HTTP Headers to be sent in a request
+ * @param method
+ * @return object An object containing the necessary HTTP headers
+ */
+function constructRequestHeaders(method) {
+  let headers = {};
+
+  if (method.toLowerCase() !== "get") {
+    headers["Content-Type"] = "application/json";
+  }
+
+  const jwtToken = getCookie("jwt");
+  if (jwtToken) {
+    headers["Authorization"] = "Bearer " + jwtToken;
+  }
+  return headers;
 }

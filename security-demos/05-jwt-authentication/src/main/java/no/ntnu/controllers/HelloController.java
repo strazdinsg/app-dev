@@ -11,20 +11,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 public class HelloController {
-    @GetMapping("")
-    public String home() {
-        return "This is a public home page";
-    }
+  @GetMapping("")
+  public String home() {
+    return "This is a public home page";
+  }
 
-    @GetMapping("user")
-    @PreAuthorize("hasRole('USER')")
-    public String userPage() {
-        return "This is accessible to all authorized users";
-    }
+  @GetMapping("user")
+  @PreAuthorize("hasRole('USER')")
+  public String userPage() {
+    return "This is accessible to all authorized users";
+  }
 
-    @GetMapping("admin")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String adminPage() {
-        return "This is accessible only for ADMIN users";
-    }
+  @GetMapping("admin")
+  @PreAuthorize("hasRole('ADMIN')")
+  public String adminPage() {
+    return "This is accessible only for ADMIN users";
+  }
 }

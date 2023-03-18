@@ -20,31 +20,31 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class AuthenticationController {
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private JwtUtil jwtUtil;
+  @Autowired
+  private AuthenticationManager authenticationManager;
+  @Autowired
+  private UserDetailsService userDetailsService;
+  @Autowired
+  private JwtUtil jwtUtil;
 
 
-    /**
-     * HTTP POST request to /authenticate
-     *
-     * @param authenticationRequest The request JSON object containing username and password
-     * @return OK + JWT token; Or UNAUTHORIZED
-     */
-    @PostMapping("/authenticate")
-    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    authenticationRequest.getUsername(),
-                    authenticationRequest.getPassword()));
-        } catch (BadCredentialsException e) {
-            return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
-        }
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        final String jwt = jwtUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+  /**
+   * HTTP POST request to /authenticate
+   *
+   * @param authenticationRequest The request JSON object containing username and password
+   * @return OK + JWT token; Or UNAUTHORIZED
+   */
+  @PostMapping("/authenticate")
+  public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
+    try {
+      authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+          authenticationRequest.getUsername(),
+          authenticationRequest.getPassword()));
+    } catch (BadCredentialsException e) {
+      return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
     }
+    final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+    final String jwt = jwtUtil.generateToken(userDetails);
+    return ResponseEntity.ok(new AuthenticationResponse(jwt));
+  }
 }

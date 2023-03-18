@@ -4,7 +4,8 @@
         <li><a th:href="@{/products}">Products</a></li>
         <th:block th:if="${user != null}">
             <li th:if="${user.isAdmin}"><a th:href="@{/admin}">Administration</a></li>
-            <li><a th:href="@{/users/} + ${user.username}" th:text="'Welcome, ' + ${user.username} + '!'"></a></li>
+            <li><a th:href="@{/users/} + ${user.username}"
+                   th:text="'Welcome, ' + ${user.username} + '!'"></a></li>
             <li><a th:href="@{/logout}">Logout</a></li>
         </th:block>
         <th:block th:if="${user == null}">

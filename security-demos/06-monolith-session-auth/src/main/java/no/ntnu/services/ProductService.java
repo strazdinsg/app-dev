@@ -13,12 +13,12 @@ import java.util.List;
  */
 @Service
 public class ProductService {
-    @Autowired
-    private ProductRepository productRepository;
+  @Autowired
+  private ProductRepository productRepository;
 
-    public List<Product> getAll() {
-        List<Product> products = new LinkedList<>();
-        productRepository.findAll().forEach(products::add);
-        return products;
-    }
+  public List<Product> getAll() {
+    List<Product> products = new LinkedList<>();
+    productRepository.findAll().forEach(products::add);
+    return products;
+  }
 }

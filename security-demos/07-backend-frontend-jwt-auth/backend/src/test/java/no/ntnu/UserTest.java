@@ -13,24 +13,24 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class UserTest {
 
-    @Test
-    public void testRoleCheck() {
-        Role userRole = new Role("ROLE_USER");
-        Role adminRole = new Role("ROLE_ADMIN");
+  @Test
+  public void testRoleCheck() {
+    Role userRole = new Role("ROLE_USER");
+    Role adminRole = new Role("ROLE_ADMIN");
 
-        User regularUser = new User("regular", "fakePassword");
-        regularUser.addRole(userRole);
+    User regularUser = new User("regular", "fakePassword");
+    regularUser.addRole(userRole);
 
-        User adminUser = new User("admin", "fakePassword");
-        adminUser.addRole(userRole);
-        adminUser.addRole(adminRole);
+    User adminUser = new User("admin", "fakePassword");
+    adminUser.addRole(userRole);
+    adminUser.addRole(adminRole);
 
-        assertFalse(regularUser.isAdmin());
-        assertFalse(regularUser.hasRole("ROLE_ADMIN"));
-        assertTrue(regularUser.hasRole("ROLE_USER"));
+    assertFalse(regularUser.isAdmin());
+    assertFalse(regularUser.hasRole("ROLE_ADMIN"));
+    assertTrue(regularUser.hasRole("ROLE_USER"));
 
-        assertTrue(adminUser.isAdmin());
-        assertTrue(adminUser.hasRole("ROLE_ADMIN"));
-        assertTrue(adminUser.hasRole("ROLE_USER"));
-    }
+    assertTrue(adminUser.isAdmin());
+    assertTrue(adminUser.hasRole("ROLE_ADMIN"));
+    assertTrue(adminUser.hasRole("ROLE_USER"));
+  }
 }

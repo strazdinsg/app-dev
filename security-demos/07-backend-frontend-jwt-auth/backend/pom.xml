@@ -10,11 +10,11 @@
     </parent>
     <groupId>no.ntnu</groupId>
     <artifactId>jwt-auth-backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>jwt-auth-backend</name>
     <description>Backend part of the project which uses JWT authentication.</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <dependency>

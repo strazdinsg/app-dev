@@ -5,17 +5,17 @@
  * @returns User object or null if user is not authenticated
  */
 function getAuthenticatedUser() {
-    let user = null;
-    const username = getCookie("current_username");
-    const commaSeparatedRoles = getCookie("current_user_roles");
-    if (username && commaSeparatedRoles) {
-        const roles = commaSeparatedRoles.split(",");
-        user = {
-            "username": username,
-            "roles": roles
-        }
+  let user = null;
+  const username = getCookie("current_username");
+  const commaSeparatedRoles = getCookie("current_user_roles");
+  if (username && commaSeparatedRoles) {
+    const roles = commaSeparatedRoles.split(",");
+    user = {
+      "username": username,
+      "roles": roles
     }
-    return user;
+  }
+  return user;
 }
 
 /**
@@ -24,7 +24,7 @@ function getAuthenticatedUser() {
  * @returns {boolean}
  */
 function isAdmin(user) {
-    return user && user.roles && user.roles.includes("ROLE_ADMIN");
+  return user && user.roles && user.roles.includes("ROLE_ADMIN");
 }
 
 /**
@@ -35,26 +35,26 @@ function isAdmin(user) {
  * @param errorCallback Function to call on error, with response text as the parameter
  */
 function sendAuthenticationRequest(username, password, successCallback, errorCallback) {
-    const postData = {
-        "username": username,
-        "password": password
-    };
-    sendApiRequest(
-        "POST", "/authenticate",
-        function (jwtResponse) {
-            setCookie("jwt", jwtResponse.jwt);
-            const userData = parseJwtUser(jwtResponse.jwt);
-            if (userData) {
-                setCookie("current_username", userData.username);
-                setCookie("current_user_roles", userData.roles.join(","));
-            }
-            successCallback();
-        },
-        postData,
-        function (responseText) {
-            errorCallback(responseText);
-        }
-    );
+  const postData = {
+    "username": username,
+    "password": password
+  };
+  sendApiRequest(
+    "POST", "/authenticate",
+    function (jwtResponse) {
+      setCookie("jwt", jwtResponse.jwt);
+      const userData = parseJwtUser(jwtResponse.jwt);
+      if (userData) {
+        setCookie("current_username", userData.username);
+        setCookie("current_user_roles", userData.roles.join(","));
+      }
+      successCallback();
+    },
+    postData,
+    function (responseText) {
+      errorCallback(responseText);
+    }
+  );
 }
 
 /**
@@ -64,13 +64,13 @@ function sendAuthenticationRequest(username, password, successCallback, errorCal
  * @returns {any} Decoded JWT object
  */
 function parseJwt(token) {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
 
-    return JSON.parse(jsonPayload);
+  return JSON.parse(jsonPayload);
 }
 
 /**
@@ -79,15 +79,15 @@ function parseJwt(token) {
  * @return User object
  */
 function parseJwtUser(jwtString) {
-    let user = null;
-    const jwtObject = parseJwt(jwtString);
-    if (jwtObject) {
-        user = {
-            "username": jwtObject.sub,
-            "roles": jwtObject.roles.map(r => r.authority)
-        }
+  let user = null;
+  const jwtObject = parseJwt(jwtString);
+  if (jwtObject) {
+    user = {
+      "username": jwtObject.sub,
+      "roles": jwtObject.roles.map(r => r.authority)
     }
-    return user;
+  }
+  return user;
 }
 
 
@@ -95,16 +95,16 @@ function parseJwtUser(jwtString) {
  * Log-out the user
  */
 function doLogout() {
-    console.log("Logging out...");
-    deleteAuthorizationCookies();
-    redirectTo("/index.html");
+  console.log("Logging out...");
+  deleteAuthorizationCookies();
+  redirectTo("/index.html");
 }
 
 /**
  * Delete all cookies related to authorization (user session)
  */
 function deleteAuthorizationCookies() {
-    deleteCookie("jwt");
-    deleteCookie("current_username");
-    deleteCookie("current_user_roles");
+  deleteCookie("jwt");
+  deleteCookie("current_username");
+  deleteCookie("current_user_roles");
 }

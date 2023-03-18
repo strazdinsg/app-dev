@@ -9,16 +9,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Business logic for products
+ * Business logic for products.
  */
 @Service
 public class ProductService {
-    @Autowired
-    private ProductRepository productRepository;
+  @Autowired
+  private ProductRepository productRepository;
 
-    public List<Product> getAll() {
-        List<Product> products = new LinkedList<>();
-        productRepository.findAll().forEach(products::add);
-        return products;
-    }
+  public List<Product> getAll() {
+    List<Product> products = new LinkedList<>();
+    productRepository.findAll().forEach(products::add);
+    return products;
+  }
 }

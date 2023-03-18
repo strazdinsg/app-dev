@@ -18,105 +18,117 @@ import org.springframework.web.bind.annotation.PostMapping;
  */
 @Controller
 public class HtmlPageController {
-    @Autowired
-    private AccessUserService userService;
+  @Autowired
+  private AccessUserService userService;
 
-    /**
-     * Home page.
-     *
-     * @return the index.html Thymeleaf template name
-     */
-    @GetMapping("")
-    public String home(Model model) {
-        model.addAttribute("user", userService.getSessionUser());
-        return "index";
-    }
+  /**
+   * Home page.
+   *
+   * @return the index.html Thymeleaf template name
+   */
+  @GetMapping("")
+  public String home(Model model) {
+    model.addAttribute("user", userService.getSessionUser());
+    return "index";
+  }
 
-    /**
-     * Show profile page for a user
-     *
-     * @param model    Model for passing data to Thymeleaf
-     * @param username Username of the user
-     * @return
-     */
-    @GetMapping("users/{username}")
-    public String userPage(Model model, @PathVariable String username) {
-        return handleProfilePageRequest(username, null, model);
-    }
+  /**
+   * Show profile page for a user
+   *
+   * @param model    Model for passing data to Thymeleaf
+   * @param username Username of the user
+   * @return
+   */
+  @GetMapping("users/{username}")
+  public String userPage(Model model, @PathVariable String username) {
+    return handleProfilePageRequest(username, null, model);
+  }
 
-    /**
-     * This method handles HTTP POST - user submits changes to his/her profile
-     *
-     * @param model    Model for passing data to Thymeleaf
-     * @param username Username of the user
-     * @return name of the Thymeleaf template to render the result
-     */
-    @PostMapping("users/{username}")
-    public String userPagePost(@ModelAttribute UserProfileDto profileData, @PathVariable String username, Model model) {
-        return handleProfilePageRequest(username, profileData, model);
-    }
+  /**
+   * This method handles HTTP POST - user submits changes to his/her profile
+   *
+   * @param model    Model for passing data to Thymeleaf
+   * @param username Username of the user
+   * @return name of the Thymeleaf template to render the result
+   */
+  @PostMapping("users/{username}")
+  public String userPagePost(@ModelAttribute UserProfileDto profileData, @PathVariable String username, Model model) {
+    return handleProfilePageRequest(username, profileData, model);
+  }
 
-    private String handleProfilePageRequest(String username, UserProfileDto postData, Model model) {
-        User authenticatedUser = userService.getSessionUser();
-        if (authenticatedUser != null && authenticatedUser.getUsername().equals(username)) {
-            model.addAttribute("user", authenticatedUser);
-            if (postData != null) {
-                if (userService.updateProfile(authenticatedUser, postData)) {
-                    model.addAttribute("successMessage", "Profile updated!");
-                } else {
-                    model.addAttribute("errorMessage", "Could not update profile data!");
-                }
-            }
-            return "user";
+  /**
+   * Handler GET or POST request to the /users/{username} page. When the POST data is present,
+   * update user profile data. Also checks if we are accessing a page which is allowed for
+   * this user.
+   *
+   * @param username Username of the user profile to load
+   * @param postData HTTP POST data submitted in the request. When not null, user profile
+   *                 will be updated.
+   * @param model    The model to put successMessage or errorMessage in
+   * @return Name of the template to render: user on success, no-access if the request
+   * is unauthorized.
+   */
+  private String handleProfilePageRequest(String username, UserProfileDto postData, Model model) {
+    User authenticatedUser = userService.getSessionUser();
+    if (authenticatedUser != null && authenticatedUser.getUsername().equals(username)) {
+      model.addAttribute("user", authenticatedUser);
+      if (postData != null) {
+        if (userService.updateProfile(authenticatedUser, postData)) {
+          model.addAttribute("successMessage", "Profile updated!");
         } else {
-            return "no-access";
+          model.addAttribute("errorMessage", "Could not update profile data!");
         }
+      }
+      return "user";
+    } else {
+      return "no-access";
     }
+  }
 
 
-    @GetMapping("admin")
-    public String adminPage(Model model) {
-        // We still need the user for the navigation, even when we don't use it for the main content
-        model.addAttribute("user", userService.getSessionUser());
-        return "admin";
-    }
+  @GetMapping("admin")
+  public String adminPage(Model model) {
+    // We still need the user for the navigation, even when we don't use it for the main content
+    model.addAttribute("user", userService.getSessionUser());
+    return "admin";
+  }
 
-    @GetMapping("products")
-    public String productPage(Model model) {
-        // We still need the user for the navigation, even when we don't use it for the main content
-        model.addAttribute("user", userService.getSessionUser());
-        return "products";
-    }
+  @GetMapping("products")
+  public String productPage(Model model) {
+    // We still need the user for the navigation, even when we don't use it for the main content
+    model.addAttribute("user", userService.getSessionUser());
+    return "products";
+  }
 
-    @GetMapping("/login")
-    public String loginForm() {
-        return "login";
-    }
+  @GetMapping("/login")
+  public String loginForm() {
+    return "login";
+  }
 
-    /**
-     * Sign-up form
-     *
-     * @return NAme of Thymeleaf template to use
-     */
-    @GetMapping("/signup")
-    public String signupForm() {
-        return "signup-form";
-    }
+  /**
+   * Sign-up form
+   *
+   * @return NAme of Thymeleaf template to use
+   */
+  @GetMapping("/signup")
+  public String signupForm() {
+    return "signup-form";
+  }
 
-    /**
-     * This method processes data received from the sign-up form (HTTP POST)
-     *
-     * @return NAme of the template for the result page
-     */
-    @PostMapping("/signup")
-    public String signupProcess(@ModelAttribute SignupDto signupData, Model model) {
-        model.addAttribute("signupData", signupData);
-        String errorMessage = userService.tryCreateNewUser(signupData.getUsername(), signupData.getPassword());
-        if (errorMessage == null) {
-            return "signup-success";
-        } else {
-            model.addAttribute("errorMessage", errorMessage);
-            return "signup-form";
-        }
+  /**
+   * This method processes data received from the sign-up form (HTTP POST)
+   *
+   * @return NAme of the template for the result page
+   */
+  @PostMapping("/signup")
+  public String signupProcess(@ModelAttribute SignupDto signupData, Model model) {
+    model.addAttribute("signupData", signupData);
+    String errorMessage = userService.tryCreateNewUser(signupData.getUsername(), signupData.getPassword());
+    if (errorMessage == null) {
+      return "signup-success";
+    } else {
+      model.addAttribute("errorMessage", errorMessage);
+      return "signup-form";
     }
+  }
 }
