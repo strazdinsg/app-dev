@@ -13,22 +13,22 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class HelloController {
-    @GetMapping("")
-    public String home() {
-        return "This is a public home page";
-    }
+  @GetMapping("")
+  public String home() {
+    return "This is a public home page";
+  }
 
-    @GetMapping("user")
-    public String userPage(@AuthenticationPrincipal AccessUserDetails loggedInUser) {
-        return "You are currently logged in as " + loggedInUser.getUsername();
-    }
+  @GetMapping("user")
+  public String userPage(@AuthenticationPrincipal AccessUserDetails loggedInUser) {
+    return "You are currently logged in as " + loggedInUser.getUsername();
+  }
 
-    @GetMapping("admin")
-    public String adminPage() {
-        // Here we use another way to get reference to currently logged in user
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication auth = securityContext.getAuthentication();
-        String username = auth.getName();
-        return "You are logged in as ADMIN user: " + username;
-    }
+  @GetMapping("admin")
+  public String adminPage() {
+    // Here we use another way to get reference to currently logged in user
+    SecurityContext securityContext = SecurityContextHolder.getContext();
+    Authentication auth = securityContext.getAuthentication();
+    String username = auth.getName();
+    return "You are logged in as ADMIN user: " + username;
+  }
 }

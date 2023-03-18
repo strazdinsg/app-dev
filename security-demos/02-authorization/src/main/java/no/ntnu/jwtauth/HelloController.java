@@ -8,18 +8,18 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class HelloController {
-    @GetMapping("")
-    public String home() {
-        return "This is a public home page";
-    }
+  @GetMapping("")
+  public String home() {
+    return "This is a public home page";
+  }
 
-    @GetMapping("user")
-    public String userPage() {
-        return "This is accessible to all authorized users";
-    }
+  @GetMapping("user")
+  public String userPage() {
+    return "This is accessible to all authorized users";
+  }
 
-    @GetMapping("admin")
-    public String adminPage() {
-        return "This is accessible only for ADMIN users";
-    }
+  @GetMapping("admin")
+  public String adminPage() {
+    return "This is accessible only for ADMIN users";
+  }
 }

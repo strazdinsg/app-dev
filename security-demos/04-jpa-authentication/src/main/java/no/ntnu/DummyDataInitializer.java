@@ -18,41 +18,41 @@ import java.util.Optional;
  */
 @Component
 public class DummyDataInitializer implements ApplicationListener<ApplicationReadyEvent> {
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
+  @Autowired
+  private RoleRepository roleRepository;
 
-    private final Logger logger = LoggerFactory.getLogger("DummyInit");
+  private final Logger logger = LoggerFactory.getLogger("DummyInit");
 
-    /**
-     * This method is called when the application is ready (loaded)
-     *
-     * @param event Event which we don't use :)
-     */
-    @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
-        Optional<User> existingChuckUser = userRepository.findByUsername("chuck");
-        if (existingChuckUser.isEmpty()) {
-            logger.info("Importing test data...");
-            User chuck = new User("chuck", "$2a$12$/NoknpFFPDlzL3kBryJfsur0yeYC2JFqAs7Fd79ypMP6PN/mtSYmC");
-            User dave = new User("dave", "$2a$10$nwbEjYKgcomq2rjUPge2JegqI.y4zEcNqRMPdqwFnd1ytorNCQM/y");
-            Role user = new Role("ROLE_USER");
-            Role admin = new Role("ROLE_ADMIN");
-            chuck.addRole(user);
-            chuck.addRole(admin);
-            dave.addRole(user);
+  /**
+   * This method is called when the application is ready (loaded)
+   *
+   * @param event Event which we don't use :)
+   */
+  @Override
+  public void onApplicationEvent(ApplicationReadyEvent event) {
+    Optional<User> existingChuckUser = userRepository.findByUsername("chuck");
+    if (existingChuckUser.isEmpty()) {
+      logger.info("Importing test data...");
+      User chuck = new User("chuck", "$2a$12$/NoknpFFPDlzL3kBryJfsur0yeYC2JFqAs7Fd79ypMP6PN/mtSYmC");
+      User dave = new User("dave", "$2a$10$nwbEjYKgcomq2rjUPge2JegqI.y4zEcNqRMPdqwFnd1ytorNCQM/y");
+      Role user = new Role("ROLE_USER");
+      Role admin = new Role("ROLE_ADMIN");
+      chuck.addRole(user);
+      chuck.addRole(admin);
+      dave.addRole(user);
 
-            roleRepository.save(user);
-            roleRepository.save(admin);
+      roleRepository.save(user);
+      roleRepository.save(admin);
 
-            userRepository.save(chuck);
-            userRepository.save(dave);
+      userRepository.save(chuck);
+      userRepository.save(dave);
 
-            logger.info("DONE importing test data");
-        } else {
-            logger.info("Users already in the database, not importing anything");
-        }
+      logger.info("DONE importing test data");
+    } else {
+      logger.info("Users already in the database, not importing anything");
     }
+  }
 }

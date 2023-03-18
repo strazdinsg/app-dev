@@ -11,7 +11,8 @@ This example shows how we can configure:
 The code is based on the video
 ["How to configure Spring Security Authorization" by Java Brains](https://youtu.be/iyXne7dIn7U).
 
-Used in the course [IDATA2306 Application development](https://www.ntnu.edu/studies/courses/IDATA2306)
+Used in the
+course [IDATA2306 Application development](https://www.ntnu.edu/studies/courses/IDATA2306)
 at [NTNU](https://www.ntnu.edu/) campus [Aalesund](https://www.ntnu.edu/alesund).
 
 
