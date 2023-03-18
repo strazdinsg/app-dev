@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class HelloController {
-  @GetMapping("")
+  @GetMapping("/")
   public String home() {
     return "This is a public home page";
   }

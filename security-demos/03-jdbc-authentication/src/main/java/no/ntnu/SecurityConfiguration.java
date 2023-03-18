@@ -2,21 +2,20 @@ package no.ntnu;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
 
 /**
- * Creates AuthenticationManager - set up authentication type
- * The @EnableWebSecurity tells that this ia a class for configuring web security
+ * Creates AuthenticationManager - set up authentication type.
  */
-@EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+@Configuration
+public class SecurityConfiguration {
   /**
    * A database connection which provides our users. We configure the database in application.properties
    */
@@ -24,40 +23,52 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   DataSource dataSource;
 
   /**
+   * Configure the authentication - the user access.
+   *
+   * @param auth builder for the authentication config
+   * @throws Exception When something goes wrong with the database config
+   */
+  @Autowired
+  public void configureAuthentication(AuthenticationManagerBuilder auth)
+      throws Exception {
+    // The database will be initialized from the schema.sql and data.sql scripts
+    auth.jdbcAuthentication().dataSource(dataSource);
+  }
+
+  /**
+   * Use BCrypt encoder for passwords.
+   *
+   * @return A BCrypt encoder
+   */
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
+  /**
    * This method will be called automatically by the framework to find out what authentication to use.
-   * Here we tell that we want to load users from a database
    *
-   * @param auth Authentication builder
+   * @param http HttpSecurity setting builder
    * @throws Exception
    */
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.jdbcAuthentication()
-        .dataSource(dataSource)
-        // Here we specify the queries for selecting the necessary fields from our database
-        .usersByUsernameQuery("SELECT username, password, is_enabled FROM users WHERE username = ?")
-        .authoritiesByUsernameQuery("SELECT username, role FROM roles WHERE username = ?")
-    ;
-  }
-
-  /**
-   * Configure the authorization rules
-   *
-   * @param http HTTP Security object
-   * @throws Exception
-   */
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
+  @Bean
+  public SecurityFilterChain configureAuthorizationFilterChain(HttpSecurity http) throws Exception {
     // Set up the authorization requests, starting from most restrictive at the top, to least restrictive on bottom
-    http.authorizeRequests()
-        .antMatchers("/admin").hasRole("ADMIN")
-        .antMatchers("/user").hasAnyRole("USER", "ADMIN")
-        .antMatchers("/").permitAll()
+    http
+        // This enables the access restrictions
+        .authorizeHttpRequests()
+        // This configures the requested authorization (role)
+        .requestMatchers("/admin").hasRole("ADMIN")
+        .requestMatchers("/user").hasAnyRole("USER", "ADMIN")
+        .requestMatchers("/").permitAll()
+        // Redirect to an auto-provided login-form if the user is not authenticated
         .and().formLogin();
+
+    return http.build();
   }
 
   /**
-   * This method is called to decide what encryption to use for password checking
+   * This method is called when Spring Security needs a BCrypt encoder for passwords.
    *
    * @return The password encryptor
    */
