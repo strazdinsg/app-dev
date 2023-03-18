@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 public class HelloController {
-  @GetMapping("")
+  @GetMapping("/")
   public String home() {
     return "This is a public home page";
   }

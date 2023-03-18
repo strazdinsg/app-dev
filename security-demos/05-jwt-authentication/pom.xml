@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.5</version>
+        <version>3.0.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>no.ntnu</groupId>
     <artifactId>jwt-auth-example</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0</version>
     <name>jwt-auth-example</name>
     <description>Example of JWT authentication, loading users from a database, using JPA.
     </description>
@@ -22,12 +22,26 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!-- Exclude snakeyaml to avoid security issues -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.yaml</groupId>
+                    <artifactId>snakeyaml</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
+        <!-- For JSON Web Token generation -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
+        </dependency>
+        <!-- This is also needed for token handling (JSON parsing) Since Spring Boot 3.0 -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.4.0-b180830.0359</version>
         </dependency>
 
         <dependency>
@@ -43,12 +57,10 @@
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
-        </dependency>
-        <!-- For MySQL database -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
+            <!-- The version is important, because with 10.15 Derby + Spring Boot 3.0 one
+                 would get this error:
+                 https://stackoverflow.com/questions/66844429/where-is-the-derby-embedded-driver -->
+            <version>10.14.2.0</version>
         </dependency>
     </dependencies>
 

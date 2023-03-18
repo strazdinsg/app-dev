@@ -1,6 +1,6 @@
 package no.ntnu.models;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 

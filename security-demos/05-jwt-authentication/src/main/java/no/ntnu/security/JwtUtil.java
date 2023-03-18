@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.function.Function;
 
 /**
- * Utility class for handling JWT tokens
+ * Utility class for handling JWT tokens.
  * Code from https://youtu.be/X80nJ5T7YpE
  */
 @Component
@@ -21,7 +21,7 @@ public class JwtUtil {
   /**
    * Key inside JWT token where roles are stored
    */
-  private static final String JWT_AUTH_KEY = "roles";
+  private static final String ROLE_KEY = "roles";
 
   /**
    * Generate a JWT token for an authenticated user
@@ -36,7 +36,7 @@ public class JwtUtil {
 
     return Jwts.builder()
         .setSubject(userDetails.getUsername())
-        .claim(JWT_AUTH_KEY, userDetails.getAuthorities())
+        .claim(ROLE_KEY, userDetails.getAuthorities())
         .setIssuedAt(new Date(TIME_NOW))
         .setExpiration(new Date(TIME_AFTER_ONE_HOUR))
         .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
