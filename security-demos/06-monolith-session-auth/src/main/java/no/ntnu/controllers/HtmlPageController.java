@@ -5,7 +5,6 @@ import no.ntnu.dto.UserProfileDto;
 import no.ntnu.models.User;
 import no.ntnu.services.AccessUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +25,7 @@ public class HtmlPageController {
    *
    * @return the index.html Thymeleaf template name
    */
-  @GetMapping("")
+  @GetMapping("/")
   public String home(Model model) {
     model.addAttribute("user", userService.getSessionUser());
     return "index";

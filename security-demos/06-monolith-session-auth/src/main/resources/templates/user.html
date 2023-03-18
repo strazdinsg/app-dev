@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<nav th:include="components/navigation"></nav>
+<nav th:insert="~{components/navigation}"></nav>
 <main>
     <form action="" method="post" class="bio">
         <h1 th:text="'Welcome, ' + ${user.username}"></h1>

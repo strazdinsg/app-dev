@@ -2,20 +2,20 @@ package no.ntnu.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Creates AuthenticationManager - set up authentication type
  * The @EnableWebSecurity tells that this ia a class for configuring web security
  */
-@EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+@Configuration
+public class SecurityConfiguration {
   /**
    * A service providing our users from the database
    */
@@ -29,28 +29,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
    * @param auth Authentication builder
    * @throws Exception
    */
-  @Override
+  @Autowired
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.userDetailsService(userDetailsService);
   }
 
   /**
-   * Configure the authorization rules
+   * This method will be called automatically by the framework to find out what authentication to use.
    *
-   * @param http HTTP Security object
+   * @param http HttpSecurity setting builder
    * @throws Exception
    */
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
+  @Bean
+  public SecurityFilterChain configureAuthorizationFilterChain(HttpSecurity http) throws Exception {
     // Set up the authorization requests, starting from most restrictive at the top, to least restrictive on bottom
     http.csrf().disable()
         .authorizeRequests()
-        .antMatchers("/admin/**").hasRole("ADMIN")
-        .antMatchers("/users/**").hasAnyRole("USER", "ADMIN")
-        .antMatchers("/").permitAll()
+        .requestMatchers("/admin/**").hasRole("ADMIN")
+        .requestMatchers("/users/**").hasAnyRole("USER", "ADMIN")
+        .requestMatchers("/").permitAll()
         .and().formLogin().loginPage("/login")
         .and().logout().logoutSuccessUrl("/")
     ;
+    return http.build();
   }
 
   /**

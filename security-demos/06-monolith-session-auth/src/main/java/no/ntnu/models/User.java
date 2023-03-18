@@ -2,7 +2,7 @@ package no.ntnu.models;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;

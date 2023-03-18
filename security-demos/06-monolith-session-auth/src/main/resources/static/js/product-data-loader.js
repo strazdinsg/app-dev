@@ -1,29 +1,11 @@
-// Dynamically load product data
-const request = new XMLHttpRequest();
-
 /**
  * Send an Ajax request to backend, fetch product data
  */
-function sendProductDataRequest() {
+async function sendProductDataRequest() {
     console.log("Loading product data...");
-    request.onload = productDataReceived;
-    request.open("GET", "/api/products");
-    request.send();
-}
-
-/**
- * This method is called when product data is received
- */
-function productDataReceived() {
-    if (request.readyState === XMLHttpRequest.DONE) {
-        if (request.status === 200) {
-            console.log("Product data received")
-            const products = JSON.parse(request.responseText);
-            showProducts(products);
-        } else {
-            console.error("Error while fetching product data");
-        }
-    }
+    const response = await fetch("/api/products");
+    const productJson = await response.json();
+    showProducts(productJson);
 }
 
 /**
