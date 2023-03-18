@@ -21,6 +21,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!-- Exclude snakeyaml to avoid security issues -->
             <exclusions>
                 <exclusion>
                     <groupId>org.yaml</groupId>

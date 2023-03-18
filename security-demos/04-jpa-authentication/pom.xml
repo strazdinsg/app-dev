@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.5</version>
+        <version>3.0.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>no.ntnu</groupId>
     <artifactId>jpa-auth-example</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0</version>
     <name>jpa-auth-example</name>
     <description>Example of loading users from a database, using JPA.</description>
     <properties>
@@ -21,6 +21,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!-- Exclude snakeyaml to avoid security issues -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.yaml</groupId>
+                    <artifactId>snakeyaml</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -36,12 +43,10 @@
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
-        </dependency>
-        <!-- For MySQL database -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
+            <!-- The version is important, because with 10.15 Derby + Spring Boot 3.0 one
+                 would get this error:
+                 https://stackoverflow.com/questions/66844429/where-is-the-derby-embedded-driver -->
+            <version>10.14.2.0</version>
         </dependency>
     </dependencies>
 
