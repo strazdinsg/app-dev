@@ -1,8 +1,7 @@
 // All code for sending requests to backend is stored in this file
 
 // The base path where the API is running
-// TODO - make this dynamic
-const API_BASE_URL = "http://localhost:8042/api";
+const API_BASE_URL = "http://web-tek.ninja:8042/api";
 
 /**
  * Send a REST-API request to the backend
