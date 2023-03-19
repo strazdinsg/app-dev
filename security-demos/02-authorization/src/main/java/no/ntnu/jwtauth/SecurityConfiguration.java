@@ -24,6 +24,8 @@ public class SecurityConfiguration {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
+        // Disable CSRF and CORS checks. Without this it will be hard to make automated tests
+        .cors().and().csrf().disable()
         // This enables the access restrictions
         .authorizeHttpRequests()
         // This configures the requested authorization (role)
