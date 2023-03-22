@@ -44,7 +44,7 @@ public class SecurityConfiguration {
   public SecurityFilterChain configureAuthorizationFilterChain(HttpSecurity http) throws Exception {
     // Set up the authorization requests, starting from most restrictive at the top, to least restrictive on bottom
     http.csrf().disable()
-        .authorizeRequests()
+        .authorizeHttpRequests()
         .requestMatchers("/admin/**").hasRole("ADMIN")
         .requestMatchers("/users/**").hasAnyRole("USER", "ADMIN")
         .requestMatchers("/").permitAll()

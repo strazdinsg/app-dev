@@ -49,7 +49,7 @@ public class SecurityConfiguration {
   public SecurityFilterChain configureAuthorizationFilterChain(HttpSecurity http) throws Exception {
     // Allow JWT authentication
     http.cors().and().csrf().disable()
-        .authorizeRequests()
+        .authorizeHttpRequests()
         .requestMatchers("/api/authenticate").permitAll()
         .requestMatchers("/api/signup").permitAll()
         .requestMatchers("/api/products").permitAll()
