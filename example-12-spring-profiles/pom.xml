@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.3</version>
+        <version>3.0.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>no.ntnu</groupId>
     <artifactId>spring-profiles</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>spring-profiles</name>
-    <description>Example showing how we can use different profiles (and hence different environment variables)
-        in SpringBoot
+    <description>Example showing how we can use different profiles (and hence different environment
+        variables) in Spring Boot
     </description>
     <properties>
         <java.version>17</java.version>
@@ -22,6 +23,14 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!-- To avoid the security vulnerability, exclude SnakeYaml, which is needed only
+            for processing .yml files (not used here) -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.yaml</groupId>
+                    <artifactId>snakeyaml</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- For Using JPA -->
         <dependency>
@@ -32,12 +41,18 @@
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
+            <!-- The version is important, because with 10.15 Derby + Spring Boot 3.0 one
+            would get this error:
+            https://stackoverflow.com/questions/66844429/where-is-the-derby-embedded-driver -->
+            <version>10.14.2.0</version>
+
         </dependency>
         <!-- For MySQL database -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
+            <version>8.0.32</version>
         </dependency>
 
         <dependency>
