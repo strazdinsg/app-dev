@@ -35,7 +35,7 @@ public class HelloController {
    *
    * @return A Map (will be converted to JSON object) containing the variables
    */
-  @GetMapping
+  @GetMapping("/")
   public Map<String, Object> getEnvVariables() {
     Map<String, Object> env = new HashMap<>();
     env.put("JAVA_HOME", javaPath);
