@@ -1,13 +1,21 @@
 package no.ntnu.crudrest;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- * REST API controller for author collection
+ * REST API controller for author collection.
  */
 @RestController
 @RequestMapping("authors")
@@ -20,7 +28,7 @@ public class AuthorController {
   }
 
   /**
-   * Initialize dummy author data for the collection
+   * Initialize dummy author data for the collection.
    */
   private void initializeData() {
     latestId = 1;
@@ -35,7 +43,7 @@ public class AuthorController {
   }
 
   /**
-   * Get All authors
+   * Get All authors.
    * HTTP GET to /authors
    *
    * @return List of all authors currently stored in the collection
@@ -46,7 +54,7 @@ public class AuthorController {
   }
 
   /**
-   * Get a specific author
+   * Get a specific author.
    *
    * @param id ID of the author to be returned
    * @return Author with the given ID or status 404
@@ -88,12 +96,12 @@ public class AuthorController {
       throw new IllegalArgumentException("Invalid author");
     }
 
-    author.setId(createNewId());
-    authors.put(author.getId(), author);
+    int id = createNewId();
+    authors.put(id, new Author(id, author.firstName(), author.lastName(), author.birthYear()));
   }
 
   /**
-   * Delete an author from the collection
+   * Delete an author from the collection.
    *
    * @param id ID of the author to delete
    * @return 200 OK on success, 404 Not found on error
@@ -121,7 +129,7 @@ public class AuthorController {
   }
 
   /**
-   * Update an author in the repository
+   * Update an author in the repository.
    *
    * @param id     ID of the author to update, from the URL
    * @param author New author data to store, from request body
@@ -148,7 +156,7 @@ public class AuthorController {
     if (author == null || !author.isValid()) {
       throw new IllegalArgumentException("Wrong data in request body");
     }
-    if (author.getId() != id) {
+    if (author.id() != id) {
       throw new IllegalArgumentException(
           "Author ID in the URL does not match the ID in the response body");
     }
@@ -157,7 +165,7 @@ public class AuthorController {
   }
 
   /**
-   * Search through the author collection, find the author by given ID
+   * Search through the author collection, find the author by given ID.
    *
    * @param id Author ID
    * @return Author or null if not found
