@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,9 +58,19 @@ public class BookController {
   @GetMapping("/books/{id}")
   @Operation(
       summary = "Get one book",
-      description = "Get a single book, with the given ID. Return the book "
-          + "in the response body or 404 code on error."
+      description = "Get a single book, with the given ID"
   )
+  @ApiResponses(value = {
+      @ApiResponse(
+          responseCode = "200",
+          description = "The book returned in the response body"
+      ),
+      @ApiResponse(
+          responseCode = "404",
+          description = "The book with the provided ID is not found, empty body",
+          content = @Content
+      )
+  })
   public ResponseEntity<Book> getBook(
       @Parameter(description = "The ID of the book to fetch")
       @PathVariable
