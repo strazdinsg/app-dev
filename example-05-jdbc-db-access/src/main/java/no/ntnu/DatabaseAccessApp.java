@@ -14,6 +14,11 @@ public class DatabaseAccessApp {
   private static final String DB_USERNAME = "libuser";
   private static final String DB_PASSWORD = "libuser23!";
 
+  /**
+   * Entrypoint for the application.
+   *
+   * @param args Command-line arguments, not used
+   */
   public static void main(String[] args) {
     JdbcConnection connection = JdbcConnection.getInstance();
     try {
