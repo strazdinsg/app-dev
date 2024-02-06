@@ -120,12 +120,11 @@ public class JdbcConnection {
    * @throws SQLException Exception on error
    */
   private PreparedStatement prepareStatement(String query, String[] args) throws SQLException {
-    try (PreparedStatement stmt = connection.prepareStatement(query)) {
-      for (int i = 0; i < args.length; ++i) {
-        stmt.setString(i + 1, args[i]);
-      }
-      return stmt;
+    PreparedStatement stmt = connection.prepareStatement(query);
+    for (int i = 0; i < args.length; ++i) {
+      stmt.setString(i + 1, args[i]);
     }
+    return stmt;
   }
 
   /**
@@ -139,14 +138,11 @@ public class JdbcConnection {
   private List<String> executeStringListSelectQuery(String query, String[] values)
       throws SQLException {
     List<String> responseStrings = new LinkedList<>();
-
-    try (PreparedStatement stmt = prepareStatement(query, values)) {
-      ResultSet rs = stmt.executeQuery();
-      while (rs.next()) {
-        responseStrings.add(rs.getString(1));
-      }
+    PreparedStatement stmt = prepareStatement(query, values);
+    ResultSet rs = stmt.executeQuery();
+    while (rs.next()) {
+      responseStrings.add(rs.getString(1));
     }
-
     return responseStrings;
   }
 }
