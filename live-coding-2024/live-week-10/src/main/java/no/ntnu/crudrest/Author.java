@@ -1,11 +1,14 @@
 package no.ntnu.crudrest;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 /**
  * Represents a resource: an author. We store Author objects in the application state.
@@ -19,7 +22,19 @@ public final class Author {
   private String lastName;
   private int birthYear;
 
+  @OneToMany(mappedBy = "author")
+  @JsonIgnore
+  private Set<Book> books = new HashSet<>();
+
   public Author() {}
+
+  public Set<Book> getBooks() {
+    return books;
+  }
+
+  public void setBooks(Set<Book> books) {
+    this.books = books;
+  }
 
   /**
    * @param id        Unique ID

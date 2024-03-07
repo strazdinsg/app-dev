@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 /**
  * Represents a resource: a book. We store Book objects in the application state.
@@ -19,6 +20,8 @@ public final class Book {
   private int year;
   private int numberOfPages;
 
+  @ManyToOne
+  private Author author;
 
   public Book() {
   }
@@ -26,11 +29,12 @@ public final class Book {
   /**
    *
    */
-  public Book(int id, String title, int year, int numberOfPages) {
+  public Book(int id, String title, int year, int numberOfPages, Author author) {
     this.id = id;
     this.title = title;
     this.year = year;
     this.numberOfPages = numberOfPages;
+    this.author = author;
   }
 
   /**
@@ -73,6 +77,14 @@ public final class Book {
 
   public void setNumberOfPages(int numberOfPages) {
     this.numberOfPages = numberOfPages;
+  }
+
+  public Author getAuthor() {
+    return author;
+  }
+
+  public void setAuthor(Author author) {
+    this.author = author;
   }
 
   @Override
