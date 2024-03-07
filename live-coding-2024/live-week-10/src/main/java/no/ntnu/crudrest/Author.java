@@ -8,6 +8,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
 /**
@@ -22,7 +25,12 @@ public final class Author {
   private String lastName;
   private int birthYear;
 
-  @OneToMany(mappedBy = "author")
+  @ManyToMany
+  @JoinTable(
+      name="author_book",
+      joinColumns = @JoinColumn(name="author_id"),
+      inverseJoinColumns = @JoinColumn(name = "book_id")
+  )
   @JsonIgnore
   private Set<Book> books = new HashSet<>();
 

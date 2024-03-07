@@ -1,11 +1,14 @@
 package no.ntnu.crudrest;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 /**
@@ -20,22 +23,12 @@ public final class Book {
   private int year;
   private int numberOfPages;
 
-  @ManyToOne
-  private Author author;
+  @ManyToMany(mappedBy = "books")
+  private Set<Author> authors = new HashSet<>();
 
   public Book() {
   }
 
-  /**
-   *
-   */
-  public Book(int id, String title, int year, int numberOfPages, Author author) {
-    this.id = id;
-    this.title = title;
-    this.year = year;
-    this.numberOfPages = numberOfPages;
-    this.author = author;
-  }
 
   /**
    * Check if this object is a valid book.
@@ -79,12 +72,12 @@ public final class Book {
     this.numberOfPages = numberOfPages;
   }
 
-  public Author getAuthor() {
-    return author;
+  public Set<Author> getAuthors() {
+    return authors;
   }
 
-  public void setAuthor(Author author) {
-    this.author = author;
+  public void setAuthors(Set<Author> authors) {
+    this.authors = authors;
   }
 
   @Override
