@@ -1,7 +1,7 @@
 # Library website variant - static site
 
-A static HTML+CSS website, with static data, no real database. Can be used just for demonstration purposes and as a
-source of template files for the more dynamic projects.
+A static HTML+CSS website, with static data, no real database. Can be used just for demonstration
+purposes and as a source of template files for the more dynamic projects.
 
 This is one variation of the library application, see the [idea description](..).
 
