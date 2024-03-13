@@ -1,4 +1,4 @@
-# Starter code for exercise 9.2 - Monolith with data
+# Starter code for exercise 11.2 - Monolith with data
 
 The end goal of the exercise is to create a monolithic Spring-Boot application serving static, server-rendered HTML
 pages. All the data is
