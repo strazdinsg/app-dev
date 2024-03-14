@@ -15,13 +15,7 @@
   </head>
 
   <body>
-    <nav>
-      <ul>
-        <li><a th:href="@{/}">Home</a></li>
-        <li><a th:href="@{/books}">Books</a></li>
-        <li><a th:href="@{about}">About us</a></li>
-      </ul>
-    </nav>
+    <nav th:replace="~{components/navigation}"></nav>
     <div class="main-container">
       <main>
         <section>
