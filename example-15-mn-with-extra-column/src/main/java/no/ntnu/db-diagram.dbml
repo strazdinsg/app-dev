@@ -1,0 +1,46 @@
+// Database schema in DBML syntax
+// Made using https://dbdiagram.io
+// Example 15 used in the app-dev course:
+// https://github.com/strazdinsg/app-dev
+
+Table Book {
+  id int [primary key]
+  title varchar
+  year int
+  number_of_pages int
+}
+
+Table Author {
+  id int [primary key]
+  first_name varchar
+  last_name varchar
+  birth_year int
+}
+
+Table BookAuthor {
+  book_id int
+  author_id int
+  role varchar
+}
+
+Table Borrower {
+  email varchar [primary key]
+  first_name varchar
+  last_name varchar
+  address varchar
+}
+
+Table Loan {
+  id int
+  book_id int
+  borrower_email varchar
+  from_date date
+  to_date date
+}
+
+
+ref: BookAuthor.author_id > Author.id
+ref: BookAuthor.book_id > Book.id
+
+ref: Loan.borrower_email > Borrower.email
+ref: Loan.book_id > Book.id
