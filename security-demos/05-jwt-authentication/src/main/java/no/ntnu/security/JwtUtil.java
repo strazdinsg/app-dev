@@ -3,9 +3,11 @@ package no.ntnu.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.function.Function;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -35,12 +37,17 @@ public class JwtUtil {
     final long timeAfterOneHour = timeNow + millisecondsInHour;
 
     return Jwts.builder()
-        .setSubject(userDetails.getUsername())
+        .subject(userDetails.getUsername())
         .claim(ROLE_KEY, userDetails.getAuthorities())
-        .setIssuedAt(new Date(timeNow))
-        .setExpiration(new Date(timeAfterOneHour))
-        .signWith(SignatureAlgorithm.HS256, secretKey)
+        .issuedAt(new Date(timeNow))
+        .expiration(new Date(timeAfterOneHour))
+        .signWith(getSigningKey())
         .compact();
+  }
+
+  private SecretKey getSigningKey() {
+    byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+    return new SecretKeySpec(keyBytes, 0, keyBytes.length, "HmacSHA256");
   }
 
   /**
@@ -78,12 +85,10 @@ public class JwtUtil {
   }
 
   private Claims extractAllClaims(String token) {
-    return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+    return Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token).getPayload();
   }
 
   private Boolean isTokenExpired(String token) {
     return extractExpiration(token).before(new Date());
   }
-
-
 }

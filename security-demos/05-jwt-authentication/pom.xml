@@ -28,13 +28,7 @@
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
-        </dependency>
-        <!-- This is also needed for token handling (JSON parsing) Since Spring Boot 3.0 -->
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.4.0-b180830.0359</version>
+            <version>0.12.5</version>
         </dependency>
 
         <dependency>
