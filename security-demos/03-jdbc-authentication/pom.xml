@@ -34,8 +34,7 @@
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
             <!-- To fix the driver class problem, include the AutoloadedDriver property
-            in application.properties
-             -->
+            in application.properties -->
             <version>10.17.1.0</version>
         </dependency>
         <!-- Although we don't use JPA directly, without this one the DataSource will not work! -->
