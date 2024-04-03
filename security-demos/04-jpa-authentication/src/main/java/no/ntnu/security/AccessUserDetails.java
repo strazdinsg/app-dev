@@ -1,15 +1,17 @@
 package no.ntnu.security;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import no.ntnu.models.Role;
 import no.ntnu.models.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
-
 /**
- * Contains authentication information, needed by UserDetailsService
+ * Contains authentication information, needed by UserDetailsService.
  */
 public class AccessUserDetails implements UserDetails {
   private final String username;
@@ -17,6 +19,11 @@ public class AccessUserDetails implements UserDetails {
   private final boolean isActive;
   private final List<GrantedAuthority> authorities = new LinkedList<>();
 
+  /**
+   * Create an object.
+   *
+   * @param user The user to copy data from
+   */
   public AccessUserDetails(User user) {
     this.username = user.getUsername();
     this.password = user.getPassword();

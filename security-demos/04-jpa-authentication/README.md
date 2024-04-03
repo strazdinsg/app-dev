@@ -5,7 +5,8 @@ This is the 4th example in the series on Spring Security.
 This example shows how we can configure:
 
 1. Authentication (user storage in database) using JPA, in an Apache Derby H2 In-memory database (to
-   use MySQL or other DB, just change the data source settings in `application.properties`).
+   use MySQL or other DB, just change the data source settings in
+   [`application.properties`](src/main/resources/application.properties)).
 2. We also include all the functionality from the [second example](../02-authorization): different
    authorization levels, login and logout forms.
 
