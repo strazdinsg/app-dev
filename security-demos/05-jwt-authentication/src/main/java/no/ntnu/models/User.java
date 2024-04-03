@@ -11,6 +11,9 @@ import jakarta.persistence.ManyToMany;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+/**
+ * User entity class.
+ */
 @Entity(name = "users")
 public class User {
   @Id
@@ -27,7 +30,7 @@ public class User {
   private Set<Role> roles = new LinkedHashSet<>();
 
   /**
-   * Empty constructor needed for JPA
+   * Empty constructor needed for JPA.
    */
   public User() {
   }
@@ -79,7 +82,7 @@ public class User {
   }
 
   /**
-   * Add a role to the user
+   * Add a role to the user.
    *
    * @param role Role to add
    */

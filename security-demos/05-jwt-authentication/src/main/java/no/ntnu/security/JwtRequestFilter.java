@@ -26,7 +26,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  */
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-  private final static Logger logger = LoggerFactory.getLogger(
+  private static final Logger logger = LoggerFactory.getLogger(
       JwtRequestFilter.class.getSimpleName());
 
   @Autowired
@@ -98,7 +98,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     return SecurityContextHolder.getContext().getAuthentication() == null;
   }
 
-  private static void registerUserAsAuthenticated(HttpServletRequest request, UserDetails userDetails) {
+  private static void registerUserAsAuthenticated(HttpServletRequest request,
+                                                  UserDetails userDetails) {
     final UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(
         userDetails, null, userDetails.getAuthorities());
     upat.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
