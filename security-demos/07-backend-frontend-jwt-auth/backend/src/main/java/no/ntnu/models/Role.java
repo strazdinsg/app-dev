@@ -1,11 +1,14 @@
 package no.ntnu.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * User role (admin, regular user, etc).
+ * Entity class for a role.
  */
 @Entity(name = "roles")
 public class Role {
@@ -19,7 +22,7 @@ public class Role {
   private Set<User> users = new LinkedHashSet<>();
 
   /**
-   * Empty constructor needed for JPA
+   * Empty constructor needed for JPA.
    */
   public Role() {
   }

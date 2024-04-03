@@ -1,6 +1,5 @@
 package no.ntnu.controllers;
 
-import java.util.List;
 import no.ntnu.models.Product;
 import no.ntnu.services.ProductService;
 import org.slf4j.Logger;

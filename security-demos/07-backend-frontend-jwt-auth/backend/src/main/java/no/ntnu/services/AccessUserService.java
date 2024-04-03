@@ -1,5 +1,7 @@
 package no.ntnu.services;
 
+import java.io.IOException;
+import java.util.Optional;
 import no.ntnu.dto.UserProfileDto;
 import no.ntnu.models.Role;
 import no.ntnu.models.User;
@@ -15,8 +17,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 /**
  * Provides AccessUserDetails needed for authentication.
@@ -71,9 +71,9 @@ public class AccessUserService implements UserDetailsService {
    *
    * @param username Username of the new user
    * @param password Plaintext password of the new user
-   * @return null when user created, error message on error
+   * @throws IOException when creation of the user failed
    */
-  public String tryCreateNewUser(String username, String password) {
+  public void tryCreateNewUser(String username, String password) throws IOException {
     String errorMessage;
     if ("".equals(username)) {
       errorMessage = "Username can't be empty";
@@ -85,8 +85,11 @@ public class AccessUserService implements UserDetailsService {
         createUser(username, password);
       }
     }
-    return errorMessage;
+    if (errorMessage != null) {
+      throw new IOException(errorMessage);
+    }
   }
+
 
   /**
    * Check if password matches the requirements.

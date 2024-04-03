@@ -6,16 +6,17 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.2</version>
+        <version>3.2.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>no.ntnu</groupId>
     <artifactId>jwt-auth-backend</artifactId>
-    <version>2.0.0</version>
+    <version>3.0.0</version>
     <name>jwt-auth-backend</name>
     <description>Backend part of the project which uses JWT authentication.</description>
     <properties>
         <java.version>17</java.version>
+        <jwt.version>0.12.5</jwt.version>
     </properties>
     <dependencies>
         <dependency>
@@ -33,14 +34,20 @@
         <!-- For JSON Web Token generation -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jwt.version}</version>
         </dependency>
-        <!-- This is also needed for token handling (JSON parsing) Since Spring Boot 3.0 -->
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.4.0-b180830.0359</version>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jwt.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>${jwt.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
@@ -61,10 +68,9 @@
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
-            <!-- The version is important, because with 10.15 Derby + Spring Boot 3.0 one
-                 would get this error:
-                 https://stackoverflow.com/questions/66844429/where-is-the-derby-embedded-driver -->
-            <version>10.14.2.0</version>
+            <!-- To fix the driver class problem, include the AutoloadedDriver property
+            in application.properties -->
+            <version>10.16.1.1</version>
         </dependency>
     </dependencies>
 

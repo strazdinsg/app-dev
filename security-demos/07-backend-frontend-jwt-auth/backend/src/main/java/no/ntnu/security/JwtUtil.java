@@ -1,68 +1,77 @@
 package no.ntnu.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.function.Function;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.function.Function;
-
 /**
- * Utility class for handling JWT tokens
+ * Utility class for handling JWT tokens.
  * Code from https://youtu.be/X80nJ5T7YpE
  */
 @Component
 public class JwtUtil {
   @Value("${jwt_secret_key}")
-  private String SECRET_KEY;
+  private String secretKey;
   /**
-   * Key inside JWT token where roles are stored
+   * Key inside JWT token where roles are stored.
    */
-  private static final String JWT_AUTH_KEY = "roles";
+  private static final String ROLE_KEY = "roles";
 
   /**
-   * Generate a JWT token for an authenticated user
+   * Generate a JWT token for an authenticated user.
    *
    * @param userDetails Object containing user details
    * @return JWT token string
    */
   public String generateToken(UserDetails userDetails) {
-    final long TIME_NOW = System.currentTimeMillis();
-    final long MILLISECONDS_IN_HOUR = 60 * 60 * 1000;
-    final long TIME_AFTER_ONE_HOUR = TIME_NOW + MILLISECONDS_IN_HOUR;
+    final long timeNow = System.currentTimeMillis();
+    final long millisecondsInHour = 60 * 60 * 1000;
+    final long timeAfterOneHour = timeNow + millisecondsInHour;
 
     return Jwts.builder()
-        .setSubject(userDetails.getUsername())
-        .claim(JWT_AUTH_KEY, userDetails.getAuthorities())
-        .setIssuedAt(new Date(TIME_NOW))
-        .setExpiration(new Date(TIME_AFTER_ONE_HOUR))
-        .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+        .subject(userDetails.getUsername())
+        .claim(ROLE_KEY, userDetails.getAuthorities())
+        .issuedAt(new Date(timeNow))
+        .expiration(new Date(timeAfterOneHour))
+        .signWith(getSigningKey())
         .compact();
   }
 
+  private SecretKey getSigningKey() {
+    byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+    return new SecretKeySpec(keyBytes, 0, keyBytes.length, "HmacSHA256");
+  }
+
   /**
-   * Find username from a JWT token
+   * Find username from a JWT token.
    *
    * @param token JWT token
    * @return Username
    */
-  public String extractUsername(String token) {
+  public String extractUsername(String token) throws JwtException {
     return extractClaim(token, Claims::getSubject);
   }
 
   /**
-   * Check if a token is valid for a given user
+   * Check if a token is valid for a given user.
    *
    * @param token       Token to validate
    * @param userDetails Object containing user details
    * @return True if the token matches the current user and is still valid
    */
-  public Boolean validateToken(String token, UserDetails userDetails) {
+  public boolean validateToken(String token, UserDetails userDetails) throws JwtException {
     final String username = extractUsername(token);
-    return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+    return userDetails != null
+        && username.equals(userDetails.getUsername())
+        && !isTokenExpired(token);
   }
 
 
@@ -76,12 +85,10 @@ public class JwtUtil {
   }
 
   private Claims extractAllClaims(String token) {
-    return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+    return Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token).getPayload();
   }
 
   private Boolean isTokenExpired(String token) {
     return extractExpiration(token).before(new Date());
   }
-
-
 }
