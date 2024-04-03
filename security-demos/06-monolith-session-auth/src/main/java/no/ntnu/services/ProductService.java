@@ -5,20 +5,20 @@ import no.ntnu.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
-import java.util.List;
-
 /**
- * Business logic for products
+ * Business logic for products.
  */
 @Service
 public class ProductService {
   @Autowired
   private ProductRepository productRepository;
 
-  public List<Product> getAll() {
-    List<Product> products = new LinkedList<>();
-    productRepository.findAll().forEach(products::add);
-    return products;
+  /**
+   * Get all the products stored in the database.
+   *
+   * @return List of all the products
+   */
+  public Iterable<Product> getAll() {
+    return productRepository.findAll();
   }
 }

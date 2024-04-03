@@ -1,5 +1,6 @@
 package no.ntnu.controllers;
 
+import java.io.IOException;
 import no.ntnu.dto.SignupDto;
 import no.ntnu.dto.UserProfileDto;
 import no.ntnu.models.User;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
- * A controller serving our HTML pages
+ * A controller serving our HTML pages.
  */
 @Controller
 public class HtmlPageController {
@@ -32,11 +33,11 @@ public class HtmlPageController {
   }
 
   /**
-   * Show profile page for a user
+   * Show profile page for a user.
    *
    * @param model    Model for passing data to Thymeleaf
    * @param username Username of the user
-   * @return
+   * @return Name of the template to render
    */
   @GetMapping("users/{username}")
   public String userPage(Model model, @PathVariable String username) {
@@ -44,14 +45,15 @@ public class HtmlPageController {
   }
 
   /**
-   * This method handles HTTP POST - user submits changes to his/her profile
+   * This method handles HTTP POST - user submits changes to his/her profile.
    *
    * @param model    Model for passing data to Thymeleaf
    * @param username Username of the user
    * @return name of the Thymeleaf template to render the result
    */
   @PostMapping("users/{username}")
-  public String userPagePost(@ModelAttribute UserProfileDto profileData, @PathVariable String username, Model model) {
+  public String userPagePost(@ModelAttribute UserProfileDto profileData,
+                             @PathVariable String username, Model model) {
     return handleProfilePageRequest(username, profileData, model);
   }
 
@@ -65,7 +67,7 @@ public class HtmlPageController {
    *                 will be updated.
    * @param model    The model to put successMessage or errorMessage in
    * @return Name of the template to render: user on success, no-access if the request
-   * is unauthorized.
+   *     is unauthorized.
    */
   private String handleProfilePageRequest(String username, UserProfileDto postData, Model model) {
     User authenticatedUser = userService.getSessionUser();
@@ -84,7 +86,12 @@ public class HtmlPageController {
     }
   }
 
-
+  /**
+   * Handle HTTP GET requests to the admin page.
+   *
+   * @param model Model for passing data to Thymeleaf
+   * @return name of the Thymeleaf template to render the result
+   */
   @GetMapping("admin")
   public String adminPage(Model model) {
     // We still need the user for the navigation, even when we don't use it for the main content
@@ -92,6 +99,12 @@ public class HtmlPageController {
     return "admin";
   }
 
+  /**
+   * Handle HTTP GET requests to the product page.
+   *
+   * @param model Model for passing data to Thymeleaf
+   * @return name of the Thymeleaf template to render the result
+   */
   @GetMapping("products")
   public String productPage(Model model) {
     // We still need the user for the navigation, even when we don't use it for the main content
@@ -105,9 +118,9 @@ public class HtmlPageController {
   }
 
   /**
-   * Sign-up form
+   * Sign-up form.
    *
-   * @return NAme of Thymeleaf template to use
+   * @return Name of Thymeleaf template to use
    */
   @GetMapping("/signup")
   public String signupForm() {
@@ -115,19 +128,21 @@ public class HtmlPageController {
   }
 
   /**
-   * This method processes data received from the sign-up form (HTTP POST)
+   * This method processes data received from the sign-up form (HTTP POST).
    *
-   * @return NAme of the template for the result page
+   * @return Name of the template for the result page
    */
   @PostMapping("/signup")
   public String signupProcess(@ModelAttribute SignupDto signupData, Model model) {
     model.addAttribute("signupData", signupData);
-    String errorMessage = userService.tryCreateNewUser(signupData.getUsername(), signupData.getPassword());
-    if (errorMessage == null) {
-      return "signup-success";
-    } else {
-      model.addAttribute("errorMessage", errorMessage);
-      return "signup-form";
+    String templateName;
+    try {
+      userService.tryCreateNewUser(signupData.getUsername(), signupData.getPassword());
+      templateName = "signup-success";
+    } catch (IOException e) {
+      model.addAttribute("errorMessage", e.getMessage());
+      templateName = "signup-form";
     }
+    return templateName;
   }
 }

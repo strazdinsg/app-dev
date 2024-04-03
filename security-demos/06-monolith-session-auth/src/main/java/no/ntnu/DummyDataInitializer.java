@@ -1,5 +1,6 @@
 package no.ntnu;
 
+import java.util.Optional;
 import no.ntnu.models.Product;
 import no.ntnu.models.Role;
 import no.ntnu.models.User;
@@ -13,10 +14,8 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 /**
- * A class which inserts some dummy data into the database, when Spring Boot app has started
+ * A class which inserts some dummy data into the database, when Spring Boot app has started.
  */
 @Component
 public class DummyDataInitializer implements ApplicationListener<ApplicationReadyEvent> {
@@ -32,7 +31,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
   private final Logger logger = LoggerFactory.getLogger("DummyInit");
 
   /**
-   * This method is called when the application is ready (loaded)
+   * This method is called when the application is ready (loaded).
    *
    * @param event Event which we don't use :)
    */

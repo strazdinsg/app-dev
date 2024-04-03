@@ -1,7 +1,7 @@
 package no.ntnu.dto;
 
 /**
- * Data transfer object (DTO) for data from the sign-up form
+ * Data transfer object (DTO) for data from the sign-up form.
  */
 public class SignupDto {
   private final String username;

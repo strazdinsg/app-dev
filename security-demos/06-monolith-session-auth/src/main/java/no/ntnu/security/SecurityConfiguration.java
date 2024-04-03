@@ -11,23 +11,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * Creates AuthenticationManager - set up authentication type
+ * Creates AuthenticationManager - set up authentication type.
  * The @EnableWebSecurity tells that this ia a class for configuring web security
  */
 @Configuration
 public class SecurityConfiguration {
   /**
-   * A service providing our users from the database
+   * A service providing our users from the database.
    */
   @Autowired
   UserDetailsService userDetailsService;
 
   /**
-   * This method will be called automatically by the framework to find out what authentication to use.
+   * This method will be called automatically by the framework to find the authentication to use.
    * Here we tell that we want to load users from a database
    *
    * @param auth Authentication builder
-   * @throws Exception
+   * @throws Exception When user detail service is not found
    */
   @Autowired
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -35,14 +35,15 @@ public class SecurityConfiguration {
   }
 
   /**
-   * This method will be called automatically by the framework to find out what authentication to use.
+   * This method will be called automatically by the framework to find the authentication to use.
    *
    * @param http HttpSecurity setting builder
-   * @throws Exception
+   * @throws Exception When security config fails
    */
   @Bean
   public SecurityFilterChain configureAuthorizationFilterChain(HttpSecurity http) throws Exception {
-    // Set up the authorization requests, starting from most restrictive at the top, to least restrictive on bottom
+    // Set up the authorization requests, starting from most restrictive at the top,
+    // to the least restrictive on the bottom
     http.csrf().disable()
         .authorizeHttpRequests()
         .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -63,7 +64,7 @@ public class SecurityConfiguration {
   }
 
   /**
-   * This method is called to decide what encryption to use for password checking
+   * This method is called to decide what encryption to use for password checking.
    *
    * @return The password encryptor
    */

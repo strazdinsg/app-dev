@@ -1,5 +1,8 @@
 package no.ntnu.services;
 
+import java.io.IOError;
+import java.io.IOException;
+import java.util.Optional;
 import no.ntnu.dto.UserProfileDto;
 import no.ntnu.models.Role;
 import no.ntnu.models.User;
@@ -16,10 +19,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 /**
- * Provides AccessUserDetails needed for authentication
+ * Provides AccessUserDetails needed for authentication.
  */
 @Service
 public class AccessUserService implements UserDetailsService {
@@ -40,7 +41,7 @@ public class AccessUserService implements UserDetailsService {
   }
 
   /**
-   * Get the user which is authenticated for the current session
+   * Get the user which is authenticated for the current session.
    *
    * @return User object or null if no user has logged in
    */
@@ -52,7 +53,7 @@ public class AccessUserService implements UserDetailsService {
   }
 
   /**
-   * Check if user with given username exists in the database
+   * Check if user with given username exists in the database.
    *
    * @param username Username of the user to check, case-sensitive
    * @return True if user exists, false otherwise
@@ -67,13 +68,13 @@ public class AccessUserService implements UserDetailsService {
   }
 
   /**
-   * Try to create a new user
+   * Try to create a new user.
    *
    * @param username Username of the new user
    * @param password Plaintext password of the new user
-   * @return null when user created, error message on error
+   * @throws IOException when creation of the user failed
    */
-  public String tryCreateNewUser(String username, String password) {
+  public void tryCreateNewUser(String username, String password) throws IOException {
     String errorMessage;
     if ("".equals(username)) {
       errorMessage = "Username can't be empty";
@@ -85,18 +86,20 @@ public class AccessUserService implements UserDetailsService {
         createUser(username, password);
       }
     }
-    return errorMessage;
+    if (errorMessage != null) {
+      throw new IOException(errorMessage);
+    }
   }
 
   /**
-   * Check if password matches the requirements
+   * Check if password matches the requirements.
    *
    * @param password A password to check
    * @return null if all OK, error message on error
    */
   private String checkPasswordRequirements(String password) {
     String errorMessage = null;
-    if (password == null || password.length() == 0) {
+    if (password == null || password.isEmpty()) {
       errorMessage = "Password can't be empty";
     } else if (password.length() < MIN_PASSWORD_LENGTH) {
       errorMessage = "Password must be at least " + MIN_PASSWORD_LENGTH + " characters";
@@ -106,7 +109,7 @@ public class AccessUserService implements UserDetailsService {
 
 
   /**
-   * Create a new user in the database
+   * Create a new user in the database.
    *
    * @param username Username of the new user
    * @param password Plaintext password of the new user
@@ -121,7 +124,7 @@ public class AccessUserService implements UserDetailsService {
   }
 
   /**
-   * Create a secure hash of a password
+   * Create a secure hash of a password.
    *
    * @param password Plaintext password
    * @return BCrypt hash, with random salt
@@ -131,7 +134,7 @@ public class AccessUserService implements UserDetailsService {
   }
 
   /**
-   * Update profile information for a user
+   * Update profile information for a user.
    *
    * @param user        User to update
    * @param profileData Profile data to set for the user

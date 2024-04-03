@@ -1,7 +1,7 @@
 package no.ntnu.dto;
 
 /**
- * Data transfer object (DTO) for submitting changes to user profile data
+ * Data transfer object (DTO) for submitting changes to user profile data.
  */
 public class UserProfileDto {
   private final String bio;
