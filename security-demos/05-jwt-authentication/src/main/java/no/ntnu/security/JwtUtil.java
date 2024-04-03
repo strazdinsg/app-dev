@@ -1,6 +1,8 @@
 package no.ntnu.security;
 
+import io.jsonwebtoken.ClaimJwtException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,7 +51,7 @@ public class JwtUtil {
    * @param token JWT token
    * @return Username
    */
-  public String extractUsername(String token) {
+  public String extractUsername(String token) throws JwtException {
     return extractClaim(token, Claims::getSubject);
   }
 
@@ -60,9 +62,11 @@ public class JwtUtil {
    * @param userDetails Object containing user details
    * @return True if the token matches the current user and is still valid
    */
-  public Boolean validateToken(String token, UserDetails userDetails) {
+  public boolean validateToken(String token, UserDetails userDetails) throws JwtException {
     final String username = extractUsername(token);
-    return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+    return userDetails != null
+        && username.equals(userDetails.getUsername())
+        && !isTokenExpired(token);
   }
 
 
