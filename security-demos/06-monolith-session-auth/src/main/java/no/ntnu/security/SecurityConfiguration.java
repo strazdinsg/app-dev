@@ -3,8 +3,10 @@ package no.ntnu.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,22 +46,19 @@ public class SecurityConfiguration {
   public SecurityFilterChain configureAuthorizationFilterChain(HttpSecurity http) throws Exception {
     // Set up the authorization requests, starting from most restrictive at the top,
     // to the least restrictive on the bottom
-    http.csrf().disable()
-        .authorizeHttpRequests()
-        .requestMatchers("/admin/**").hasRole("ADMIN")
-        .requestMatchers("/users/**").hasAnyRole("USER", "ADMIN")
-        .requestMatchers("/").permitAll()
-        .requestMatchers("/products").permitAll()
-        .requestMatchers("/api/products").permitAll()
-        .requestMatchers("/login").permitAll()
-        .requestMatchers("/signup").permitAll()
-        .requestMatchers("/css/**").permitAll()
-        .requestMatchers("/js/**").permitAll()
-        .requestMatchers("/favicon.ico").permitAll()
-        .requestMatchers("/").permitAll()
-        .and().formLogin().loginPage("/login")
-        .and().logout().logoutSuccessUrl("/")
-    ;
+    http
+        // Disable CSRF and CORS checks. Without this it will be hard to make automated tests.
+        .csrf(AbstractHttpConfigurer::disable)
+        .cors(AbstractHttpConfigurer::disable)
+        // Configure required access level for the specific URL prefixes
+        .authorizeHttpRequests((auth) -> auth.requestMatchers("/admin/**").hasRole("ADMIN"))
+        .authorizeHttpRequests((auth) ->
+            auth.requestMatchers("/users/**").hasAnyRole("USER", "ADMIN")
+        )
+        // Any other URL is permitted
+        .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+        .formLogin(Customizer.withDefaults())
+        .logout(logout -> logout.logoutSuccessUrl("/"));
     return http.build();
   }
 
