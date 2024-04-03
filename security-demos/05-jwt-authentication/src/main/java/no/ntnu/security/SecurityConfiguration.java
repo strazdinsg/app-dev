@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -51,21 +52,39 @@ public class SecurityConfiguration {
   @Bean
   public SecurityFilterChain configureAuthorizationFilterChain(HttpSecurity http) throws Exception {
     // Set up the authorization requests, starting from most restrictive at the top, to least restrictive on bottom
-    http.cors().and().csrf().disable()
-        // This enables the access restrictions
-        .authorizeHttpRequests()
+    http
+        // Disable CSRF and CORS checks. Without this it will be hard to make automated tests.
+        .csrf(AbstractHttpConfigurer::disable)
+        .cors(AbstractHttpConfigurer::disable)
         // Authentication URL is accessible for everyone
-        .requestMatchers("/authenticate").permitAll()
+        .authorizeHttpRequests((auth) -> auth.requestMatchers("/authenticate").permitAll())
         // Any other request will be authenticated with a stateless policy
-        .anyRequest().authenticated()
-        .and().sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
+        .authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
+        // Enable stateless session policy
+        .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         // Enable our JWT authentication filter
         .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
     // Necessary authorization for each endpoint will be configured by each method, using @PreAuthorize
     return http.build();
+
+    // For Spring Boot 3.0.2 and older, use this:
+//    // Set up the authorization requests, starting from most restrictive at the top, to least restrictive on bottom
+//    http.cors().and().csrf().disable()
+//        // This enables the access restrictions
+//        .authorizeHttpRequests()
+//        // Authentication URL is accessible for everyone
+//        .requestMatchers("/authenticate").permitAll()
+//        // Any other request will be authenticated with a stateless policy
+//        .anyRequest().authenticated()
+//        .and().sessionManagement()
+//        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//        .and()
+//        // Enable our JWT authentication filter
+//        .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//    // Necessary authorization for each endpoint will be configured by each method, using @PreAuthorize
+//    return http.build();
   }
 
   @Bean
