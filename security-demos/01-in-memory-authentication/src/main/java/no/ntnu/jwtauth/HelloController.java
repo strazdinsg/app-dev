@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Simple REST API controller
+ * Simple REST API controller.
  */
 @RestController
 public class HelloController {
