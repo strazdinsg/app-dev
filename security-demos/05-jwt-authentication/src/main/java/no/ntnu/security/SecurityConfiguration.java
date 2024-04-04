@@ -59,6 +59,8 @@ public class SecurityConfiguration {
         .cors(AbstractHttpConfigurer::disable)
         // Authentication URL is accessible for everyone
         .authorizeHttpRequests((auth) -> auth.requestMatchers("/authenticate").permitAll())
+        // The default URL / is accessible to everyone
+        .authorizeHttpRequests((authorize) -> authorize.requestMatchers("/").permitAll())
         // Any other request will be authenticated with a stateless policy
         .authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
         // Enable stateless session policy
