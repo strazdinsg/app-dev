@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.5</version>
+        <version>3.2.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>no.ntnu</groupId>
     <artifactId>spring-profiles</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <name>spring-profiles</name>
     <description>Example showing how we can use different profiles (and hence different environment
         variables) in Spring Boot
@@ -23,14 +23,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <!-- To avoid the security vulnerability, exclude SnakeYaml, which is needed only
-            for processing .yml files (not used here) -->
-            <exclusions>
-                <exclusion>
-                    <groupId>org.yaml</groupId>
-                    <artifactId>snakeyaml</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <!-- For Using JPA -->
         <dependency>
@@ -41,18 +33,14 @@
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
-            <!-- The version is important, because with 10.15 Derby + Spring Boot 3.0 one
-            would get this error:
-            https://stackoverflow.com/questions/66844429/where-is-the-derby-embedded-driver -->
-            <version>10.14.2.0</version>
-
+            <version>10.16.1.1</version>
         </dependency>
         <!-- For MySQL database -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
-            <version>8.0.32</version>
+            <version>8.3.0</version>
         </dependency>
 
         <dependency>
