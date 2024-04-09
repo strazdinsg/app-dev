@@ -15,7 +15,7 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Here we specify that all the tests (within this class) must be executed with the `rest` profile.
+ * Here we specify that all the tests (within this class) must be executed with the `test` profile.
  * I.e., values from application-test.properties will be used
  */
 @SpringBootTest
