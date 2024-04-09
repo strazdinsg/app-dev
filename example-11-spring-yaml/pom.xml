@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.5</version>
+        <version>3.2.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>no.ntnu</groupId>
     <artifactId>spring-yaml</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <name>spring-yaml</name>
     <description>Example of using application.yml file instead of application.properties
     </description>
@@ -22,29 +22,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <!-- We exclude the vulnerable SnakeYaml version here -->
-            <exclusions>
-                <exclusion>
-                    <groupId>org.yaml</groupId>
-                    <artifactId>snakeyaml</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!-- And here we include the "safe" version of SnakeYaml - it is needed to parse
-        the application.yml file -->
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>2.0</version>
-        </dependency>
-
-        <!-- This is needed when we have custom configuration classes.
-        See https://docs.spring.io/spring-boot/docs/3.0.5/reference/html/configuration-metadata.html#appendix.configuration-metadata.annotation-processor.configuring
-        -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <dependency>
