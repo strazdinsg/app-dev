@@ -17,4 +17,10 @@ Run the server:
 ```bash
 $ python -m flask run
 ```
+To run in development mode with auto-reloading:
+
+```bash
+$ python -m flask run --reload
+```
+
 
