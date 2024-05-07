@@ -1,4 +1,7 @@
 const API_BASE_URL = "http://localhost:8080/api";
+// Use this if you want to use the Python Flask backend:
+// const API_BASE_URL = "http://127.0.0.1:5000";
+
 
 /**
  * Send HTTP GET request to the backend REST API
