@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>GitHub OAuth Example</title>
+  </head>
+  <body>
+    <h1>Demo</h1>
+    <div id="container">Checking login status...</div>
+  </body>
+  <script>
+    // When the document is ready, get the current user
+    document.addEventListener("DOMContentLoaded", async function () {
+      await loadUserInfo();
+    });
+
+    async function loadUserInfo() {
+      const user = await getCurrentUser();
+      if (user) {
+        showUserInfo(user);
+      } else {
+        showLoginForm();
+      }
+    }
+
+    // Fetch data about the current user from the server
+    async function getCurrentUser() {
+      let user = null;
+
+      let response = await fetch("/user", {
+        redirect: "manual", // Don't redirect the browser to the login page
+      });
+      if (response.status === 200) {
+        user = await response.text();
+        console.log(user);
+      }
+
+      return user;
+    }
+
+    function showUserInfo(user) {
+      const container = document.getElementById("container");
+      container.innerHTML = `Logged in as ${user}.<button id='logout'>Logout</button>`;
+      document.getElementById("logout").addEventListener("click", doLogout);
+    }
+
+    function showLoginForm() {
+      document.getElementById("container").innerHTML =
+        "<a href='/oauth2/authorization/github'>Login with GitHub</a>";
+    }
+
+    async function doLogout() {
+      await fetch("/logout", {
+        method: "POST",
+      });
+      showLoginForm();
+    }
+  </script>
+</html>
