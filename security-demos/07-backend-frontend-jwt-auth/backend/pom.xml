@@ -70,7 +70,7 @@
             <artifactId>derby</artifactId>
             <!-- To fix the driver class problem, include the AutoloadedDriver property
             in application.properties -->
-            <version>10.16.1.1</version>
+            <version>10.17.1.0</version>
         </dependency>
     </dependencies>
 
