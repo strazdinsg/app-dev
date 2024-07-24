@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.4</version>
+        <version>3.2.8</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>no.ntnu</groupId>
@@ -17,7 +17,7 @@
         variables) in Spring Boot
     </description>
     <properties>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -33,14 +33,14 @@
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
-            <version>10.16.1.1</version>
+            <version>10.17.1.0</version>
         </dependency>
         <!-- For MySQL database -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
-            <version>8.3.0</version>
+            <version>8.4.0</version>
         </dependency>
 
         <dependency>
