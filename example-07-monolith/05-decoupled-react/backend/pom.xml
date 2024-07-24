@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.2</version>
+        <version>3.2.8</version>
         <relativePath/>
     </parent>
     <groupId>no.ntnu</groupId>
@@ -18,7 +18,7 @@
         frontend.
     </description>
     <properties>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -34,10 +34,7 @@
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
-            <!-- The version is important, because with 10.15 Derby + Spring Boot 3.0 one
-            would get this error:
-            https://stackoverflow.com/questions/66844429/where-is-the-derby-embedded-driver -->
-            <version>10.14.2.0</version>
+            <version>10.17.1.0</version>
         </dependency>
     </dependencies>
 
